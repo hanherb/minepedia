@@ -10,35 +10,61 @@
         div( class="col-sm-offset-3 col-sm-9")
           div( class="checkbox-inline")
             label( for="header_rows") 
-        div( class="row")
-          div( class="col")
-            div( class="card-body p-0 pb-3 text-center" style="overflow-x:auto;")
+        d-container( fluid class="main-content-container px-4 pb-4")
+          v-client-table( class="dataTables_wrapper" :data="tableData" :columns="columns" :options="clientTableOptions")
               table( class="table mb-0")
                 thead( class="bg-light")
                   tr
                     th( v-for="key in parse_header" @click="sortBy(key)" :class="{ active: sortKey == key }") {{ key | capitalize }}
                       span( class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'")
                 tbody
-                  tr( v-for="csv in parse_csv")
+                  tr( v-for="csv in tableData")
                     td( v-for="key in parse_header") {{csv[key]}}
-            br
-            div( align='center' v-if="parse_csv[0]")
-              d-button( theme="primary") Submit
+          br
+          div( align='center' v-if="tableData[0]")
+            d-button( theme="primary") Submit
 </template>
 
 <script>
 import graphqlFunction from '../graphqlFunction';
 import address from '../address';
 import headers from '../headers';
+import Vue from 'vue';
+import { ClientTable } from 'vue-tables-2';
+import '@/assets/scss/vue-tables.scss';
+
+Vue.use(ClientTable);
 
 export default {
   name: 'import-xls',
+  components: {
+    ClientTable,
+  },
   data() {
     return {
       parse_header: [],
-      parse_csv: [],
       sortOrders:{},
-      sortKey: ''
+      sortKey: '',
+      columns: [],
+      tableData: [],
+      clientTableOptions: {
+        perPage: 10,
+        recordsPerPage: [10, 25, 50, 100],
+        skin: 'transaction-history table dataTable',
+        sortIcon: {
+          base: 'fas float-right mt-1 text-muted',
+          up: 'fa-caret-up',
+          down: 'fa-caret-down',
+        },
+        texts: {
+          filterPlaceholder: '',
+          limit: 'Show',
+        },
+        pagination: {
+          edge: true,
+          nav: 'scroll',
+        },
+      },
     };
   },
   filters: {
@@ -56,7 +82,7 @@ export default {
       var vm = this
       var lines = csv.split("\n")
       var result = []
-      var headers = lines[0].split(";")
+      var csvHeaders = lines[0].split(";")
       vm.parse_header = lines[0].split(";") 
       lines[0].split(",").forEach(function (key) {
         vm.sortOrders[key] = 1
@@ -68,15 +94,18 @@ export default {
         var obj = {}
         var currentline = line.split(";")
         
-        headers.map(function(header, indexHeader){
+        csvHeaders.map(function(header, indexHeader){
           obj[header] = currentline[indexHeader]
         })
-        
+
         result.push(obj)
       })
-      
+      this.axios.post(address + ':3000/import-csv', {}, headers)
+      .then((response) => {
+        console.log(response);
+      });
       result.pop() // remove the last item because undefined values
-      console.log(result)
+      this.columns = Object.keys(result[0]);
       return result // JavaScript object
     },
     loadCSV(e) {
@@ -87,7 +116,7 @@ export default {
         // Handle errors load
         reader.onload = function(event) {
           var csv = event.target.result;
-          vm.parse_csv = vm.csvJSON(csv)
+          vm.tableData = vm.csvJSON(csv)
           
         };
         reader.onerror = function(evt) {

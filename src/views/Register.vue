@@ -89,7 +89,8 @@ export default {
             fullname: this.input.fullname,
             role: this.input.role,
             authority: this.input.authority,
-            password: this.input.password
+            password: this.input.password,
+            status: "wait-profile",
           };
           this.axios.post(address + ':3000/register-user', postObj)
           .then((response) => {

@@ -1,13 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Analytics from './views/Analytics.vue';
 import OnlineStore from './views/OnlineStore.vue';
 import HeaderNavigation from './views/HeaderNavigation.vue';
 import IconSidebarNav from './views/IconSidebarNav.vue';
 import PersonalBlog from './views/PersonalBlog.vue';
-import UserProfile from './views/UserProfile.vue';
-import EditUserProfile from './views/EditUserProfile.vue';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
@@ -43,7 +40,7 @@ export default new Router({
     {
       path: '/analytics',
       name: 'analytics',
-      component: Analytics,
+      component: () => import('./views/Analytics.vue'),
     },
     {
       path: '/ecommerce',
@@ -58,12 +55,12 @@ export default new Router({
     {
       path: '/user-profile',
       name: 'user-profile',
-      component: UserProfile,
+      component: () => import('./views/UserProfile.vue'),
     },
     {
       path: '/edit-user-profile',
       name: 'edit-user-profile',
-      component: EditUserProfile,
+      component: () => import('./views/EditUserProfile.vue'),
     },
     {
       path: '/login',
@@ -174,6 +171,7 @@ export default new Router({
     {
       path: '/not-admin',
       name: 'not-admin',
+      meta: { layout: 'non-admin' },
       component: () => import('./views/NotAdmin.vue'),
     },
     {

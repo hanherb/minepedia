@@ -43,55 +43,72 @@ Vue.use(VueAnalytics, {
 });
 
 router.beforeEach((to, from, next) => {
-    var user_role = localStorage.getItem('user_role');
-    var user_authority = localStorage.getItem('user_authority').split(',');
-    if(to.path == '/add-user') {
-        for(var i = 0; i <= user_authority.length; i++) {
-            if(i == user_authority.length) {
-                next({
-                    path: '/not-authenticated',
-                })
-            }
-            else {
-                if(user_authority[i] == 'create') {
-                    next();
-                    break;
-                }
-            }
-        }
+    if(localStorage.getItem('user_role')) {
+        var user_role = localStorage.getItem('user_role');
     }
-    else if(to.path == '/update-user') {
-        for(var i = 0; i <= user_authority.length; i++) {
-            if(i == user_authority.length) {
-                next({
-                    path: '/not-authenticated',
-                })
-            }
-            else {
-                if(user_authority[i] == 'update') {
-                    next();
-                    break;
-                }
-            }
-        }
+    if(localStorage.getItem('user_authority')) {
+        var user_authority = localStorage.getItem('user_authority').split(',');
     }
-    else if(to.path == '/delete-user') {
-        for(var i = 0; i <= user_authority.length; i++) {
-            if(i == user_authority.length) {
-                next({
-                    path: '/not-authenticated',
-                })
-            }
-            else {
-                if(user_authority[i] == 'delete') {
-                    next();
-                    break;
-                }
-            }
+    if(localStorage.getItem('user_status')) {
+        var user_status = localStorage.getItem('user_status').split(',');
+    }
+    if(user_status == 'wait-profile') {
+        if(to.path != '/edit-user-profile') {
+            next('/edit-user-profile');
+        }
+        else {
+            next();
         }
     }
     else {
-        next();
+        if(to.path == '/add-user') {
+            for(var i = 0; i <= user_authority.length; i++) {
+                if(i == user_authority.length) {
+                    next({
+                        path: '/not-authenticated',
+                    })
+                }
+                else {
+                    if(user_authority[i] == 'create') {
+                        next();
+                        break;
+                    }
+                }
+            }
+        }
+        else if(to.path == '/update-user') {
+            for(var i = 0; i <= user_authority.length; i++) {
+                if(i == user_authority.length) {
+                    next({
+                        path: '/not-authenticated',
+                    })
+                }
+                else {
+                    if(user_authority[i] == 'update') {
+                        next();
+                        break;
+                    }
+                }
+            }
+        }
+        else if(to.path == '/delete-user') {
+            for(var i = 0; i <= user_authority.length; i++) {
+                if(i == user_authority.length) {
+                    next({
+                        path: '/not-authenticated',
+                    })
+                }
+                else {
+                    if(user_authority[i] == 'delete') {
+                        next();
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            next();
+        }
     }
 });
 

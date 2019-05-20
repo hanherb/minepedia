@@ -38,7 +38,7 @@
     </li>
     <li class="nav-item dropdown" v-if="session">
       <a class="nav-link dropdown-toggle text-nowrap px-3" v-d-toggle.user-actions>
-        <img class="user-avatar rounded-circle mr-2" src="@/assets/images/avatars/0.jpg" alt="User Avatar"> <span class="d-none d-md-inline-block">{{session.fullname}}</span>
+        <img class="user-avatar rounded-circle mr-2" :src="avatarImg" alt="User Avatar"> <span class="d-none d-md-inline-block">{{session.fullname}}</span>
       </a>
       <d-collapse id="user-actions" class="dropdown-menu dropdown-menu-small">
         <d-dropdown-item to="user-profile"><i class="material-icons">&#xE7FD;</i> Profile</d-dropdown-item>
@@ -63,7 +63,8 @@ export default {
   name: 'navbar-nav',
   data(){
     return {
-      session: []
+      session: [],
+      avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
     }
   },
 
@@ -80,6 +81,7 @@ export default {
       this.axios.get(address + ":3000/logout").then((response) => {
         alert("Successfully Logged Out");
         basicFunction.deleteAllCookies();
+        localStorage.clear();
         this.$session.destroy();
         this.$router.push('/');
         location.reload();

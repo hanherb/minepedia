@@ -18,9 +18,9 @@
           d-checkbox( label="update" v-model="input.authority" value="update") Update
         div
           d-checkbox( label="delete" v-model="input.authority" value="delete") Delete
-        <!-- label API Authority
+        label API Authority
         div( v-for="plugin in plugins")
-          d-checkbox( :label="plugin.name" v-model="input.authority" :value="plugin.name") {{plugin.name}} -->
+          d-checkbox( :label="plugin.name" v-model="input.authority" :value="plugin.name") {{plugin.name}}
       .form-group
         label Password
         d-input( type="password" v-model="input.password" placeholder="Password")
@@ -98,7 +98,8 @@ export default {
           fullname: this.input.fullname,
           role: this.input.role,
           authority: this.input.authority,
-          password: this.input.password
+          password: this.input.password,
+          status: "wait-profile",
         };
         this.axios.post(address + ':3000/create-user', postObj, headers)
         .then((response) => {

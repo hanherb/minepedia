@@ -18,16 +18,9 @@
           <d-card-body class="p-0">
 
             <!-- Nav Wrapper -->
-            <div class="border-bottom clearfix d-flex">
-              <d-nav tabs class="border-0 mt-auto mx-4 pt-2">
-                <d-nav-item active>General</d-nav-item>
-              </d-nav>
-            </div>
-
             <d-form class="py-4">
               <d-form-row class="mx-4">
                 <d-col class="mb-3">
-                  <d-form-text tag="h6" class="m-0">General</d-form-text>
                   <d-form-text tag="p" class="text-muted m-0">Setup your general profile details.</d-form-text>
                 </d-col>
               </d-form-row>
@@ -35,16 +28,10 @@
                 <d-col lg="8">
                   <d-form-row>
 
-                    <!-- First Name -->
-                    <d-col md="6" class="form-group">
-                      <label for="firstName">First Name</label>
-                      <d-input type="text" id="firstName" value="Sierra" />
-                    </d-col>
-
-                    <!-- Last Name -->
-                    <d-col md="6" class="form-group">
-                      <label for="lastName">Last Name</label>
-                      <d-input type="text" id="lastName" value="Brooks" />
+                    <!-- Full Name -->
+                    <d-col md="12" class="form-group">
+                      <label for="fullName">Full Name</label>
+                      <d-input v-model="input.fullname" type="text" id="fullName"/>
                     </d-col>
 
                     <!-- Location -->
@@ -54,7 +41,7 @@
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE0C8;</i>
                         </d-input-group-text>
-                        <d-input id="userLocation" value="Remote" />
+                        <d-input v-model="input.location" id="userLocation"/>
                       </d-input-group>
                     </d-col>
 
@@ -65,29 +52,19 @@
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE0CD;</i>
                         </d-input-group-text>
-                        <d-input id="phoneNumber" value="+40 1234 567 890" />
+                        <d-input v-model="input.phone_number" id="phoneNumber"/>
                       </d-input-group>
                     </d-col>
 
                     <!-- Email Address -->
-                    <d-col md="6" class="form-group">
+                    <d-col md="12" class="form-group">
                       <label for="emailAddress">Email</label>
                       <d-input-group seamless>
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE0BE;</i>
                         </d-input-group-text>
-                        <d-input id="emailAddress" />
+                        <d-input v-model="input.email" id="emailAddress" disabled />
                       </d-input-group>
-                    </d-col>
-
-                    <!-- Display Email Publicly -->
-                    <d-col md="6" class="form-group">
-                      <label for="displayEmail">Display Email Publicly</label>
-                      <d-select :value="null">
-                        <option :value="null">Select an Option</option>
-                        <option>Yes, display my email</option>
-                        <option>No, do not display my email.</option>
-                      </d-select>
                     </d-col>
 
                   </d-form-row>
@@ -97,13 +74,13 @@
                 <d-col lg="4">
                   <label for="userProfilePicture" class="text-center w-100 mb-4">Profile Picture</label>
                   <div class="edit-user-details__avatar m-auto">
-                    <img src="@/assets/images/avatars/0.jpg" alt="User Avatar">
+                    <img :src="avatarImg" alt="User Avatar">
                     <label class="edit-user-details__avatar__change">
                                 <i class="material-icons mr-1">&#xE439;</i>
-                                <d-input type="file" id="userProfilePicture" class="d-none" />
+                                <input @change="onFileChange" type="file" id="userProfilePicture" class="d-none" />
                               </label>
                   </div>
-                  <d-button size="sm" class="btn-white d-table mx-auto mt-4"><i class="material-icons">&#xE2C3;</i> Upload Image</d-button>
+                  <span v-if="profile_picture_upload.name" size="sm" class="d-table mx-auto mt-4"><i class="material-icons">&#xE2C3;</i> Image Uploaded</span>
                 </d-col>
 
               </d-form-row>
@@ -113,143 +90,9 @@
                 <!-- User Bio -->
                 <d-col md="6" class="form-group">
                   <label for="userBio">Bio</label>
-                  <d-textarea style="min-height: 87px;" id="userBio" name="userBio" />
+                  <textarea v-model="input.description" rows="5" wrap="soft" class="form-control form-control-lg" />
                 </d-col>
 
-                <!-- User Tags -->
-                <d-col md="6" class="form-group">
-                  <label for="userTags">Tags</label>
-                  <tags-input class="form-control" id="userTags" v-model="tag" :tags="userTags" />
-                </d-col>
-
-              </d-form-row>
-
-              <hr />
-
-              <!-- Social Profiles -->
-              <d-form-row class="mx-4">
-                <d-col class="mb-3 form-group">
-                  <h6 class="form-text m-0">Social</h6>
-                  <p class="form-text text-muted m-0">Setup your social profiles info.</p>
-                </d-col>
-              </d-form-row>
-
-              <d-form-row class="mx-4">
-
-                <!-- Facebook -->
-                <d-col md="4" class="form-group">
-                  <label for="socialFacebook">Facebook</label>
-                  <d-input-group seamless>
-                    <d-input-group-text slot="prepend">
-                      <i class="fab fa-facebook-f"></i>
-                    </d-input-group-text>
-                    <d-input id="socialFacebook" />
-                  </d-input-group>
-                </d-col>
-
-                <!-- Twitter -->
-                <d-col md="4" class="form-group">
-                  <label for="socialTwitter">Twitter</label>
-                  <d-input-group seamless>
-                    <d-input-group-text slot="prepend">
-                      <i class="fab fa-twitter"></i>
-                    </d-input-group-text>
-                    <d-input id="socialTwitter" />
-                  </d-input-group>
-                </d-col>
-
-                <!-- GitHub -->
-                <d-col md="4" class="form-group">
-                  <label for="socialGitHub">GitHub</label>
-                  <d-input-group seamless>
-                    <d-input-group-text slot="prepend">
-                      <i class="fab fa-github"></i>
-                    </d-input-group-text>
-                    <d-input id="socialGitHub" />
-                  </d-input-group>
-                </d-col>
-
-                <!-- Slack -->
-                <d-col md="4" class="form-group">
-                  <label for="socialSlack">Slack</label>
-                  <d-input-group seamless>
-                    <d-input-group-text slot="prepend">
-                      <i class="fab fa-slack"></i>
-                    </d-input-group-text>
-                    <d-input id="socialSlack" />
-                  </d-input-group>
-                </d-col>
-
-                <!-- Dribbble -->
-                <d-col md="4" class="form-group">
-                  <label for="socialDribbble">Dribbble</label>
-                  <d-input-group seamless>
-                    <d-input-group-text slot="prepend">
-                      <i class="fab fa-dribbble"></i>
-                    </d-input-group-text>
-                    <d-input id="socialDribbble" />
-                  </d-input-group>
-                </d-col>
-
-                <!-- Google Plus -->
-                <d-col md="4" class="form-group">
-                  <label for="socialGooglePlus">Google Plus</label>
-                  <d-input-group seamless>
-                    <d-input-group-text slot="prepend">
-                      <i class="fab fa-google-plus-g"></i>
-                    </d-input-group-text>
-                    <d-input id="socialGooglePlus" />
-                  </d-input-group>
-                </d-col>
-              </d-form-row>
-
-              <hr />
-
-              <!-- Notifications -->
-              <d-form-row class="mx-4">
-                <d-col class="mb-3">
-                  <d-form-text tag="h6" class="m-0">Notifications</d-form-text>
-                  <d-form-text tag="p" class="text-muted m-0">Setup which notifications would you like to receive.</d-form-text>
-                </d-col>
-              </d-form-row>
-
-              <!-- Conversations -->
-              <d-form-row class="mx-4">
-                <d-col tag="label" for="conversationsEmailsToggle" class="col-form-label">
-                  Conversations
-                  <d-form-text class="text-muted">
-                    Sends notification emails with updates for the conversations you are participating in or if someone mentions you.
-                  </d-form-text>
-                </d-col>
-                <d-col class="d-flex">
-                  <d-checkbox checked class="ml-auto my-auto" id="conversationsEmailsToggle" toggle/>
-                </d-col>
-              </d-form-row>
-
-              <!-- New Projects -->
-              <d-form-row class="mx-4">
-                <d-col tag="label" for="newProjectsEmailsToggle" class="col-form-label">
-                  New Projects
-                  <d-form-text class="text-muted">
-                    Sends notification emails when you are invited to a new project.
-                  </d-form-text>
-                </d-col>
-                <d-col class="d-flex">
-                  <d-checkbox class="ml-auto my-auto" id="newProjectsEmailsToggle" toggle/>
-                </d-col>
-              </d-form-row>
-
-              <!-- Vulnerability Alerts -->
-              <d-form-row class="mx-4">
-                <d-col tag="label" for="vulnerabilitiesEmailsToggle" class="col-form-label">
-                  Vulnerability Alerts
-                  <d-form-text class="text-muted">
-                    Sends notification emails when everything goes down and there's no hope left whatsoever.
-                  </d-form-text>
-                </d-col>
-                <d-col class="d-flex">
-                  <d-checkbox checked class="ml-auto my-auto" id="vulnerabilitiesEmailsToggle" toggle/>
-                </d-col>
               </d-form-row>
 
               <hr />
@@ -267,19 +110,19 @@
                 <!-- Old Password -->
                 <d-col md="4" class="form-group">
                   <label for="oldPassword">Old Password</label>
-                  <d-input id="oldPassword" placeholder="Old Password" />
+                  <d-input type="password" id="oldPassword" placeholder="Old Password" />
                 </d-col>
 
                 <!-- New Password -->
                 <d-col md="4" class="form-group">
                   <label for="newPassword">New Password</label>
-                  <d-input id="newPassword" placeholder="New Password" />
+                  <d-input type="password" id="newPassword" placeholder="New Password" />
                 </d-col>
 
                 <!-- Repeat New Password -->
                 <d-col md="4" class="form-group">
                   <label for="repeatNewPassword">Repeat New Password</label>
-                  <d-input id="repeatNewPassword" placeholder="Repeat New Password" />
+                  <d-input type="password" id="repeatNewPassword" placeholder="Repeat New Password" />
                 </d-col>
 
               </d-form-row>
@@ -288,7 +131,7 @@
 
           <!-- Save Changes -->
           <d-card-footer class="border-top">
-            <d-button size="sm" class="btn-accent ml-auto d-table mr-3">
+            <d-button size="sm" class="btn-accent ml-auto d-table mr-3" v-on:click="submitFile">
               Save Changes
             </d-button>
           </d-card-footer>
@@ -300,42 +143,136 @@
 </template>
 
 <script>
-import TagsInput from '@johmun/vue-tags-input';
-import '@/assets/scss/vue-tags-input.scss';
+import graphqlFunction from '../graphqlFunction';
+import address from '../address';
+import headers from '../headers';
 
 export default {
-  components: {
-    TagsInput,
+  name: 'update-user',
+  data(){
+      return{
+        input:{
+          email: "",
+          fullname: "",
+          location: "",
+          phone_number: "",
+          biodata: "",
+        },
+        id: "",
+        role: "",
+        authority: [],
+        status: "",
+        profile_picture: "",
+        profile_picture_upload: [],
+        avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
+      }
   },
-  data() {
-    return {
-      tag: '',
-      userTags: [{
-        text: 'User Experience',
-        tiClasses: ['valid'],
-      },
-      {
-        text: 'UI Design',
-        tiClasses: ['valid'],
-      },
-      {
-        text: 'React JS',
-        tiClasses: ['valid'],
-      },
-      {
-        text: 'HTML & CSS',
-        tiClasses: ['valid'],
-      },
-      {
-        text: 'JavaScript',
-        tiClasses: ['valid'],
-      },
-      {
-        text: 'Bootstrap 4',
-        tiClasses: ['valid'],
-      },
-      ],
-    };
+
+  created: function()
+  {
+      this.fetchUser();
   },
+
+  methods: {
+      fetchUser() {
+        let id = this.$session.get('user')._id;
+        this.axios.get(address + ":3000/get-user", headers).then((response) => {
+          let query = `query getSingleUser($userId: String!) {
+            user(_id: $userId) {
+              _id
+              fullname
+              email
+              role
+              authority
+              status
+              location
+              phone_number
+              biodata
+              profile_picture
+            }
+          }`;
+          let variable = {
+            userId: id
+          };
+          graphqlFunction.graphqlFetchOne(query, variable, (result) => {
+            this.id = result.user._id;
+            this.input.email = result.user.email;
+            this.input.fullname = result.user.fullname;
+            this.input.location = result.user.location;
+            this.input.phone_number = result.user.phone_number;
+            this.input.biodata = result.user.biodata;
+            this.role = result.user.role;
+            this.authority = result.user.authority;
+            this.status = result.user.status;
+            this.profile_picture = result.user.profile_picture;
+          });
+        })
+      },
+
+      onFileChange(event) {
+        this.profile_picture_upload = event.target.files[0];
+      },
+
+      submitFile() {
+        if(!this.input.fullname || !this.input.location || !this.input.phone_number) {
+          alert("Please fill the provided form");
+        }
+        else {
+          let formData = new FormData();
+          formData.append('profile_picture', this.profile_picture_upload, 'profile_' + this.id);
+
+          this.axios.post(address + ':3000/post-picture', formData, headers)
+          .then((response) => {
+            if(response.data != 'No Profile Picture Uploaded') {
+              this.profile_picture = response.data.originalname;
+              this.updateSession(response.data.originalname);
+            }
+            this.updateUser();
+          });
+        }
+      },
+
+      updateUser() {
+        if(this.status == "wait-profile"){
+          this.status = "active";
+          localStorage.setItem('user_status', 'active');
+        }
+        let postObj = {
+          email: this.input.email, 
+          fullname: this.input.fullname,
+          role: this.role,
+          authority: this.authority,
+          status: this.status,
+          location: this.input.location,
+          phone_number: this.input.phone_number,
+          biodata: this.input.biodata,
+          profile_picture: this.profile_picture,
+        };
+        this.axios.post(address + ':3000/update-user', postObj, headers)
+        .then((response) => {
+          let query = `mutation updateSingleUser($userEmail:String!, $input:PersonInput) {
+              updateUser(email: $userEmail, input: $input) {
+                  fullname
+              }
+          }`;
+          let variables = {
+            userEmail: this.input.email,
+            input: postObj
+          }
+          graphqlFunction.graphqlMutation(query, variables, (result) => {
+            location.reload();
+            alert("Update User Success");
+          });
+
+        });
+      },
+
+      updateSession(picture) {
+        var temp = this.$session.get('user');
+        temp.profile_picture = picture;
+        temp.status = 'active';
+        this.$session.set('user', temp);
+      }
+  }
 };
 </script>

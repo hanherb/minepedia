@@ -18,9 +18,9 @@
           d-checkbox( label="update" v-model="input.authority" value="update") Update
         div
           d-checkbox( label="delete" v-model="input.authority" value="delete") Delete
-        <!-- label API Authority
+        label API Authority
         div( v-for="plugin in plugins")
-          d-checkbox( :label="plugin.name" v-model="input.authority" :value="plugin.name") {{plugin.name}} -->
+          d-checkbox( :label="plugin.name" v-model="input.authority" :value="plugin.name") {{plugin.name}}
       d-button( type="button" v-on:click="updateUser()") Submit
 </template>
 
@@ -40,7 +40,12 @@ export default {
           authority: []
         },
         roles: [],
-        plugins: []
+        plugins: [],
+        status: "",
+        location: "",
+        phone_number: "",
+        biodata: "",
+        profile_picture: "",
       }
   },
 
@@ -62,6 +67,11 @@ export default {
               email
               role
               authority
+              status
+              location
+              phone_number
+              biodata
+              profile_picture
             }
           }`;
           let variable = {
@@ -72,6 +82,11 @@ export default {
             this.input.fullname = result.user.fullname;
             this.input.role = result.user.role;
             this.input.authority = result.user.authority;
+            this.status = result.user.status;
+            this.location = result.user.location;
+            this.phone_number = result.user.phone_number;
+            this.biodata = result.user.biodata;
+            this.profile_picture = result.user.profile_picture;
           });
         })
       },
@@ -113,7 +128,12 @@ export default {
           email: this.input.email, 
           fullname: this.input.fullname,
           role: this.input.role,
-          authority: this.input.authority
+          authority: this.input.authority,
+          status: this.status,
+          location: this.location,
+          phone_number: this.phone_number,
+          biodata: this.biodata,
+          profile_picture: this.profile_picture,
         };
         this.axios.post(address + ':3000/update-user', postObj, headers)
         .then((response) => {

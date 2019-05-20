@@ -1,4 +1,8 @@
 module.exports = {
-  baseUrl: '/admin/',
-  transpileDependencies: ['shards-vue'],
+  	baseUrl: '/admin/',
+  	devServer: {
+        host: 'qrcode.wearesqood.com',
+        port: 8080,
+	},
+  	transpileDependencies: ['shards-vue'],
 };
