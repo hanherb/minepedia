@@ -227,6 +227,11 @@ export default {
               this.profile_picture = response.data.originalname;
               this.updateSession(response.data.originalname);
             }
+            else {
+              var temp = this.$session.get('user');
+              temp.status = 'active';
+              this.$session.set('user', temp);
+            }
             this.updateUser();
           });
         }

@@ -69,27 +69,22 @@ export default {
         .then((response) => {
           console.log(response.data.response);
           if(response.data.token) {
-            if(response.data.response.role == "admin") {
-              alert("Login Success");
-              if(response.data.response.status != 'wait-profile') {
-                this.$router.push('/analytics');
-              }
-              else {
-                this.$router.push('/edit-user-profile');
-              }
-              this.$session.start();
-              this.$session.set('user', response.data.response);
-              document.cookie = "token=" + response.data.token;
-              document.cookie = "user_session=" + this.$session.get('user')._id;
-              document.cookie = "user_authority=" + this.$session.get('user').authority;
-              document.cookie = "user_status=" + this.$session.get('user').status;
-              localStorage.setItem('user_role', this.$session.get('user').role);
-              localStorage.setItem('user_authority', this.$session.get('user').authority);
-              localStorage.setItem('user_status', this.$session.get('user').status);
+            alert("Login Success");
+            if(response.data.response.status != 'wait-profile') {
+              this.$router.push('/analytics');
             }
             else {
-              this.$router.push('/not-admin');
+              this.$router.push('/edit-user-profile');
             }
+            this.$session.start();
+            this.$session.set('user', response.data.response);
+            document.cookie = "token=" + response.data.token;
+            document.cookie = "user_session=" + this.$session.get('user')._id;
+            document.cookie = "user_authority=" + this.$session.get('user').authority;
+            document.cookie = "user_status=" + this.$session.get('user').status;
+            localStorage.setItem('user_role', this.$session.get('user').role);
+            localStorage.setItem('user_authority', this.$session.get('user').authority);
+            localStorage.setItem('user_status', this.$session.get('user').status);
           }
           else {
             alert("Incorrect Credential");

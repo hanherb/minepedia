@@ -4,30 +4,19 @@
       <a class="nav-link nav-link-icon text-center" v-d-toggle.notifications>
         <div class="nav-link-icon__wrapper">
           <i class="material-icons">&#xE7F4;</i>
-          <d-badge pill theme="danger">2</d-badge>
+          <d-badge pill theme="danger">{{ notifications.length }}</d-badge>
         </div>
       </a>
-      <d-collapse id="notifications" class="dropdown-menu dropdown-menu-small">
-        <d-dropdown-item>
+      <d-collapse v-for="notification in notifications" key="notifications" id="notifications" class="dropdown-menu dropdown-menu-small">
+        <d-dropdown-item :href="notification.href">
           <div class="notification__icon-wrapper">
             <div class="notification__icon">
               <i class="material-icons">&#xE6E1;</i>
             </div>
           </div>
           <div class="notification__content">
-            <span class="notification__category">Analytics</span>
-            <p>Your website’s active users count increased by <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
-          </div>
-        </d-dropdown-item>
-        <d-dropdown-item href="#">
-          <div class="notification__icon-wrapper">
-            <div class="notification__icon">
-              <i class="material-icons">&#xE8D1;</i>
-            </div>
-          </div>
-          <div class="notification__content">
-            <span class="notification__category">Sales</span>
-            <p>Last week your store’s sales count decreased by <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
+            <span class="notification__category">{{ notification.category }}</span>
+            <p v-html="notification.description"></p>
           </div>
         </d-dropdown-item>
         <d-dropdown-item class="notification__all text-center">View all Notifications</d-dropdown-item>
@@ -63,7 +52,8 @@ export default {
   name: 'navbar-nav',
   data(){
     return {
-      session: [],
+      session: {},
+      notifications: [],
       avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
     }
   },
@@ -71,11 +61,33 @@ export default {
   created: function()
   {
       this.fetchSession();
+      this.setNotification();
+      console.log(this.$session.get('user').status);
   },
 
   methods: {
     fetchSession() {
       this.session = this.$session.get('user');
+    },
+    setNotification() {
+      if(this.session.status == "wait-profile") {
+        var temp = {
+          id: "notif_wait",
+          category: "Profile",
+          description: "You <span class='text-danger text-semibold'>haven't completed</span> your profile yet. Please complete your profile to access other content",
+          href: "/admin/edit-user-profile",
+        }
+        this.notifications.push(temp);
+      }
+      else if(this.session.status == "active") {
+        var temp = {
+          id: "notif_active",
+          category: "Profile",
+          description: "Your profile is <span class='text-success text-semibold'>complete</span>, click here to upload CSV file",
+          href: "/admin/importcsv",
+        }
+        this.notifications.push(temp);
+      }
     },
     logout() {
       this.axios.get(address + ":3000/logout").then((response) => {
