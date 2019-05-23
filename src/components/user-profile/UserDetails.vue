@@ -66,7 +66,7 @@ export default {
     return {
       user: [],
       coverImg: require('@/assets/images/user-profile/up-user-details-background.jpg'),
-      avatarImg: require('@/assets/images/avatars/0.jpg'),
+      avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
       social: {
         facebook: '#',
         twitter: '#',
