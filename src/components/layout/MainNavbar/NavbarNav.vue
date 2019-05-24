@@ -62,7 +62,6 @@ export default {
   {
       this.fetchSession();
       this.setNotification();
-      console.log(this.$session.get('user').status);
   },
 
   methods: {

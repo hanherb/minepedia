@@ -42,9 +42,17 @@ export default {
         roles: [],
         plugins: [],
         status: "",
-        location: "",
-        phone_number: "",
-        biodata: "",
+        badan_usaha: "",
+        izin: "",
+        generasi: "",
+        tahapan_kegiatan: "",
+        komoditas: "",
+        alamat_kantor: "",
+        telepon: "",
+        fax: "",
+        website: "",
+        npwp: "",
+        lokasi_tambang: "",
         profile_picture: "",
       }
   },
@@ -66,11 +74,19 @@ export default {
               fullname
               email
               role
-              authority
               status
-              location
-              phone_number
-              biodata
+              authority
+              badan_usaha
+              izin
+              generasi
+              tahapan_kegiatan
+              komoditas
+              alamat_kantor
+              telepon
+              fax
+              website
+              npwp
+              lokasi_tambang
               profile_picture
             }
           }`;
@@ -83,9 +99,17 @@ export default {
             this.input.role = result.user.role;
             this.input.authority = result.user.authority;
             this.status = result.user.status;
-            this.location = result.user.location;
-            this.phone_number = result.user.phone_number;
-            this.biodata = result.user.biodata;
+            this.badan_usaha = result.user.badan_usaha;
+            this.izin = result.user.izin;
+            this.generasi = result.user.generasi;
+            this.tahapan_kegiatan = result.user.tahapan_kegiatan;
+            this.komoditas = result.user.komoditas;
+            this.alamat_kantor = result.user.alamat_kantor;
+            this.telepon = result.user.telepon;
+            this.fax = result.user.fax;
+            this.website = result.user.website;
+            this.npwp = result.user.npwp;
+            this.lokasi_tambang = result.user.lokasi_tambang;
             this.profile_picture = result.user.profile_picture;
           });
         })
@@ -130,9 +154,17 @@ export default {
           role: this.input.role,
           authority: this.input.authority,
           status: this.status,
-          location: this.location,
-          phone_number: this.phone_number,
-          biodata: this.biodata,
+          badan_usaha: this.badan_usaha,
+          izin: this.izin,
+          generasi: this.generasi,
+          tahapan_kegiatan: this.tahapan_kegiatan,
+          komoditas: this.komoditas,
+          alamat_kantor: this.alamat_kantor,
+          telepon: this.telepon,
+          fax: this.fax,
+          website: this.website,
+          npwp: this.npwp,
+          lokasi_tambang: this.lokasi_tambang,
           profile_picture: this.profile_picture,
         };
         this.axios.post(address + ':3000/update-user', postObj, headers)

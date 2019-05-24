@@ -21,7 +21,8 @@
             <d-form class="py-4">
               <d-form-row class="mx-4">
                 <d-col class="mb-3">
-                  <d-form-text tag="p" class="text-muted m-0">Setup your general profile details.</d-form-text>
+                  <d-form-text tag="h4" class="text-muted m-0">Setup your general profile details.</d-form-text>
+                  <d-form-text tag="p" class="text-muted m-0">Form with * symbol must be filled.</d-form-text>
                 </d-col>
               </d-form-row>
               <d-form-row class="mx-4">
@@ -30,29 +31,98 @@
 
                     <!-- Full Name -->
                     <d-col md="12" class="form-group">
-                      <label for="fullName">Full Name</label>
+                      <label for="fullName">Name *</label>
                       <d-input v-model="input.fullname" type="text" id="fullName"/>
                     </d-col>
 
-                    <!-- Location -->
+                    <!-- Badan Usaha -->
                     <d-col md="6" class="form-group">
-                      <label for="userLocation">Location</label>
+                      <label for="badan_usaha">Badan Usaha *</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-form-select :options="select_badan_usaha" v-model="input.badan_usaha" id="badan_usaha">
+                        </d-form-select>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Jenis Izin -->
+                    <d-col md="6" class="form-group">
+                      <label for="izin">Jenis Izin *</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-form-select :options="select_izin" v-model="input.izin" id="izin">
+                        </d-form-select>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Generasi -->
+                    <d-col md="6" class="form-group">
+                      <label for="generasi">Generasi *</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-input v-model="input.generasi" id="generasi"/>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Tahapan Kegiatan -->
+                    <d-col md="6" class="form-group">
+                      <label for="tahapan_kegiatan">Tahapan Kegiatan *</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-form-select :options="select_tahapan_kegiatan" v-model="input.tahapan_kegiatan" id="tahapan_kegiatan">
+                        </d-form-select>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Komoditas -->
+                    <d-col md="12" class="form-group">
+                      <label for="komoditas">Komoditas *</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-input v-model="input.komoditas" id="komoditas"/>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Alamat Kantor -->
+                    <d-col md="12" class="form-group">
+                      <label for="alamat_kantor">Alamat Kantor *</label>
                       <d-input-group seamless>
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE0C8;</i>
                         </d-input-group-text>
-                        <d-input v-model="input.location" id="userLocation"/>
+                        <d-input v-model="input.alamat_kantor" id="alamat_kantor"/>
                       </d-input-group>
                     </d-col>
 
-                    <!-- Phone Number -->
+                    <!-- Telepon -->
                     <d-col md="6" class="form-group">
-                      <label for="phoneNumber">Phone Number</label>
+                      <label for="telepon">Telepon *</label>
                       <d-input-group seamless>
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE0CD;</i>
                         </d-input-group-text>
-                        <d-input v-model="input.phone_number" id="phoneNumber"/>
+                        <d-input v-model="input.telepon" id="telepon"/>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Fax -->
+                    <d-col md="6" class="form-group">
+                      <label for="fax">Fax</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE0CD;</i>
+                        </d-input-group-text>
+                        <d-input v-model="input.fax" id="fax"/>
                       </d-input-group>
                     </d-col>
 
@@ -64,6 +134,39 @@
                           <i class="material-icons">&#xE0BE;</i>
                         </d-input-group-text>
                         <d-input v-model="input.email" id="emailAddress" disabled />
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Website -->
+                    <d-col md="6" class="form-group">
+                      <label for="website">Website</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-input v-model="input.website" id="website"/>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- NPWP -->
+                    <d-col md="6" class="form-group">
+                      <label for="npwp">NPWP</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE865;</i>
+                        </d-input-group-text>
+                        <d-input v-model="input.npwp" id="npwp"/>
+                      </d-input-group>
+                    </d-col>
+
+                    <!-- Lokasi Tambang -->
+                    <d-col md="12" class="form-group">
+                      <label for="lokasi_tambang">Lokasi Tambang</label>
+                      <d-input-group seamless>
+                        <d-input-group-text slot="prepend">
+                          <i class="material-icons">&#xE0C8;</i>
+                        </d-input-group-text>
+                        <d-input v-model="input.lokasi_tambang" id="lokasi_tambang"/>
                       </d-input-group>
                     </d-col>
 
@@ -81,16 +184,6 @@
                               </label>
                   </div>
                   <span v-if="profile_picture_upload.name" size="sm" class="d-table mx-auto mt-4"><i class="material-icons">&#xE2C3;</i> Image Uploaded</span>
-                </d-col>
-
-              </d-form-row>
-
-              <d-form-row class="mx-4">
-
-                <!-- User Bio -->
-                <d-col md="6" class="form-group">
-                  <label for="userBio">Bio</label>
-                  <textarea v-model="input.description" rows="5" wrap="soft" class="form-control form-control-lg" />
                 </d-col>
 
               </d-form-row>
@@ -157,11 +250,41 @@ export default {
           location: "",
           phone_number: "",
           biodata: "",
+          badan_usaha: "",
+          izin: "",
+          generasi: "",
+          tahapan_kegiatan: "",
+          komoditas: "",
+          alamat_kantor: "",
+          telepon: "",
+          fax: "",
+          website: "",
+          npwp: "",
+          lokasi_tambang: "",
         },
         id: "",
         role: "",
         authority: [],
         status: "",
+        select_badan_usaha: [
+          'PT',
+          'CV',
+          'Sdr',
+          'Sdri',
+          'Lain-lain',
+        ],
+        select_izin: [
+          'IUP',
+          'IUPK',
+          'IUP OPK',
+          'KK',
+        ],
+        select_tahapan_kegiatan: [
+          'Penyelidikan Umum',
+          'Eksplorasi',
+          'Studi Kelayakan',
+          'Operasi Produksi',
+        ],
         profile_picture: "",
         profile_picture_upload: [],
         avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
@@ -183,11 +306,19 @@ export default {
               fullname
               email
               role
-              authority
               status
-              location
-              phone_number
-              biodata
+              authority
+              badan_usaha
+              izin
+              generasi
+              tahapan_kegiatan
+              komoditas
+              alamat_kantor
+              telepon
+              fax
+              website
+              npwp
+              lokasi_tambang
               profile_picture
             }
           }`;
@@ -198,9 +329,17 @@ export default {
             this.id = result.user._id;
             this.input.email = result.user.email;
             this.input.fullname = result.user.fullname;
-            this.input.location = result.user.location;
-            this.input.phone_number = result.user.phone_number;
-            this.input.biodata = result.user.biodata;
+            this.input.badan_usaha = result.user.badan_usaha;
+            this.input.izin = result.user.izin;
+            this.input.generasi = result.user.generasi;
+            this.input.tahapan_kegiatan = result.user.tahapan_kegiatan;
+            this.input.komoditas = result.user.komoditas;
+            this.input.alamat_kantor = result.user.alamat_kantor;
+            this.input.telepon = result.user.telepon;
+            this.input.fax = result.user.fax;
+            this.input.website = result.user.website;
+            this.input.npwp = result.user.npwp;
+            this.input.lokasi_tambang = result.user.lokasi_tambang;
             this.role = result.user.role;
             this.authority = result.user.authority;
             this.status = result.user.status;
@@ -214,7 +353,14 @@ export default {
       },
 
       submitFile() {
-        if(!this.input.fullname || !this.input.location || !this.input.phone_number) {
+        if(!this.input.fullname || 
+          !this.input.badan_usaha ||
+          !this.input.izin ||
+          !this.input.generasi ||
+          !this.input.tahapan_kegiatan ||
+          !this.input.komoditas ||
+          !this.input.alamat_kantor ||
+          !this.input.telepon) {
           alert("Please fill the provided form");
         }
         else {
@@ -248,9 +394,17 @@ export default {
           role: this.role,
           authority: this.authority,
           status: this.status,
-          location: this.input.location,
-          phone_number: this.input.phone_number,
-          biodata: this.input.biodata,
+          badan_usaha: this.input.badan_usaha,
+          izin: this.input.izin,
+          generasi: this.input.generasi,
+          tahapan_kegiatan: this.input.tahapan_kegiatan,
+          komoditas: this.input.komoditas,
+          alamat_kantor: this.input.alamat_kantor,
+          telepon: this.input.telepon,
+          fax: this.input.fax,
+          website: this.input.website,
+          npwp: this.input.npwp,
+          lokasi_tambang: this.input.lokasi_tambang,
           profile_picture: this.profile_picture,
         };
         this.axios.post(address + ':3000/update-user', postObj, headers)
