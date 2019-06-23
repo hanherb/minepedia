@@ -82,8 +82,8 @@ export default {
         var temp = {
           id: "notif_active",
           category: "Profile",
-          description: "Your profile is <span class='text-success text-semibold'>complete</span>, click here to upload CSV file",
-          href: "/admin/importcsv",
+          description: "Your profile is <span class='text-success text-semibold'>complete</span>, you can upload CSV files now",
+          href: "/admin/csv-neraca",
         }
         this.notifications.push(temp);
       }

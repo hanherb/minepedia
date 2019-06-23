@@ -2,7 +2,7 @@
   div( class="container")
     div( class="panel panel-sm")
       div( class="panel-heading")
-        h4 CSV Import
+        h4 Import CSV Keuangan Lainnya
       div( class="panel-body")
         div( class="form-group")
           div( class="col-sm-9")
@@ -22,7 +22,7 @@
                     td( v-for="key in parse_header") {{csv[key]}}
           br
           div( align='center' v-if="tableData[0]")
-            d-button( theme="primary") Submit
+            d-button( theme="primary" v-on:click="addKeuanganLainnya") Submit
 </template>
 
 <script>
@@ -36,7 +36,7 @@ import '@/assets/scss/vue-tables.scss';
 Vue.use(ClientTable);
 
 export default {
-  name: 'import-xls',
+  name: 'csv-keuangan-lainnya-eksplorasi',
   components: {
     ClientTable,
   },
@@ -48,7 +48,7 @@ export default {
       columns: [],
       tableData: [],
       clientTableOptions: {
-        perPage: 10,
+        perPage: 40,
         recordsPerPage: [10, 25, 50, 100],
         skin: 'transaction-history table dataTable',
         sortIcon: {
@@ -80,7 +80,7 @@ export default {
     },
     csvJSON(csv){
       var vm = this
-      var lines = csv.split("\n")
+      var lines = csv.split(/\r\n|\n|\r/);
       var result = []
       var csvHeaders = lines[0].split(";")
       vm.parse_header = lines[0].split(";") 
@@ -106,6 +106,22 @@ export default {
       });
       result.pop() // remove the last item because undefined values
       this.columns = Object.keys(result[0]);
+
+      function div(colname) {
+        for(var i = 0; i <= 5; i++) {
+          if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
+            result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          }
+          else if(colname == "% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018") {
+            result[i][colname] = result[i]["RENCANA TAHUN 2019"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          }
+        }
+      }
+
+      div("% REALISASI TERHADAP RENCANA TAHUN 2018");
+      div("% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018");
+
+      console.log(result);
       return result // JavaScript object
     },
     loadCSV(e) {
@@ -127,6 +143,18 @@ export default {
       } else {
         alert('FileReader are not supported in this browser.');
       }
+    },
+    addKeuanganLainnya() {
+      let postObj = {
+        data: this.tableData,
+        upload_by: this.$session.get('user').fullname,
+        tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
+      };
+      this.axios.post(address + ':3000/add-keuangan-lainnya', postObj, headers)
+      .then((response) => {
+        location.reload();
+        alert("Add Keuangan Lainnya Success");
+      });
     }
   }
 };
