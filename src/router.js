@@ -106,6 +106,16 @@ export default new Router({
       component: () => import('./views/DeleteUser.vue'),
     },
     {
+      path: '/data-keuangan-op',
+      name: 'data-keuangan-op',
+      component: () => import('./views/DataKeuanganOP.vue'),
+    },
+    {
+      path: '/data-keuangan-eksplorasi',
+      name: 'data-keuangan-eksplorasi',
+      component: () => import('./views/DataKeuanganEksplorasi.vue'),
+    },
+    {
       path: '/csv-asumsi-keuangan-op',
       name: 'csv-asumsi-keuangan-op',
       component: () => import('./views/CsvAsumsiKeuanganOP.vue'),

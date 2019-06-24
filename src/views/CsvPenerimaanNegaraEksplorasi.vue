@@ -32,9 +32,7 @@ import headers from '../headers';
 import Vue from 'vue';
 import { ClientTable } from 'vue-tables-2';
 import '@/assets/scss/vue-tables.scss';
-
 Vue.use(ClientTable);
-
 export default {
   name: 'csv-penerimaan-negara-eksplorasi',
   components: {
@@ -97,7 +95,6 @@ export default {
         csvHeaders.map(function(header, indexHeader){
           obj[header] = currentline[indexHeader]
         })
-
         result.push(obj)
       })
       this.axios.post(address + ':3000/import-csv', {}, headers)
@@ -106,7 +103,6 @@ export default {
       });
       result.pop() // remove the last item because undefined values
       this.columns = Object.keys(result[0]);
-
       function sum(colname) {
         //Jumlah Pajak
         for(var i = 1; i < 10; i++) {
@@ -117,7 +113,6 @@ export default {
             parseInt(result[10][colname]) + 
             parseInt(result[i][colname]);
         }
-
         //Jumlah Non Pajak
         for(var i = 12; i < 17; i++) {
           if(!result[i][colname] || result[i][colname] == ' - ') {
@@ -127,13 +122,11 @@ export default {
             parseInt(result[17][colname]) + 
             parseInt(result[i][colname]);
         }
-
         //Jumlah Penerimaan Negara
         result[18][colname] =
           parseInt(result[10][colname]) +
           parseInt(result[17][colname]);
       }
-
       function div(colname) {
         for(var i = 1; i <= 18; i++) {
           if(i != 11) {
@@ -146,13 +139,11 @@ export default {
           }
         }
       }
-
       sum("RENCANA TAHUN 2018");
       sum("REALISASI TAHUN 2018");
       sum("RENCANA TAHUN 2019");
       div("% REALISASI TERHADAP RENCANA TAHUN 2018");
       div("% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018");
-
       console.log(result);
       return result // JavaScript object
     },

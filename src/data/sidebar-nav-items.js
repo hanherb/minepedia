@@ -17,6 +17,20 @@ export default function () {
         name: 'users',
       },
     }, {
+      title: 'List Data Keuangan',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'data-keuangan-op',
+        tahapan_kegiatan: 'Operasi Produksi',
+      },
+    }, {
+      title: 'List Data Keuangan',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'data-keuangan-eksplorasi',
+        tahapan_kegiatan: 'Eksplorasi',
+      },
+    }, {
       title: 'CSV Asumsi Keuangan',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
