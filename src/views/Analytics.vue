@@ -30,6 +30,23 @@
       </d-col>
     </d-row>
 
+    <hr>
+
+    <d-button size="sm" class="btn-accent d-table mr-4" id="komoditas-card" v-on:click="toggleCard($event.currentTarget.id)">
+      List Komoditas
+    </d-button>
+
+    <div class="komoditas-card">
+      <br>
+      <d-row>
+        <d-col v-for="(stats, idx) in komoditasStats" :key="idx" md="6" lg="3" class="mb-4">
+          <small-stats :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+        </d-col>
+      </d-row>
+    </div>
+
+    <hr>
+
     <d-row>
       <!-- Sessions -->
       <d-col lg="8" md="12" sm="12" class="mb-4">
@@ -90,6 +107,8 @@ export default {
         to: null,
       },
       users: [],
+      komoditas: [],
+      komoditasCard: [],
     };
   },
   computed: {
@@ -153,11 +172,15 @@ export default {
         }],
       }];
     },
+    komoditasStats() {
+      return this.komoditasCard;
+    },
   },
 
   created: function()
   {
     this.fetchUsers();
+    this.fetchKomoditas();
   },
 
   methods: {
@@ -176,8 +199,49 @@ export default {
           this.users = result.users;
         });
       })
+    },
+    fetchKomoditas() {
+      this.axios.get(address + ":3000/get-komoditas", headers).then((response) => {
+        this.komoditas = response.data[0].data;
+        this.createKomoditasCard();
+      })
+    },
+    createKomoditasCard() {
+      for(var i = 0; i < this.komoditas.length; i++) {
+        this.komoditasCard.push({
+          label: this.komoditas[i],
+          value: 0,
+          percentage: '0',
+          increase: true,
+          decrease: false,
+          datasets: [{
+            label: 'Today',
+            fill: 'start',
+            borderWidth: 1.5,
+            backgroundColor: colors.primary.toRGBA(0.1),
+            borderColor: colors.primary.toRGBA(),
+            data: [0, 0, 0, 0, 0],
+          }],
+        });
+      }
+    },
+    toggleCard(id) {
+      if(document.getElementsByClassName(id)[0].style.display == 'none') {
+        document.getElementsByClassName(id)[0].style.display = 'block';
+      }
+      else if(document.getElementsByClassName(id)[0].style.display == 'block') {
+        document.getElementsByClassName(id)[0].style.display = 'none';
+      }
+      else {
+        document.getElementsByClassName(id)[0].style.display = 'block';
+      }
     }
   }
 };
 </script>
 
+<style scoped>
+  .komoditas-card {
+    display: none;
+  }
+</style>

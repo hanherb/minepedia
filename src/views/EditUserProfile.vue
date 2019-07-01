@@ -247,7 +247,6 @@ import tahapanKegiatanData from '@/data/edit-user-profile/tahapan-kegiatan.json'
 import badanUsahaData from '@/data/edit-user-profile/badan-usaha.json';
 import generasiData from '@/data/edit-user-profile/generasi.json';
 import izinData from '@/data/edit-user-profile/izin.json';
-import komoditasData from '@/data/edit-user-profile/komoditas.json';
 
 export default {
   name: 'update-user',
@@ -279,7 +278,7 @@ export default {
         select_izin: izinData,
         select_generasi: generasiData,
         select_tahapan_kegiatan: tahapanKegiatanData,
-        select_komoditas: komoditasData,
+        select_komoditas: [],
         profile_picture: "",
         profile_picture_upload: [],
         avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
@@ -289,6 +288,7 @@ export default {
   created: function()
   {
       this.fetchUser();
+      this.fetchKomoditas();
   },
 
   methods: {
@@ -343,6 +343,12 @@ export default {
         })
       },
 
+      fetchKomoditas() {
+        this.axios.get(address + ":3000/get-komoditas", headers).then((response) => {
+          this.select_komoditas = response.data[0].data;
+        })
+      },
+
       filterIzin(event) {
         if(event == "IUP OPK Olah Murni" || event == "IUP OPK Angkut Jual") {
           this.input.tahapan_kegiatan = "Operasi Produksi";
@@ -372,7 +378,9 @@ export default {
         }
         else {
           let formData = new FormData();
-          formData.append('profile_picture', this.profile_picture_upload, 'profile_' + this.id);
+          if(this.profile_picture_upload.length != 0) {
+            formData.append('profile_picture', this.profile_picture_upload, 'profile_' + this.id);
+          }
 
           this.axios.post(address + ':3000/post-picture', formData, headers)
           .then((response) => {
