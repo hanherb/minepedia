@@ -28,7 +28,7 @@
         <div v-if="items" v-for="(nav, navIdx) in items" :key="navIdx">
           <h6 v-if="nav.title" class="main-sidebar__nav-title">{{ nav.title }}</h6>
           <d-nav v-if="typeof nav.items !== 'undefined' && nav.items.length" class="nav--no-borders flex-column">
-            <li v-for="(item, navItemIdx) in nav.items" :key="navItemIdx" class="nav-item dropdown">
+            <li v-for="(item, navItemIdx) in nav.items" :key="navItemIdx" v-if="item.to.tahapan_kegiatan == tahapan_kegiatan || !item.to.tahapan_kegiatan" class="nav-item dropdown">
               <d-link :class="['nav-link', item.items && item.items.length ? 'dropdown-toggle' : '']" :to="item.to" v-d-toggle="`snc-${navIdx}-${navItemIdx}`">
                 <div class="item-icon-wrapper" v-if="item.htmlBefore" v-html="item.htmlBefore" />
                 <span v-if="item.title">{{ item.title }}</span>
@@ -68,10 +68,20 @@ export default {
   data() {
     return {
       sidebarVisible: false,
+      tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
     };
   },
   created() {
     this.$eventHub.$on('toggle-sidebar', this.handleToggleSidebar);
+
+    //Tampilkan sesuai tahapan kegiatan
+    // for(var i = 0; i < this.items[1].items.length; i++) {
+    //   if(this.items[1].items[i].to.hasOwnProperty('tahapan_kegiatan')) {
+    //     if(this.items[1].items[i].to.tahapan_kegiatan != this.$session.get('user').tahapan_kegiatan) {
+    //       this.items[1].items.splice(i, 1);
+    //     }
+    //   }
+    // }
   },
   beforeDestroy() {
     this.$eventHub.$off('toggle-sidebar');

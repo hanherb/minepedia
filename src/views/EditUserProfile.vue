@@ -54,7 +54,7 @@
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE865;</i>
                         </d-input-group-text>
-                        <d-form-select :options="select_izin" v-model="input.izin" id="izin">
+                        <d-form-select :options="select_izin" v-model="input.izin" id="izin" @change="filterIzin($event)">
                         </d-form-select>
                       </d-input-group>
                     </d-col>
@@ -66,7 +66,10 @@
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE865;</i>
                         </d-input-group-text>
-                        <d-input v-model="input.generasi" id="generasi"/>
+                        <d-form-select v-if="this.input.izin == 'KK' || this.input.izin == 'PKP2B'" :options="select_generasi" v-model="input.generasi" id="generasi">
+                        </d-form-select>
+                        <d-form-select v-else disabled>
+                        </d-form-select>
                       </d-input-group>
                     </d-col>
 
@@ -77,7 +80,7 @@
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE865;</i>
                         </d-input-group-text>
-                        <d-form-select :options="select_tahapan_kegiatan" v-model="input.tahapan_kegiatan" id="tahapan_kegiatan">
+                        <d-form-select :options="select_tahapan_kegiatan" v-model="input.tahapan_kegiatan" id="tahapan_kegiatan" :disabled="input.izin == 'IUP OPK Olah Murni' || input.izin == 'IUP OPK Angkut Jual'">
                         </d-form-select>
                       </d-input-group>
                     </d-col>
@@ -89,7 +92,8 @@
                         <d-input-group-text slot="prepend">
                           <i class="material-icons">&#xE865;</i>
                         </d-input-group-text>
-                        <d-input v-model="input.komoditas" id="komoditas"/>
+                       <d-form-select :options="select_komoditas" v-model="input.komoditas" id="komoditas">
+                        </d-form-select>
                       </d-input-group>
                     </d-col>
 
@@ -239,6 +243,10 @@
 import graphqlFunction from '../graphqlFunction';
 import address from '../address';
 import headers from '../headers';
+import tahapanKegiatanData from '@/data/edit-user-profile/tahapan-kegiatan.json';
+import badanUsahaData from '@/data/edit-user-profile/badan-usaha.json';
+import generasiData from '@/data/edit-user-profile/generasi.json';
+import izinData from '@/data/edit-user-profile/izin.json';
 
 export default {
   name: 'update-user',
@@ -266,25 +274,11 @@ export default {
         role: "",
         authority: [],
         status: "",
-        select_badan_usaha: [
-          'PT',
-          'CV',
-          'Sdr',
-          'Sdri',
-          'Lain-lain',
-        ],
-        select_izin: [
-          'IUP',
-          'IUPK',
-          'IUP OPK',
-          'KK',
-        ],
-        select_tahapan_kegiatan: [
-          'Penyelidikan Umum',
-          'Eksplorasi',
-          'Studi Kelayakan',
-          'Operasi Produksi',
-        ],
+        select_badan_usaha: badanUsahaData,
+        select_izin: izinData,
+        select_generasi: generasiData,
+        select_tahapan_kegiatan: tahapanKegiatanData,
+        select_komoditas: [],
         profile_picture: "",
         profile_picture_upload: [],
         avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
@@ -294,6 +288,7 @@ export default {
   created: function()
   {
       this.fetchUser();
+      this.fetchKomoditas();
   },
 
   methods: {
@@ -348,6 +343,25 @@ export default {
         })
       },
 
+      fetchKomoditas() {
+        this.axios.get(address + ":3000/get-komoditas", headers).then((response) => {
+          this.select_komoditas = response.data[0].data;
+        })
+      },
+
+      filterIzin(event) {
+        if(event == "IUP OPK Olah Murni" || event == "IUP OPK Angkut Jual") {
+          this.input.tahapan_kegiatan = "Operasi Produksi";
+        }
+        else {
+          this.input.tahapan_kegiatan = "";
+        }
+
+        if(event != "KK" && event != "PKP2B") {
+          this.input.generasi = "";
+        }
+      },
+
       onFileChange(event) {
         this.profile_picture_upload = event.target.files[0];
       },
@@ -356,7 +370,6 @@ export default {
         if(!this.input.fullname || 
           !this.input.badan_usaha ||
           !this.input.izin ||
-          !this.input.generasi ||
           !this.input.tahapan_kegiatan ||
           !this.input.komoditas ||
           !this.input.alamat_kantor ||
@@ -365,7 +378,9 @@ export default {
         }
         else {
           let formData = new FormData();
-          formData.append('profile_picture', this.profile_picture_upload, 'profile_' + this.id);
+          if(this.profile_picture_upload.length != 0) {
+            formData.append('profile_picture', this.profile_picture_upload, 'profile_' + this.id);
+          }
 
           this.axios.post(address + ':3000/post-picture', formData, headers)
           .then((response) => {
