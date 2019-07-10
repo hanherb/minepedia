@@ -2,7 +2,7 @@
   div( class="container")
     div( class="panel panel-sm")
       div( class="panel-heading")
-        h4 Import CSV Harga Pokok Penjualan
+        h4 Import CSV Belanja Barang
       div( class="panel-body")
         div( class="form-group")
           div( class="col-sm-9")
@@ -22,7 +22,7 @@
                     td( v-for="key in parse_header") {{csv[key]}}
           br
           div( align='center' v-if="tableData[0]")
-            d-button( theme="primary" v-on:click="addHargaPokok") Submit
+            d-button( theme="primary" v-on:click="addBelanjaBarang") Submit
 </template>
 
 <script>
@@ -36,7 +36,7 @@ import '@/assets/scss/vue-tables.scss';
 Vue.use(ClientTable);
 
 export default {
-  name: 'csv-harga-pokok-op',
+  name: 'csv-belanja-barang',
   components: {
     ClientTable,
   },
@@ -48,7 +48,7 @@ export default {
       columns: [],
       tableData: [],
       clientTableOptions: {
-        perPage: 20,
+        perPage: 40,
         recordsPerPage: [10, 25, 50, 100],
         skin: 'transaction-history table dataTable',
         sortIcon: {
@@ -65,16 +65,13 @@ export default {
           nav: 'scroll',
         },
       },
+      validation: "",
     };
   },
   filters: {
     capitalize: function (str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
     }
-  },
-  created: function()
-  {
-    this.fetchHargaPokok();
   },
   methods: {
     sortBy: function (key) {
@@ -112,60 +109,84 @@ export default {
       this.columns = Object.keys(result[0]);
 
       function sum(colname) {
-        //Subtotal Biaya Tambang
-        for(var i = 0; i < 6; i++) {
-          if(!result[i][colname] || result[i][colname] == ' - ') {
-            result[i][colname] = 0;
-          }
-          result[6][colname] = 
-            parseInt(result[6][colname]) + 
-            parseInt(result[i][colname]);
-        }
-
-        //Total Biaya Produksi
-        for(var i = 6; i < 10; i++) {
-          if(!result[i][colname] || result[i][colname] == ' - ') {
-            result[i][colname] = 0;
-          }
-          result[10][colname] = 
-            parseInt(result[10][colname]) + 
-            parseInt(result[i][colname]);
-        }
-
-        //Total HPP
-        for(var i = 10; i < 13; i++) {
-          if(!result[i][colname] || result[i][colname] == ' - ') {
-            result[i][colname] = 0;
-          }
-          if(i != 12) {
-            result[13][colname] = 
-              parseInt(result[13][colname]) + 
-              parseInt(result[i][colname]);
+        result[result.length-1][colname] = 0;
+        for(var i = 1; i < result.length-1; i++) {
+          if(!result[i][colname]) {
+            result[result.length-1][colname] = 
+              parseInt(result[result.length-1][colname]) + 0;
           }
           else {
-            result[13][colname] = 
-              parseInt(result[13][colname]) - 
+            result[result.length-1][colname] = 
+              parseInt(result[result.length-1][colname]) + 
               parseInt(result[i][colname]);
           }
         }
       }
 
-      function div(colname) {
-        for(var i = 0; i < 14; i++) {
-          if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
-            result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
+      function prod(colname) {
+        for(var i = 1; i < result.length-1; i++) {
+          if(result[i]["Cost, Insurance, & Freight"]) {
+            result[i][colname] = parseInt(result[i]["Kuantitas"]) * parseInt(result[i]["Cost, Insurance, & Freight"]);
           }
-          else if(colname == "% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018") {
-            result[i][colname] = result[i]["RENCANA TAHUN 2019"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          else if(result[i]["On Site"]) {
+            result[i][colname] = parseInt(result[i]["Kuantitas"]) * parseInt(result[i]["On Site"]);
           }
         }
       }
 
-      sum("RENCANA TAHUN 2018");
-      sum("REALISASI TAHUN 2018");
-      sum("RENCANA TAHUN 2019");
-      div("% REALISASI TERHADAP RENCANA TAHUN 2018");
-      div("% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018");
+      for(var i = 1; i < result.length-1; i++) {
+        if(result[i]["Nasional"]) {
+          if(result[i]["Provinsi"] || result[i]["Kabupaten"] ||result[i]["Negara"]) {
+            this.validation = "Tidak bisa memilih asal barang lebih dari 1, pada barang " + result[i]["Jenis Barang"];
+          }
+        }
+        else if(result[i]["Provinsi"]) {
+          if(result[i]["Nasional"] || result[i]["Kabupaten"] ||result[i]["Negara"]) {
+            this.validation = "Tidak bisa memilih asal barang lebih dari 1, pada barang " + result[i]["Jenis Barang"];
+          }
+        }
+        else if(result[i]["Kabupaten"]) {
+          if(result[i]["Nasional"] || result[i]["Provinsi"] ||result[i]["Negara"]) {
+            this.validation = "Tidak bisa memilih asal barang lebih dari 1, pada barang " + result[i]["Jenis Barang"];
+          }
+        }
+        else if(result[i]["Negara"]) {
+          if(result[i]["Nasional"] || result[i]["Provinsi"] ||result[i]["Kabupaten"]) {
+            this.validation = "Tidak bisa memilih asal barang lebih dari 1, pada barang " + result[i]["Jenis Barang"];
+          }
+          if(result[i]["Produsen/Suplier"]) {
+            this.validation = "Produsen/Suplier hanya untuk barang lokal, pada barang " + result[i]["Jenis Barang"];
+          }
+        }
+
+        if(result[i]["Produsen/Suplier"]) {
+          if(result[i]["Produsen/Suplier"] == "S" || 
+            result[i]["Produsen/Suplier"] == "s" ||
+            result[i]["Produsen/Suplier"] == "Suplier" ||
+            result[i]["Produsen/Suplier"] == "suplier" ||
+            result[i]["Produsen/Suplier"] == "Supplier" ||
+            result[i]["Produsen/Suplier"] == "supplier") {
+            result[i]["Produsen/Suplier"] = "Suplier";
+          }
+          else if(result[i]["Produsen/Suplier"] == "P" || 
+            result[i]["Produsen/Suplier"] == "p" ||
+            result[i]["Produsen/Suplier"] == "Produsen" ||
+            result[i]["Produsen/Suplier"] == "produsen") {
+            result[i]["Produsen/Suplier"] = "Produsen";
+          }
+        }
+
+        if(result[i]["Cost, Insurance, & Freight"] && result[i]["On Site"]) {
+          this.validation = "Tidak bisa mengisi On Site dan Cost, Insurance, & Freight secara bersamaan, pada barang " + result[i]["Jenis Barang"];
+        }
+      }
+
+      prod("Total Price (US$)");
+      sum("Kuantitas");
+      sum("Cost, Insurance, & Freight");
+      sum("On Site");
+      sum("Total Price (US$)");
+      sum("Bobot Tertimbang (%)");
 
       console.log(result);
       return result // JavaScript object
@@ -190,27 +211,21 @@ export default {
         alert('FileReader are not supported in this browser.');
       }
     },
-    fetchHargaPokok() {
-      this.axios.get(address + ":3000/get-harga-pokok", headers).then((response) => {
-        for(var i = 0; i < response.data.length; i++) {
-          if (response.data[i].upload_by == this.$session.get('user')._id) {
-            this.columns = Object.keys(response.data[i].data[0]);
-            this.tableData = response.data[i].data;
-          }
-        }
-      })
-    },
-    addHargaPokok() {
+    addBelanjaBarang() {
       let postObj = {
         data: this.tableData,
         upload_by: this.$session.get('user')._id,
-        tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
       };
-      this.axios.post(address + ':3000/add-harga-pokok', postObj, headers)
-      .then((response) => {
-        location.reload();
-        alert("Add Harga Pokok Success");
-      });
+      if(this.validation) {
+        alert(this.validation);
+      }
+      else {
+        this.axios.post(address + ':3000/add-belanja-barang', postObj, headers)
+        .then((response) => {
+          location.reload();
+          alert("Add Belanja Barang Success");
+        });
+      }
     }
   }
 };

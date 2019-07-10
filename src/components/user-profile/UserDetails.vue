@@ -60,13 +60,17 @@
 </template>
 
 <script>
+import graphqlFunction from '@/graphqlFunction';
+import basicFunction from '@/basicFunction';
+import address from '@/address';
+import headers from '@/headers';
 export default {
   name: 'user-details',
   data(){
     return {
-      user: [],
+      user: {},
       coverImg: require('@/assets/images/user-profile/up-user-details-background.jpg'),
-      avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
+      avatarImg: "",
       social: {
         facebook: '#',
         twitter: '#',
@@ -86,12 +90,43 @@ export default {
 
   created: function()
   {
-      this.fetchSession();
+      this.fetchUser();
   },
 
   methods: {
-    fetchSession() {
-      this.user = this.$session.get('user');
+    fetchUser() {
+      var id = window.location.href.split("?id=")[1];
+      this.axios.get(address + ":3000/get-user", headers).then((response) => {
+        let query = `query getSingleUser($userId: String!) {
+          user(_id: $userId) {
+            _id
+            fullname
+            email
+            role
+            status
+            authority
+            badan_usaha
+            izin
+            generasi
+            tahapan_kegiatan
+            komoditas
+            alamat_kantor
+            telepon
+            fax
+            website
+            npwp
+            lokasi_tambang
+            profile_picture
+          }
+        }`;
+        let variable = {
+          userId: id
+        };
+        graphqlFunction.graphqlFetchOne(query, variable, (result) => {
+          this.user = result.user;
+          this.avatarImg = require('@/assets/images/uploads/' + this.user.profile_picture + '.png');
+        });
+      })
     },
   }
 };

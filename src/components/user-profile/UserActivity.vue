@@ -59,7 +59,7 @@ export default {
 
   methods: {
     fetchLogger() {
-      var id = this.$session.get('user')._id;
+      var id = window.location.href.split("?id=")[1];
       this.axios.get(address + ":3000/get-log", headers).then((response) => {
         for(let i = 0; i < response.data.length; i++) {
           if(response.data[i].userId == id) {

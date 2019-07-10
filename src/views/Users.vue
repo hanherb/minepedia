@@ -3,6 +3,11 @@
     <v-client-table class="dataTables_wrapper" :data="tableData" :columns="columns" :options="clientTableOptions">
       <!-- Actions Column Slot -->
       <d-button-group slot="actions" slot-scope="props" size="small" class="d-flex justify-content-center">
+        <d-link :to="'/user-profile?id=' + props.row._id">
+          <d-button class="btn-white" v-d-tooltip.hover="'Visit Profile'">
+            <i class="material-icons">&#xe7fd;</i>
+          </d-button>
+        </d-link>
         <d-link :to="'/update-user?id=' + props.row._id">
           <d-button class="btn-white" v-d-tooltip.hover="'Edit'">
             <i class="material-icons">&#xE254;</i>

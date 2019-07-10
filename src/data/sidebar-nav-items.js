@@ -17,20 +17,6 @@ export default function () {
         name: 'users',
       },
     }, {
-      title: 'List Data Keuangan',
-      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
-      to: {
-        name: 'data-keuangan-op',
-        tahapan_kegiatan: 'Operasi Produksi',
-      },
-    }, {
-      title: 'List Data Keuangan',
-      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
-      to: {
-        name: 'data-keuangan-eksplorasi',
-        tahapan_kegiatan: 'Eksplorasi',
-      },
-    }, {
       title: 'Asumsi Keuangan',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
@@ -42,6 +28,13 @@ export default function () {
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
         name: 'csv-neraca-op',
+        tahapan_kegiatan: 'Operasi Produksi',
+      },
+    }, {
+      title: 'Laba Rugi',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'csv-laba-rugi-op',
         tahapan_kegiatan: 'Operasi Produksi',
       },
     }, {
@@ -108,6 +101,13 @@ export default function () {
         tahapan_kegiatan: 'Eksplorasi',
       },
     }, {
+      title: 'Laba Rugi',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'csv-laba-rugi-eksplorasi',
+        tahapan_kegiatan: 'Eksplorasi',
+      },
+    }, {
       title: 'Arus Kas',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
@@ -148,6 +148,18 @@ export default function () {
       to: {
         name: 'csv-sumber-pembiayaan-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+      },
+    }, {
+      title: 'Belanja Barang',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'csv-belanja-barang',
+      },
+    }, {
+      title: 'Rekap Belanja Barang',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'rekap-belanja-barang',
       },
     }, {
       title: 'Companies',

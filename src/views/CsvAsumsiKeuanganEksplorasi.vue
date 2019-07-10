@@ -72,6 +72,10 @@ export default {
       return str.charAt(0).toUpperCase() + str.slice(1)
     }
   },
+  created: function()
+  {
+    this.fetchAsumsiKeuangan();
+  },
   methods: {
     sortBy: function (key) {
       var vm = this
@@ -108,7 +112,7 @@ export default {
       this.columns = Object.keys(result[0]);
 
       function div(colname) {
-        for(var i = 0; i <= 3; i++) {
+        for(var i = 0; i <= 2; i++) {
           if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
             result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
           }
@@ -144,10 +148,20 @@ export default {
         alert('FileReader are not supported in this browser.');
       }
     },
+    fetchAsumsiKeuangan() {
+      this.axios.get(address + ":3000/get-asumsi-keuangan", headers).then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          if (response.data[i].upload_by == this.$session.get('user')._id) {
+            this.columns = Object.keys(response.data[i].data[0]);
+            this.tableData = response.data[i].data;
+          }
+        }
+      })
+    },
     addAsumsiKeuangan() {
       let postObj = {
         data: this.tableData,
-        upload_by: this.$session.get('user').fullname,
+        upload_by: this.$session.get('user')._id,
         tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
       };
       this.axios.post(address + ':3000/add-asumsi-keuangan', postObj, headers)

@@ -11,9 +11,9 @@
 
       <!-- Top Referrals List Group -->
       <d-list-group flush class="list-group-small">
-        <d-list-group-item v-for="(item, idx) in referralData" :key="idx" class="d-flex px-3">
-          <span class="text-semibold text-fiord-blue">{{ item.title }}</span>
-          <span class="ml-auto text-right text-semibold text-reagent-gray">{{ item.value }}</span>
+        <d-list-group-item v-for="(item, idx) in topImport" :key="idx" class="d-flex px-3">
+          <span class="text-semibold text-fiord-blue">{{ item.name }}</span>
+          <span class="ml-auto text-right text-semibold text-reagent-gray">{{ item.qty }}</span>
         </d-list-group-item>
       </d-list-group>
 
@@ -44,52 +44,51 @@
 </template>
 
 <script>
-const defaultTopReferrals = [{
-  title: 'GitHub',
-  value: '19,291',
-}, {
-  title: 'Stack Overflow',
-  value: '11,201',
-}, {
-  title: 'Hacker News',
-  value: '9,291',
-}, {
-  title: 'Reddit',
-  value: '8,281',
-}, {
-  title: 'The Next Web',
-  value: '7,128',
-}, {
-  title: 'Tech Crunch',
-  value: '6,218',
-}, {
-  title: 'YouTube',
-  value: '1,218',
-}, {
-  title: 'Adobe',
-  value: '1,171',
-},
-];
+import graphqlFunction from '@/graphqlFunction';
+import basicFunction from '@/basicFunction';
+import address from '@/address';
 
 export default {
   name: 'ao-top-referrals',
   props: {
-    /**
-       * The component's title.
-       */
     title: {
       type: String,
-      default: 'Top Referrals',
-    },
-    /**
-       * The referral datasets.
-       */
-    referralData: {
-      type: Array,
-      default() {
-        return defaultTopReferrals;
-      },
+      default: 'Top Import',
     },
   },
+
+  data(){
+    return {
+      topImport: [],
+    }
+  },
+
+  created: function() 
+  {
+    this.fetchBelanjaBarang();
+  },
+
+  methods: {
+    fetchBelanjaBarang() {
+      this.axios.get(address + ":3000/get-belanja-barang").then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          for(var j = 0; j < response.data[i].data.length; j++) {
+            if(response.data[i].data[j]["Negara"]) {
+              if(this.topImport.length < 20) {
+                this.topImport.push({
+                  "name": response.data[i].data[j]["Jenis Barang"],
+                  "qty": response.data[i].data[j]["Kuantitas"]
+                });
+              }
+              else {
+                break;
+              }
+            }
+          }
+        }
+        this.topImport.sort(function(a, b){return b.qty-a.qty});
+      });
+    },
+  }
 };
 </script>

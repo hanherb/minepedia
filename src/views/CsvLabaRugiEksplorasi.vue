@@ -2,7 +2,7 @@
   div( class="container")
     div( class="panel panel-sm")
       div( class="panel-heading")
-        h4 Import CSV Harga Pokok Penjualan
+        h4 Import CSV Laba Rugi
       div( class="panel-body")
         div( class="form-group")
           div( class="col-sm-9")
@@ -22,7 +22,7 @@
                     td( v-for="key in parse_header") {{csv[key]}}
           br
           div( align='center' v-if="tableData[0]")
-            d-button( theme="primary" v-on:click="addHargaPokok") Submit
+            d-button( theme="primary" v-on:click="addLabaRugi") Submit
 </template>
 
 <script>
@@ -36,7 +36,7 @@ import '@/assets/scss/vue-tables.scss';
 Vue.use(ClientTable);
 
 export default {
-  name: 'csv-harga-pokok-op',
+  name: 'csv-laba-rugi-eksplorasi',
   components: {
     ClientTable,
   },
@@ -48,7 +48,7 @@ export default {
       columns: [],
       tableData: [],
       clientTableOptions: {
-        perPage: 20,
+        perPage: 40,
         recordsPerPage: [10, 25, 50, 100],
         skin: 'transaction-history table dataTable',
         sortIcon: {
@@ -74,7 +74,7 @@ export default {
   },
   created: function()
   {
-    this.fetchHargaPokok();
+    this.fetchLabaRugi();
   },
   methods: {
     sortBy: function (key) {
@@ -111,47 +111,58 @@ export default {
       result.pop() // remove the last item because undefined values
       this.columns = Object.keys(result[0]);
 
-      function sum(colname) {
-        //Subtotal Biaya Tambang
-        for(var i = 0; i < 6; i++) {
-          if(!result[i][colname] || result[i][colname] == ' - ') {
-            result[i][colname] = 0;
-          }
-          result[6][colname] = 
-            parseInt(result[6][colname]) + 
-            parseInt(result[i][colname]);
+      for(var i = 0; i < result.length; i++) {
+        if(result[i]["URAIAN"] == "Laba kotor") {
+          var laba_kotor = i;
         }
-
-        //Total Biaya Produksi
-        for(var i = 6; i < 10; i++) {
-          if(!result[i][colname] || result[i][colname] == ' - ') {
-            result[i][colname] = 0;
-          }
-          result[10][colname] = 
-            parseInt(result[10][colname]) + 
-            parseInt(result[i][colname]);
+        if(result[i]["URAIAN"] == "Laba/(Rugi) Operasi") {
+          var laba_rugi_operasi = i;
         }
-
-        //Total HPP
-        for(var i = 10; i < 13; i++) {
-          if(!result[i][colname] || result[i][colname] == ' - ') {
-            result[i][colname] = 0;
-          }
-          if(i != 12) {
-            result[13][colname] = 
-              parseInt(result[13][colname]) + 
-              parseInt(result[i][colname]);
-          }
-          else {
-            result[13][colname] = 
-              parseInt(result[13][colname]) - 
-              parseInt(result[i][colname]);
-          }
+        if(result[i]["URAIAN"] == "Laba sebelum Pajak") {
+          var laba_rugi_pajak = i;
         }
       }
 
+      function sum(colname) {
+        for(var i = 0; i < laba_kotor; i++) {
+          if(!result[i][colname] || result[i][colname] == '-') {
+            result[i][colname] = 0;
+          }
+        }
+
+        result[2][colname] = parseInt(result[0][colname]) - parseInt(result[1][colname]);
+
+        for(var i = laba_kotor+1; i < laba_rugi_operasi; i++) {
+          if(!result[i][colname] || result[i][colname] == '-') {
+            result[i][colname] = 0;
+          }
+        }
+
+        result[laba_rugi_operasi][colname] = parseInt(result[laba_kotor][colname]) - parseInt(result[laba_rugi_operasi-1][colname]);
+
+        for(var i = laba_rugi_operasi+2; i < laba_rugi_pajak-1; i++) {
+          if(!result[i][colname] || result[i][colname] == ' - ') {
+            result[i][colname] = 0;
+          }
+          result[laba_rugi_pajak-1][colname] = 
+            parseInt(result[laba_rugi_pajak-1][colname]) + 
+            parseInt(result[i][colname]);
+          
+        }
+
+        result[laba_rugi_pajak][colname] = parseInt(result[laba_rugi_operasi][colname]) - parseInt(result[laba_rugi_pajak-1][colname]);
+
+        for(var i = laba_rugi_pajak+1; i < laba_rugi_pajak+2; i++) {
+          if(!result[i][colname] || result[i][colname] == '-') {
+            result[i][colname] = 0;
+          }
+        }
+
+        result[laba_rugi_pajak+2][colname] = parseInt(result[laba_rugi_pajak][colname]) - parseInt(result[laba_rugi_pajak+1][colname]);
+      }
+
       function div(colname) {
-        for(var i = 0; i < 14; i++) {
+        for(var i = 1; i < result.length; i++) {
           if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
             result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
           }
@@ -167,7 +178,6 @@ export default {
       div("% REALISASI TERHADAP RENCANA TAHUN 2018");
       div("% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018");
 
-      console.log(result);
       return result // JavaScript object
     },
     loadCSV(e) {
@@ -190,8 +200,8 @@ export default {
         alert('FileReader are not supported in this browser.');
       }
     },
-    fetchHargaPokok() {
-      this.axios.get(address + ":3000/get-harga-pokok", headers).then((response) => {
+    fetchLabaRugi() {
+      this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
         for(var i = 0; i < response.data.length; i++) {
           if (response.data[i].upload_by == this.$session.get('user')._id) {
             this.columns = Object.keys(response.data[i].data[0]);
@@ -200,16 +210,17 @@ export default {
         }
       })
     },
-    addHargaPokok() {
+    addLabaRugi() {
       let postObj = {
         data: this.tableData,
         upload_by: this.$session.get('user')._id,
         tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
+        komoditas: this.$session.get('user').komoditas,
       };
-      this.axios.post(address + ':3000/add-harga-pokok', postObj, headers)
+      this.axios.post(address + ':3000/add-laba-rugi', postObj, headers)
       .then((response) => {
         location.reload();
-        alert("Add Harga Pokok Success");
+        alert("Add Laba Rugi Success");
       });
     }
   }

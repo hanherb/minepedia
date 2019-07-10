@@ -31,10 +31,18 @@
     </d-row>
 
     <hr>
-
-    <d-button size="sm" class="btn-accent d-table mr-4" id="komoditas-card" v-on:click="toggleCard($event.currentTarget.id)">
-      List Komoditas
-    </d-button>
+    <d-row>
+      <d-col sm="1">
+        <d-button size="sm" class="btn-accent d-table mr-4" id="total-aset" v-on:click="toggleCard($event.currentTarget.id)">
+          Total Aset
+        </d-button>
+      </d-col>
+      <d-col sm="1">
+        <d-button size="sm" class="btn-accent d-table mr-4" id="total-DER" v-on:click="toggleCard($event.currentTarget.id)">
+          DER
+        </d-button>
+      </d-col>
+    </d-row>
 
     <div class="komoditas-card">
       <br>
@@ -58,19 +66,9 @@
         <ao-users-by-device />
       </d-col>
 
-      <!-- Top Referrals -->
-      <d-col lg="3" sm="6" class="mb-4">
-        <ao-top-referrals />
-      </d-col>
-
       <!-- Goals Overview -->
       <d-col lg="5" class="mb-4">
         <ao-goals-overview />
-      </d-col>
-
-      <!-- Users by Country -->
-      <d-col lg="4" class="mb-4">
-        <country-reports />
       </d-col>
     </d-row>
   </d-container>
@@ -82,11 +80,10 @@ import basicFunction from '@/basicFunction';
 import address from '@/address';
 import headers from '@/headers';
 import SmallStats from '@/components/common/SmallStats.vue';
-import CountryReports from '@/components/common/CountryReports.vue';
-import TopReferrals from '@/components/common/TopReferrals.vue';
 import Sessions from '@/components/analytics/Sessions.vue';
 import UsersByDevice from '@/components/analytics/UsersByDevice.vue';
 import GoalsOverview from '@/components/analytics/GoalsOverview/GoalsOverview.vue';
+import KomoditasGroup from '@/data/komoditas-group.json';
 
 import colors from '../utils/colors';
 
@@ -94,10 +91,8 @@ export default {
   name: 'analytics',
   components: {
     SmallStats,
-    CountryReports,
     aoSessions: Sessions,
     aoUsersByDevice: UsersByDevice,
-    aoTopReferrals: TopReferrals,
     aoGoalsOverview: GoalsOverview,
   },
   data() {
@@ -107,8 +102,13 @@ export default {
         to: null,
       },
       users: [],
-      komoditas: [],
+      komoditasGroup: KomoditasGroup,
       komoditasCard: [],
+      totalAset: [],
+      totalPenjualan: [],
+      totalAsetEksplorasi: [],
+      totalDER: [],
+      totalNPM: [],
     };
   },
   computed: {
@@ -180,7 +180,8 @@ export default {
   created: function()
   {
     this.fetchUsers();
-    this.fetchKomoditas();
+    this.createKomoditasCard();
+    this.calculateSummary();
   },
 
   methods: {
@@ -200,16 +201,21 @@ export default {
         });
       })
     },
-    fetchKomoditas() {
-      this.axios.get(address + ":3000/get-komoditas", headers).then((response) => {
-        this.komoditas = response.data[0].data;
-        this.createKomoditasCard();
-      })
+    fetchKomoditasGroup(komoditas) {
+      var arrKeys = Object.keys(this.komoditasGroup);
+      for(var i = 0; i < arrKeys.length; i++) {
+        for(var j = 0; j < this.komoditasGroup[arrKeys[i]].length; j++) {
+          if(this.komoditasGroup[arrKeys[i]][j] == komoditas.toLowerCase()) {
+              return arrKeys[i];
+          }
+        }
+      }
     },
     createKomoditasCard() {
-      for(var i = 0; i < this.komoditas.length; i++) {
+      var arrKeys = Object.keys(this.komoditasGroup);
+      for(var i = 0; i < arrKeys.length; i++) {
         this.komoditasCard.push({
-          label: this.komoditas[i],
+          label: arrKeys[i],
           value: 0,
           percentage: '0',
           increase: true,
@@ -235,6 +241,165 @@ export default {
       else {
         document.getElementsByClassName(id)[0].style.display = 'block';
       }
+    },
+    calculateSummary() {
+      this.axios.get(address + ":3000/get-neraca", headers).then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          var aktivaLancar = 0;
+          var aktivaTidakLancar = 0;
+          var jumlahKewajiban = 0;
+          var ekuitas = 0;
+          var totalAsetEksplorasi = 0;
+          var komoditas = this.fetchKomoditasGroup(response.data[i].komoditas);
+          console.log(komoditas);
+          for(var j = 0; j < response.data[i].data.length; j++) {
+            if(response.data[i].data[j]["URAIAN"] == "Jumlah Aktiva Lancar") {
+              aktivaLancar += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+            else if(response.data[i].data[j]["URAIAN"] == "Jumlah Aktiva Tidak Lancar") {
+              aktivaTidakLancar += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+            else if(response.data[i].data[j]["URAIAN"] == "Aktiva Eksplorasi dan Evaluasi") {
+              totalAsetEksplorasi += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+            else if(response.data[i].data[j]["URAIAN"] == "Jumlah Kewajiban") {
+              jumlahKewajiban += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+            else if(response.data[i].data[j]["URAIAN"] == "Ekuitas") {
+              ekuitas += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+          }
+          if(this.totalAset.length == 0) {
+            this.totalAset.push({
+              "komoditas": komoditas,
+              "value": aktivaLancar + aktivaTidakLancar
+            });    
+          }
+          else {
+            for(var j = 0; j < this.totalAset.length; j++) {
+              if(this.totalAset[j].komoditas == komoditas) {
+                this.totalAset[j].value += aktivaLancar + aktivaTidakLancar;
+                break;
+              }
+              if(j == this.totalAset.length-1) {
+                this.totalAset.push({
+                  "komoditas": komoditas,
+                  "value": aktivaLancar + aktivaTidakLancar
+                });
+                break;
+              }
+            }
+          }
+          if(this.totalDER.length == 0) {
+            this.totalDER.push({
+              "komoditas": komoditas,
+              "value": jumlahKewajiban / ekuitas
+            });    
+          }
+          else {
+            for(var j = 0; j < this.totalDER.length; j++) {
+              if(this.totalDER[j].komoditas == komoditas) {
+                this.totalDER[j].value += jumlahKewajiban / ekuitas;
+                break;
+              }
+              if(j == this.totalDER.length-1) {
+                this.totalDER.push({
+                  "komoditas": komoditas,
+                  "value": jumlahKewajiban / ekuitas
+                });
+                break;
+              }
+            }
+          }
+          if(this.totalAsetEksplorasi.length == 0) {
+            this.totalAsetEksplorasi.push({
+              "komoditas": komoditas,
+              "value": totalAsetEksplorasi
+            });    
+          }
+          else {
+            for(var j = 0; j < this.totalAsetEksplorasi.length; j++) {
+              if(this.totalAsetEksplorasi[j].komoditas == komoditas) {
+                this.totalAsetEksplorasi[j].value += totalAsetEksplorasi
+                break;
+              }
+              if(j == this.totalAsetEksplorasi.length-1) {
+                this.totalAsetEksplorasi.push({
+                  "komoditas": komoditas,
+                  "value": totalAsetEksplorasi
+                });
+                break;
+              }
+            }
+          }
+        }
+        console.log(this.totalAset);
+        console.log(this.totalAsetEksplorasi);
+        console.log(this.totalDER);
+      });
+
+      // this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
+      //   for(var i = 0; i < response.data.length; i++) {
+      //     var penjualan = 0;
+      //     var labaBersih = 0;
+      //     console.log(response.data[i]);
+      //     var komoditas = this.fetchKomoditasGroup(response.data[i].komoditas);
+      //     for(var j = 0; j < response.data[i].data.length; j++) {
+      //       if(response.data[i].data[j]["URAIAN"] == "Penjualan") {
+      //         penjualan += response.data[i].data[j]["REALISASI TAHUN 2018"];
+      //       }
+      //       else if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Bersih") {
+      //         labaBersih += response.data[i].data[j]["REALISASI TAHUN 2018"];
+      //       }
+      //     }
+
+      //     if(this.totalPenjualan.length == 0) {
+      //       this.totalPenjualan.push({
+      //         "komoditas": komoditas,
+      //         "value": penjualan
+      //       });    
+      //     }
+      //     else {
+      //       for(var j = 0; j < this.totalPenjualan.length; j++) {
+      //         if(this.totalPenjualan[j].komoditas == komoditas) {
+      //           this.totalPenjualan[j].value += penjualan
+      //           break;
+      //         }
+      //         if(j == this.totalPenjualan.length-1) {
+      //           this.totalPenjualan.push({
+      //             "komoditas": komoditas,
+      //             "value": penjualan
+      //           });
+      //           break;
+      //         }
+      //       }
+      //     }
+      //     if(this.totalNPM.length == 0) {
+      //       this.totalNPM.push({
+      //         "komoditas": komoditas,
+      //         "value": labaBersih / penjualan
+      //       });    
+      //     }
+      //     else {
+      //       for(var j = 0; j < this.totalNPM.length; j++) {
+      //         if(this.totalNPM[j].komoditas == komoditas) {
+      //           this.totalNPM[j].value += labaBersih / penjualan
+      //           break;
+      //         }
+      //         if(j == this.totalNPM.length-1) {
+      //           this.totalNPM.push({
+      //             "komoditas": komoditas,
+      //             "value": labaBersih / penjualan
+      //           });
+      //           break;
+      //         }
+      //       }
+      //     }
+      //   }
+
+      //   console.log(this.totalPenjualan);
+      //   console.log(this.totalNPM);
+      // });
     }
   }
 };
@@ -242,6 +407,6 @@ export default {
 
 <style scoped>
   .komoditas-card {
-    display: none;
+
   }
 </style>
