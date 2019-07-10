@@ -264,7 +264,7 @@ export default {
   methods: {
     fetchAnggaranBelanja() {
       this.axios.get(address + ":3000/get-anggaran-belanja", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.anggaranBelanja.columns = Object.keys(response.data[0].data[0]);
           this.anggaranBelanja.tableData = response.data[0].data;
         }
@@ -272,7 +272,7 @@ export default {
     },
     fetchArusKas() {
       this.axios.get(address + ":3000/get-arus-kas", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.arusKas.columns = Object.keys(response.data[0].data[0]);
           this.arusKas.tableData = response.data[0].data;
         }
@@ -280,7 +280,7 @@ export default {
     },
     fetchAsumsiKeuangan() {
       this.axios.get(address + ":3000/get-asumsi-keuangan", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.asumsiKeuangan.columns = Object.keys(response.data[0].data[0]);
           this.asumsiKeuangan.tableData = response.data[0].data;
         }
@@ -288,7 +288,7 @@ export default {
     },
     fetchHargaPokok() {
       this.axios.get(address + ":3000/get-harga-pokok", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.hargaPokok.columns = Object.keys(response.data[0].data[0]);
           this.hargaPokok.tableData = response.data[0].data;
         }
@@ -296,7 +296,7 @@ export default {
     },
     fetchInvestasi() {
       this.axios.get(address + ":3000/get-investasi", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.investasi.columns = Object.keys(response.data[0].data[0]);
           this.investasi.tableData = response.data[0].data;
         }
@@ -304,7 +304,7 @@ export default {
     },
     fetchKeuanganLainnya() {
       this.axios.get(address + ":3000/get-keuangan-lainnya", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.keuanganLainnya.columns = Object.keys(response.data[0].data[0]);
           this.keuanganLainnya.tableData = response.data[0].data;
         }
@@ -312,7 +312,7 @@ export default {
     },
     fetchNeraca() {
       this.axios.get(address + ":3000/get-neraca", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.neraca.columns = Object.keys(response.data[0].data[0]);
           this.neraca.tableData = response.data[0].data;
         }
@@ -320,7 +320,7 @@ export default {
     },
     fetchPenerimaanNegara() {
       this.axios.get(address + ":3000/get-penerimaan-negara", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.penerimaanNegara.columns = Object.keys(response.data[0].data[0]);
           this.penerimaanNegara.tableData = response.data[0].data;
         }
@@ -328,7 +328,7 @@ export default {
     },
     fetchSumberPembiayaan() {
       this.axios.get(address + ":3000/get-sumber-pembiayaan", headers).then((response) => {
-        if (response.data[0].upload_by == this.$session.get('user').fullname) {
+        if (response.data[0].upload_by == this.$session.get('user')._id) {
           this.sumberPembiayaan.columns = Object.keys(response.data[0].data[0]);
           this.sumberPembiayaan.tableData = response.data[0].data;
         }

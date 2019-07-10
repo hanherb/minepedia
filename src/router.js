@@ -106,16 +106,6 @@ export default new Router({
       component: () => import('./views/DeleteUser.vue'),
     },
     {
-      path: '/data-keuangan-op',
-      name: 'data-keuangan-op',
-      component: () => import('./views/DataKeuanganOP.vue'),
-    },
-    {
-      path: '/data-keuangan-eksplorasi',
-      name: 'data-keuangan-eksplorasi',
-      component: () => import('./views/DataKeuanganEksplorasi.vue'),
-    },
-    {
       path: '/csv-asumsi-keuangan-op',
       name: 'csv-asumsi-keuangan-op',
       component: () => import('./views/CsvAsumsiKeuanganOP.vue'),
@@ -124,6 +114,11 @@ export default new Router({
       path: '/csv-neraca-op',
       name: 'csv-neraca-op',
       component: () => import('./views/CsvNeracaOP.vue'),
+    },
+    {
+      path: '/csv-laba-rugi-op',
+      name: 'csv-laba-rugi-op',
+      component: () => import('./views/CsvLabaRugiOP.vue'),
     },
     {
       path: '/csv-harga-pokok-op',
@@ -171,6 +166,11 @@ export default new Router({
       component: () => import('./views/CsvNeracaEksplorasi.vue'),
     },
     {
+      path: '/csv-laba-rugi-eksplorasi',
+      name: 'csv-laba-rugi-eksplorasi',
+      component: () => import('./views/CsvLabaRugiEksplorasi.vue'),
+    },
+    {
       path: '/csv-arus-kas-eksplorasi',
       name: 'csv-arus-kas-eksplorasi',
       component: () => import('./views/CsvArusKasEksplorasi.vue'),
@@ -199,6 +199,16 @@ export default new Router({
       path: '/csv-sumber-pembiayaan-eksplorasi',
       name: 'csv-sumber-pembiayaan-eksplorasi',
       component: () => import('./views/CsvSumberPembiayaanEksplorasi.vue'),
+    },
+    {
+      path: '/csv-belanja-barang',
+      name: 'csv-belanja-barang',
+      component: () => import('./views/CsvBelanjaBarang.vue'),
+    },
+    {
+      path: '/rekap-belanja-barang',
+      name: 'rekap-belanja-barang',
+      component: () => import('./views/RekapBelanjaBarang.vue'),
     },
     {
       path: '/file-manager-list',

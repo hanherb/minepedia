@@ -70,6 +70,10 @@ export default {
       return str.charAt(0).toUpperCase() + str.slice(1)
     }
   },
+  created: function()
+  {
+    this.fetchPenerimaanNegara();
+  },
   methods: {
     sortBy: function (key) {
       var vm = this
@@ -167,10 +171,20 @@ export default {
         alert('FileReader are not supported in this browser.');
       }
     },
+    fetchPenerimaanNegara() {
+      this.axios.get(address + ":3000/get-penerimaan-negara", headers).then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          if (response.data[i].upload_by == this.$session.get('user')._id) {
+            this.columns = Object.keys(response.data[i].data[0]);
+            this.tableData = response.data[i].data;
+          }
+        }
+      })
+    },
     addPenerimaanNegara() {
       let postObj = {
         data: this.tableData,
-        upload_by: this.$session.get('user').fullname,
+        upload_by: this.$session.get('user')._id,
         tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
       };
       this.axios.post(address + ':3000/add-penerimaan-negara', postObj, headers)

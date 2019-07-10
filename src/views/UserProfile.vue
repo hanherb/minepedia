@@ -3,14 +3,12 @@
     <d-row class="mt-4">
       <d-col lg="4" sm="12">
         <up-user-details />
-        <up-user-contact />
-        <up-user-teams />
+        <up-user-activity />
       </d-col>
 
       <d-col lg="8">
-        <up-user-stats />
-        <up-user-performance />
-        <up-user-activity />
+        <up-user-laba-rugi />
+        <up-user-neraca />
       </d-col>
     </d-row>
   </d-container>
@@ -18,21 +16,17 @@
 
 <script>
 import UserDetails from '@/components/user-profile/UserDetails.vue';
-import UserContact from '@/components/user-profile/UserContact.vue';
-import UserTeams from '@/components/user-profile/UserTeams.vue';
-import UserStats from '@/components/user-profile/UserStats.vue';
-import UserPerformance from '@/components/user-profile/UserPerformance.vue';
 import UserActivity from '@/components/user-profile/UserActivity.vue';
+import UserLabaRugi from '@/components/user-profile/UserLabaRugi.vue';
+import UserNeraca from '@/components/user-profile/UserNeraca.vue';
 
 export default {
   name: 'user-profile',
   components: {
     upUserDetails: UserDetails,
-    upUserContact: UserContact,
-    upUserTeams: UserTeams,
-    upUserStats: UserStats,
-    upUserPerformance: UserPerformance,
     upUserActivity: UserActivity,
+    upUserLabaRugi: UserLabaRugi,
+    upUserNeraca: UserNeraca,
   },
 };
 </script>

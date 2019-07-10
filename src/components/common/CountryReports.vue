@@ -16,9 +16,9 @@
       <table class="table m-0">
         <tbody>
           <tr v-for="(country, idx) in countries" :key="idx">
-            <td><img class="country-flag mr-1" :src="country.flag" :alt="country.title"> {{ country.title }}</td>
-            <td class="text-right">{{ country.visitorsAmount }}</td>
-            <td class="text-right">{{ country.visitorsPercentage }}</td>
+            <td> {{ country.name }}</td>
+            <td class="text-right">-</td>
+            <td class="text-right">{{ country.qty }}</td>
           </tr>
         </tbody>
       </table>
@@ -48,35 +48,35 @@
 </template>
 
 <script>
-const defaultCountriesData = [{
-  flag: require('@/assets/images/flags/flag-us.png'),
-  title: 'United States',
-  visitorsAmount: '12,291',
-  visitorsPercentage: '23.32%',
-}, {
-  flag: require('@/assets/images/flags/flag-uk.png'),
-  title: 'United Kingdom',
-  visitorsAmount: '11,192',
-  visitorsPercentage: '18.8%',
-}, {
-  flag: require('@/assets/images/flags/flag-au.png'),
-  title: 'Australia',
-  visitorsAmount: '9,291',
-  visitorsPercentage: '12.3%',
-}, {
-  flag: require('@/assets/images/flags/flag-jp.png'),
-  title: 'Japan',
-  visitorsAmount: '2,291',
-  visitorsPercentage: '8.14%',
-}];
+import graphqlFunction from '@/graphqlFunction';
+import basicFunction from '@/basicFunction';
+import address from '@/address';
 
-const defaultMapsData = [
-  ['Country', 'Users'],
-  ['United States', 12219],
-  ['United Kingdom', 11192],
-  ['Australia', 9291],
-  ['Japan', 2291],
-];
+// const defaultCountriesData = [{
+//   title: 'United States',
+//   visitorsAmount: '12,291',
+//   visitorsPercentage: '23.32%',
+// }, {
+//   title: 'United Kingdom',
+//   visitorsAmount: '11,192',
+//   visitorsPercentage: '18.8%',
+// }, {
+//   title: 'Australia',
+//   visitorsAmount: '9,291',
+//   visitorsPercentage: '12.3%',
+// }, {
+//   title: 'Japan',
+//   visitorsAmount: '2,291',
+//   visitorsPercentage: '8.14%',
+// }];
+
+// const defaultMapsData = [
+//   ['Country', 'Users'],
+//   ['United States', 12219],
+//   ['United Kingdom', 11192],
+//   ['China', 9291],
+//   ['Japan', 2291],
+// ];
 
 export default {
   name: 'ao-users-by-country',
@@ -86,31 +86,42 @@ export default {
        */
     title: {
       type: String,
-      default: 'Users by Country',
+      default: 'Import by Country',
     },
     /**
        * The countries data.
        */
-    countries: {
-      type: Array,
-      default() {
-        return defaultCountriesData;
-      },
-    },
-    /**
-       * The maps data.
-       */
-    mapsData: {
-      type: Array,
-      default() {
-        return defaultMapsData;
-      },
-    },
+    // countries: {
+    //   type: Array,
+    //   default() {
+    //     return defaultCountriesData;
+    //   },
+    // },
+    // *
+    //    * The maps data.
+       
+    // mapsData: {
+    //   type: Array,
+    //   default() {
+    //     return defaultMapsData;
+    //   },
+    // },
   },
+
+  data(){
+    return {
+      countries: [],
+      mapsData: [
+        ['Country', 'Import'],
+      ],
+    }
+  },
+
   mounted() {
-    this.createGoogleMaps()
-      .then(this.initCountriesMap);
+    this.fetchBelanjaBarang(this.createGoogleMaps()
+      .then(setTimeout(this.initCountriesMap, 3000)));
   },
+
   methods: {
     createGoogleMaps() {
       if (window.__SDPGoogleChartLoaded__) {
@@ -131,7 +142,7 @@ export default {
       });
     },
     initCountriesMap() {
-      const { mapsData } = this;
+      // const { mapsData } = this;
       const { mContainer } = this.$refs;
 
       // eslint-disable-next-line
@@ -143,7 +154,7 @@ export default {
       // eslint-disable-next-line
       google.charts.setOnLoadCallback(() => {
         // eslint-disable-next-line
-        const data = google.visualization.arrayToDataTable(mapsData);
+        const data = google.visualization.arrayToDataTable(this.mapsData);
 
         const options = {
           colorAxis: {
@@ -162,6 +173,47 @@ export default {
 
         drawGeochart();
         window.addEventListener('resize', drawGeochart);
+      });
+    },
+    fetchBelanjaBarang(callback) {
+      this.axios.get(address + ":3000/get-belanja-barang").then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          for(var j = 0; j < response.data[i].data.length; j++) {
+            if(response.data[i].data[j]["Negara"]) {
+              if(this.countries.length == 0) {
+                this.countries.push({
+                  "name": response.data[i].data[j]["Negara"],
+                  "qty": parseInt(response.data[i].data[j]["Kuantitas"])
+                });
+              }
+              else {
+                for(var k = 0; k < this.countries.length; k++) {
+                  if(this.countries[k].name == response.data[i].data[j]["Negara"]) {
+                    this.countries[k].qty += parseInt(response.data[i].data[j]["Kuantitas"]);
+                    break;
+                  }
+                  if(k == this.countries.length-1) {
+                    this.countries.push({
+                      "name": response.data[i].data[j]["Negara"],
+                      "qty": parseInt(response.data[i].data[j]["Kuantitas"])
+                    });
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        this.countries.sort(function(a, b){return b.qty-a.qty});
+
+        for(var i = 0; i < this.countries.length; i++) {
+          this.mapsData.push(
+            [this.countries[i].name, this.countries[i].qty]
+          );
+        }
+        if(callback)
+            return true;
       });
     },
   },
