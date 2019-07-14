@@ -12,7 +12,8 @@
   "tembaga", 
   "perak", 
   "timbal", 
-  "seng timah", 
+  "seng",
+  "timah", 
   "nikel", 
   "mangan", 
   "platina", 
@@ -35,7 +36,7 @@
   "magnetit", 
   "besi", 
   "galena", 
-  "alumina", 
+  "alumina", //bauksit
   "niobium", 
   "zirkonium", 
   "ilmenit", 

@@ -86,10 +86,10 @@ export default {
       var id = window.location.href.split("?id=")[1];
       this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
         for(let i = 0; i < response.data.length; i++) {
+          if(i == 0) {
+            this.columns.push('Tahun');
+          }
           if(response.data[i].upload_by == id) {
-            if(i == 0) {
-              this.columns.push('Tahun');
-            }
             var temp = [];
             for(let j = 0; j < response.data[i].data.length; j++) {
               if(response.data[i].data[j]["URAIAN"] == "Penjualan" ||

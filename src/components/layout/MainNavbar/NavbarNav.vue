@@ -1,6 +1,6 @@
 <template>
   <d-navbar-nav class="flex-row">
-    <li class="nav-item border-left border-right dropdown notifications">
+    <li v-if="session" class="nav-item border-left border-right dropdown notifications">
       <a class="nav-link nav-link-icon text-center" v-d-toggle.notifications>
         <div class="nav-link-icon__wrapper">
           <i class="material-icons">&#xE7F4;</i>
@@ -24,6 +24,9 @@
     </li>
     <li class="nav-item dropdown" v-if="!session">
       <router-link class="nav-link text-nowrap px-3" to="/login">Login</router-link>
+    </li>
+    <li class="nav-item dropdown" v-if="!session">
+      <router-link class="nav-link text-nowrap px-3" to="/register">Register</router-link>
     </li>
     <li class="nav-item dropdown" v-if="session">
       <a class="nav-link dropdown-toggle text-nowrap px-3" v-d-toggle.user-actions>
@@ -54,7 +57,7 @@ export default {
     return {
       session: {},
       notifications: [],
-      avatarImg: require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png'),
+      avatarImg: null,
     }
   },
 
@@ -67,25 +70,30 @@ export default {
   methods: {
     fetchSession() {
       this.session = this.$session.get('user');
+      if(this.session) {
+        this.avatarImg = require('@/assets/images/uploads/' + this.$session.get('user').profile_picture + '.png')
+      }
     },
     setNotification() {
-      if(this.session.status == "wait-profile") {
-        var temp = {
-          id: "notif_wait",
-          category: "Profile",
-          description: "You <span class='text-danger text-semibold'>haven't completed</span> your profile yet. Please complete your profile to access other content",
-          href: "/admin/edit-user-profile",
+      if(this.session) {
+        if(this.session.status == "wait-profile") {
+          var temp = {
+            id: "notif_wait",
+            category: "Profile",
+            description: "You <span class='text-danger text-semibold'>haven't completed</span> your profile yet. Please complete your profile to access other content",
+            href: "/admin/edit-user-profile",
+          }
+          this.notifications.push(temp);
         }
-        this.notifications.push(temp);
-      }
-      else if(this.session.status == "active") {
-        var temp = {
-          id: "notif_active",
-          category: "Profile",
-          description: "Your profile is <span class='text-success text-semibold'>complete</span>, you can upload CSV files now",
-          href: "/admin/csv-neraca",
+        else if(this.session.status == "active") {
+          var temp = {
+            id: "notif_active",
+            category: "Profile",
+            description: "Your profile is <span class='text-success text-semibold'>complete</span>, you can upload CSV files now",
+            href: "/admin/csv-neraca",
+          }
+          this.notifications.push(temp);
         }
-        this.notifications.push(temp);
       }
     },
     logout() {

@@ -9,6 +9,7 @@
       <d-col lg="8">
         <up-user-laba-rugi />
         <up-user-neraca />
+        <up-user-rasio-keuangan />
       </d-col>
     </d-row>
   </d-container>
@@ -19,6 +20,7 @@ import UserDetails from '@/components/user-profile/UserDetails.vue';
 import UserActivity from '@/components/user-profile/UserActivity.vue';
 import UserLabaRugi from '@/components/user-profile/UserLabaRugi.vue';
 import UserNeraca from '@/components/user-profile/UserNeraca.vue';
+import UserRasioKeuangan from '@/components/user-profile/UserRasioKeuangan.vue';
 
 export default {
   name: 'user-profile',
@@ -27,6 +29,7 @@ export default {
     upUserActivity: UserActivity,
     upUserLabaRugi: UserLabaRugi,
     upUserNeraca: UserNeraca,
+    upUserRasioKeuangan: UserRasioKeuangan,
   },
 };
 </script>

@@ -98,3 +98,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .main-content-container {
+    padding-top: 6rem;
+  }
+</style>

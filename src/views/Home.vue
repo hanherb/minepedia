@@ -1,7 +1,5 @@
 <template>
-<d-container class="h-100">
-	<d-link class="btn" to="/login">Sign In</d-link>
-	<d-link class="btn" to="/register">Register</d-link>
+<d-container>
 	<d-row>
 		<d-col lg="4" sm="6" class="mb-4">
 	    	<ao-top-referrals />
@@ -25,7 +23,10 @@ export default {
 };
 </script>
 
-<style lang='stylus' scoped>
-.home
-  background-color:rgba(255,255,255,0.7)
+<style scoped>
+
+.container{
+	padding-top: 6rem;
+}
+
 </style>

@@ -33,7 +33,7 @@ export default new Router({
     {
       path: '/',
       name: '/home',
-      meta: { layout: 'non-admin' },
+      meta: { layout: 'no-navigation' },
       component: Home,
     },
     {
@@ -64,13 +64,13 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      meta: { layout: 'non-admin' },
+      meta: { layout: 'no-navigation' },
       component: Login,
     },
     {
       path: '/register',
       name: 'register',
-      meta: { layout: 'non-admin' },
+      meta: { layout: 'no-navigation' },
       component: Register,
     },
     {

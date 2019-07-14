@@ -18,6 +18,7 @@ import router from './router';
 // Layouts
 import Default from '@/layouts/Default.vue';
 import NonAdmin from '@/layouts/NonAdmin.vue';
+import NoNavigation from '@/layouts/NoNavigation.vue';
 import HeaderNavigation from '@/layouts/HeaderNavigation.vue';
 import IconSidebar from '@/layouts/IconSidebar.vue';
 
@@ -27,6 +28,7 @@ ShardsVue.install(Vue);
 
 Vue.component('default-layout', Default);
 Vue.component('non-admin-layout',NonAdmin);
+Vue.component('no-navigation-layout', NoNavigation);
 Vue.component('header-navigation-layout', HeaderNavigation);
 Vue.component('icon-sidebar-layout', IconSidebar);
 

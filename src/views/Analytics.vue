@@ -31,24 +31,24 @@
     </d-row>
 
     <hr>
-    <d-row>
-      <d-col sm="1">
-        <d-button size="sm" class="btn-accent d-table mr-4" id="total-aset" v-on:click="toggleCard($event.currentTarget.id)">
-          Total Aset
-        </d-button>
-      </d-col>
-      <d-col sm="1">
-        <d-button size="sm" class="btn-accent d-table mr-4" id="total-DER" v-on:click="toggleCard($event.currentTarget.id)">
-          DER
-        </d-button>
-      </d-col>
-    </d-row>
+  
+    <d-button-group size="small" class="d-inline-flex mb-3 mb-sm-0 ml-0" id="btn-group-filter">
+      <a tag="button" class="btn btn-white active" id="totalAset" v-on:click="toggleCard($event.currentTarget.id)">Total Aset</a>
+      <a tag="button" class="btn btn-white" id="totalPenjualan" v-on:click="toggleCard($event.currentTarget.id)">Total Penjualan</a>
+      <a tag="button" class="btn btn-white" id="totalAsetEksplorasi" v-on:click="toggleCard($event.currentTarget.id)">Total Aset Eksplorasi</a>
+      <a tag="button" class="btn btn-white" id="totalDER" v-on:click="toggleCard($event.currentTarget.id)">Total DER</a>
+      <a tag="button" class="btn btn-white" id="totalNPM" v-on:click="toggleCard($event.currentTarget.id)">Total NPM</a>
+    </d-button-group>
 
     <div class="komoditas-card">
       <br>
       <d-row>
         <d-col v-for="(stats, idx) in komoditasStats" :key="idx" md="6" lg="3" class="mb-4">
-          <small-stats :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+          <small-stats v-if="activeCard == 'totalAset'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalAset" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+          <small-stats v-if="activeCard == 'totalPenjualan'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalPenjualan" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+          <small-stats v-if="activeCard == 'totalAsetEksplorasi'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalAsetEksplorasi" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+          <small-stats v-if="activeCard == 'totalDER'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalDER" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+          <small-stats v-if="activeCard == 'totalNPM'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalNPM" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
         </d-col>
       </d-row>
     </div>
@@ -109,6 +109,7 @@ export default {
       totalAsetEksplorasi: [],
       totalDER: [],
       totalNPM: [],
+      activeCard: "totalAset",
     };
   },
   computed: {
@@ -216,7 +217,13 @@ export default {
       for(var i = 0; i < arrKeys.length; i++) {
         this.komoditasCard.push({
           label: arrKeys[i],
-          value: 0,
+          value: {
+            totalAset: 0,
+            totalPenjualan: 0,
+            totalAsetEksplorasi: 0,
+            totalDER: 0,
+            totalNPM: 0,
+          },
           percentage: '0',
           increase: true,
           decrease: false,
@@ -231,16 +238,45 @@ export default {
         });
       }
     },
+    fillKomoditasCard() {
+      for(var i = 0; i < this.komoditasCard.length; i++) {
+        for(var j = 0; j < this.totalAset.length; j++) {
+          if(this.komoditasCard[i].label == this.totalAset[j].komoditas) {
+            this.komoditasCard[i].value.totalAset = this.totalAset[j].value;  
+          }
+        }
+        for(var j = 0; j < this.totalPenjualan.length; j++) {
+          if(this.komoditasCard[i].label == this.totalPenjualan[j].komoditas) {
+            this.komoditasCard[i].value.totalPenjualan = this.totalPenjualan[j].value;  
+          }
+        }
+        for(var j = 0; j < this.totalAsetEksplorasi.length; j++) {
+          if(this.komoditasCard[i].label == this.totalAsetEksplorasi[j].komoditas) {
+            this.komoditasCard[i].value.totalAsetEksplorasi = this.totalAsetEksplorasi[j].value;  
+          }
+        }
+        for(var j = 0; j < this.totalDER.length; j++) {
+          if(this.komoditasCard[i].label == this.totalDER[j].komoditas) {
+            this.komoditasCard[i].value.totalDER = this.totalDER[j].value;  
+          }
+        }
+        for(var j = 0; j < this.totalNPM.length; j++) {
+          if(this.komoditasCard[i].label == this.totalNPM[j].komoditas) {
+            this.komoditasCard[i].value.totalNPM = this.totalNPM[j].value;  
+          }
+        }
+      }
+    },
     toggleCard(id) {
-      if(document.getElementsByClassName(id)[0].style.display == 'none') {
-        document.getElementsByClassName(id)[0].style.display = 'block';
+      var btn = document.getElementById("btn-group-filter");
+      var btns = document.getElementsByClassName("btn");
+      for(var i = 0; i < btns.length; i++) {
+        if(btns[i] != id) {
+          btns[i].classList.remove("active");
+        }
       }
-      else if(document.getElementsByClassName(id)[0].style.display == 'block') {
-        document.getElementsByClassName(id)[0].style.display = 'none';
-      }
-      else {
-        document.getElementsByClassName(id)[0].style.display = 'block';
-      }
+      document.getElementById(id).classList.add("active");
+      this.activeCard = id;
     },
     calculateSummary() {
       this.axios.get(address + ":3000/get-neraca", headers).then((response) => {
@@ -251,7 +287,6 @@ export default {
           var ekuitas = 0;
           var totalAsetEksplorasi = 0;
           var komoditas = this.fetchKomoditasGroup(response.data[i].komoditas);
-          console.log(komoditas);
           for(var j = 0; j < response.data[i].data.length; j++) {
             if(response.data[i].data[j]["URAIAN"] == "Jumlah Aktiva Lancar") {
               aktivaLancar += response.data[i].data[j]["REALISASI TAHUN 2018"];
@@ -333,73 +368,67 @@ export default {
             }
           }
         }
-        console.log(this.totalAset);
-        console.log(this.totalAsetEksplorasi);
-        console.log(this.totalDER);
       });
 
-      // this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
-      //   for(var i = 0; i < response.data.length; i++) {
-      //     var penjualan = 0;
-      //     var labaBersih = 0;
-      //     console.log(response.data[i]);
-      //     var komoditas = this.fetchKomoditasGroup(response.data[i].komoditas);
-      //     for(var j = 0; j < response.data[i].data.length; j++) {
-      //       if(response.data[i].data[j]["URAIAN"] == "Penjualan") {
-      //         penjualan += response.data[i].data[j]["REALISASI TAHUN 2018"];
-      //       }
-      //       else if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Bersih") {
-      //         labaBersih += response.data[i].data[j]["REALISASI TAHUN 2018"];
-      //       }
-      //     }
+      this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          var penjualan = 0;
+          var labaBersih = 0;
+          var komoditas = this.fetchKomoditasGroup(response.data[i].komoditas);
+          for(var j = 0; j < response.data[i].data.length; j++) {
+            if(response.data[i].data[j]["URAIAN"] == "Penjualan") {
+              penjualan += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+            else if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Bersih") {
+              labaBersih += response.data[i].data[j]["REALISASI TAHUN 2018"];
+            }
+          }
 
-      //     if(this.totalPenjualan.length == 0) {
-      //       this.totalPenjualan.push({
-      //         "komoditas": komoditas,
-      //         "value": penjualan
-      //       });    
-      //     }
-      //     else {
-      //       for(var j = 0; j < this.totalPenjualan.length; j++) {
-      //         if(this.totalPenjualan[j].komoditas == komoditas) {
-      //           this.totalPenjualan[j].value += penjualan
-      //           break;
-      //         }
-      //         if(j == this.totalPenjualan.length-1) {
-      //           this.totalPenjualan.push({
-      //             "komoditas": komoditas,
-      //             "value": penjualan
-      //           });
-      //           break;
-      //         }
-      //       }
-      //     }
-      //     if(this.totalNPM.length == 0) {
-      //       this.totalNPM.push({
-      //         "komoditas": komoditas,
-      //         "value": labaBersih / penjualan
-      //       });    
-      //     }
-      //     else {
-      //       for(var j = 0; j < this.totalNPM.length; j++) {
-      //         if(this.totalNPM[j].komoditas == komoditas) {
-      //           this.totalNPM[j].value += labaBersih / penjualan
-      //           break;
-      //         }
-      //         if(j == this.totalNPM.length-1) {
-      //           this.totalNPM.push({
-      //             "komoditas": komoditas,
-      //             "value": labaBersih / penjualan
-      //           });
-      //           break;
-      //         }
-      //       }
-      //     }
-      //   }
-
-      //   console.log(this.totalPenjualan);
-      //   console.log(this.totalNPM);
-      // });
+          if(this.totalPenjualan.length == 0) {
+            this.totalPenjualan.push({
+              "komoditas": komoditas,
+              "value": penjualan
+            });    
+          }
+          else {
+            for(var j = 0; j < this.totalPenjualan.length; j++) {
+              if(this.totalPenjualan[j].komoditas == komoditas) {
+                this.totalPenjualan[j].value += penjualan
+                break;
+              }
+              if(j == this.totalPenjualan.length-1) {
+                this.totalPenjualan.push({
+                  "komoditas": komoditas,
+                  "value": penjualan
+                });
+                break;
+              }
+            }
+          }
+          if(this.totalNPM.length == 0) {
+            this.totalNPM.push({
+              "komoditas": komoditas,
+              "value": labaBersih / penjualan
+            });    
+          }
+          else {
+            for(var j = 0; j < this.totalNPM.length; j++) {
+              if(this.totalNPM[j].komoditas == komoditas) {
+                this.totalNPM[j].value += labaBersih / penjualan
+                break;
+              }
+              if(j == this.totalNPM.length-1) {
+                this.totalNPM.push({
+                  "komoditas": komoditas,
+                  "value": labaBersih / penjualan
+                });
+                break;
+              }
+            }
+          }
+        }
+        this.fillKomoditasCard();
+      });
     }
   }
 };
