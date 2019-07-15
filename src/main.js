@@ -55,11 +55,21 @@ router.beforeEach((to, from, next) => {
         var user_status = localStorage.getItem('user_status').split(',');
     }
     if(user_status == 'wait-profile') {
-        if(to.path != '/edit-user-profile') {
-            next('/edit-user-profile');
+        if(user_role != "supplier") {
+            if(to.path != '/edit-user-profile') {
+                next('/edit-user-profile');
+            }
+            else {
+                next();
+            }
         }
         else {
-            next();
+            if(to.path != '/edit-supplier-profile') {
+                next('/edit-supplier-profile');
+            }
+            else {
+                next();
+            }
         }
     }
     else {

@@ -62,6 +62,11 @@ export default new Router({
       component: () => import('./views/EditUserProfile.vue'),
     },
     {
+      path: '/edit-supplier-profile',
+      name: 'edit-supplier-profile',
+      component: () => import('./views/EditSupplierProfile.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       meta: { layout: 'no-navigation' },
@@ -209,6 +214,31 @@ export default new Router({
       path: '/rekap-belanja-barang',
       name: 'rekap-belanja-barang',
       component: () => import('./views/RekapBelanjaBarang.vue'),
+    },
+    {
+      path: '/commerce',
+      name: 'commerce',
+      component: () => import('./plugins/commerce/views/Commerce.vue'),
+    },
+    {
+      path: '/list-commerce',
+      name: 'list-commerce',
+      component: () => import('./plugins/commerce/views/List-commerce.vue'),
+    },
+    {
+      path: '/add-commerce',
+      name: 'add-commerce',
+      component: () => import('./plugins/commerce/views/Add-commerce.vue'),
+    },
+    {
+      path: '/update-commerce',
+      name: 'update-commerce',
+      component: () => import('./plugins/commerce/views/Update-commerce.vue'),
+    },
+    {
+      path: '/delete-commerce',
+      name: 'delete-commerce',
+      component: () => import('./plugins/commerce/views/Delete-commerce.vue'),
     },
     {
       path: '/file-manager-list',

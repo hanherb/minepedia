@@ -38,14 +38,14 @@ import '@/assets/scss/vue-tables.scss';
 Vue.use(ClientTable);
 
 export default {
-  name: 'user-neraca',
+  name: 'user-rasio-keuangan',
   props: {
     /**
      * The component title.
      */
     title: {
       type: String,
-      default: 'User Neraca',
+      default: 'User Rasio Keuangan',
     },
   },
   components: {
@@ -73,82 +73,99 @@ export default {
           nav: 'scroll',
         },
       },
-      collectVar: [],
+      collectVar: {},
     }
   },
 
   created: function()
   {
-      this.fetchNeraca();
+      this.fetchRasioKeuangan((result) => {
+        this.createTable(result);
+      });
   },
 
   methods: {
-    fetchNeraca() {
+    fetchRasioKeuangan(callback) {
       var id = window.location.href.split("?id=")[1];
+      var temp = {};
       this.axios.get(address + ":3000/get-neraca", headers).then((response) => {
         for(let i = 0; i < response.data.length; i++) {
-          if(i == 0) {
-            this.columns.push('Tahun');
-          }
           if(response.data[i].upload_by == id) {
-            var temp = [];
             for(let j = 0; j < response.data[i].data.length; j++) {
               if(response.data[i].data[j]["URAIAN"] == "Jumlah Aktiva Lancar") {
-                this.collectVar.push({"jumlahAktivaLancar": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.jumlahAktivaLancar = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
               if(response.data[i].data[j]["URAIAN"] == "Jumlah Kewajiban Jangka Pendek") {
-                this.collectVar.push({"jumlahKewajibanJangkaPendek": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.jumlahKewajibanJangkaPendek = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
               if(response.data[i].data[j]["URAIAN"] == "Kas dan Bank") {
-                this.collectVar.push({"kasDanBank": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.kasDanBank = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
               if(response.data[i].data[j]["URAIAN"] == "Piutang Usaha") {
-                this.collectVar.push({"piutangUsaha": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.piutangUsaha = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
               if(response.data[i].data[j]["URAIAN"] == "JUMLAH AKTIVA") {
-                this.collectVar.push({"jumlahAktiva": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.jumlahAktiva = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
-              if(response.data[i].data[j]["URAIAN"] == "Jumlah Kewajiban") {
-                this.collectVar.push({"jumlahKewajiban": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+              if(response.data[i].data[j]["URAIAN"] == "Jumlah Kewajiban ") {
+                temp.jumlahKewajiban = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
               if(response.data[i].data[j]["URAIAN"] == "Ekuitas") {
-                this.collectVar.push({"ekuitas": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.ekuitas = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
               if(response.data[i].data[j]["URAIAN"] == "JumlahKewajibanJangkaPanjang") {
-                this.collectVar.push({"jumlahKewajibanJangkaPanjang": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+                temp.jumlahKewajibanJangkaPanjang = response.data[i].data[j]["REALISASI TAHUN 2018"];
               }
             }
           }
         }
-      });
-      this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
-        for(let i = 0; i < response.data.length; i++) {
-          if(response.data[i].upload_by == id) {
-            var temp = [];
-            for(let j = 0; j < response.data[i].data.length; j++) {
-              if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Operasi") {
-                this.collectVar.push({"labaOperasi": response.data[i].data[j]["REALISASI TAHUN 2018"]});
-              }
-              if(response.data[i].data[j]["URAIAN"] == "Beban bunga") {
-                this.collectVar.push({"bebanBunga": response.data[i].data[j]["REALISASI TAHUN 2018"]});
-              }
-              if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Bersih") {
-                this.collectVar.push({"labaBersih": response.data[i].data[j]["REALISASI TAHUN 2018"]});
-              }
-              if(response.data[i].data[j]["URAIAN"] == "Laba (Rugi) kotor") {
-                this.collectVar.push({"labaKotor": response.data[i].data[j]["REALISASI TAHUN 2018"]});
-              }
-              if(response.data[i].data[j]["URAIAN"] == "Penjualan") {
-                this.collectVar.push({"penjualan": response.data[i].data[j]["REALISASI TAHUN 2018"]});
+        this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
+          for(let i = 0; i < response.data.length; i++) {
+            if(response.data[i].upload_by == id) {
+              for(let j = 0; j < response.data[i].data.length; j++) {
+                if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Operasi") {
+                  temp.labaOperasi = response.data[i].data[j]["REALISASI TAHUN 2018"];
+                }
+                if(response.data[i].data[j]["URAIAN"] == "Beban bunga") {
+                  temp.bebanBunga = response.data[i].data[j]["REALISASI TAHUN 2018"];
+                }
+                if(response.data[i].data[j]["URAIAN"] == "Laba/ (Rugi) Bersih") {
+                  temp.labaBersih = response.data[i].data[j]["REALISASI TAHUN 2018"];
+                }
+                if(response.data[i].data[j]["URAIAN"] == "Laba (Rugi) kotor") {
+                  temp.labaKotor = response.data[i].data[j]["REALISASI TAHUN 2018"];
+                }
+                if(response.data[i].data[j]["URAIAN"] == "Penjualan") {
+                  temp.penjualan = response.data[i].data[j]["REALISASI TAHUN 2018"];
+                }
               }
             }
           }
-        }
+          if(callback)
+            return callback(temp);
+        });
       });
-      console.log(this.collectVar);
-      this.tableData = [{
-        "Tahun": '2018',
-      }]
+    },
+    createTable(result) {
+      if(result.jumlahAktivaLancar) {
+        this.tableData = [{
+          "Tahun": '2018',
+          "Rasio Lancar": result.jumlahAktivaLancar / result.jumlahKewajibanJangkaPendek,
+          "Rasio Sangat Lancar": (result.kasDanBank + result.piutangUsaha) / result.jumlahKewajibanJangkaPendek,
+          "Rasio Kas": result.piutangUsaha / result.jumlahKewajibanJangkaPendek,
+          "Rasio Utang Terhadap Aset": result.jumlahKewajiban / result.jumlahAktiva,
+          "Rasio Utang Terhadap Modal": result.jumlahKewajiban / result.ekuitas,
+          "Rasio Utang Jangka Panjang Terhadap Modal": result.jumlahKewajibanJangkaPanjang / result.ekuitas,
+          "Rasio Kelipatan Bunga yang Dihasilkan": result.labaOperasi / result.bebanBunga,
+          "Rasio Laba Operasional Terhadap Kewajiban": result.labaOperasi / result.jumlahKewajiban,
+          "Hasil Pengembalian atas Aset": result.labaBersih / result.jumlahAktiva,
+          "Hasil Pengembalian atas Ekuitas": result.labaBersih / result.ekuitas,
+          "Marjin Laba Kotor": result.labaKotor / result.penjualan,
+          "Marjin Laba Operasional": result.labaOperasi / result.penjualan,
+          "Marjin Laba Bersih": result.labaBersih / result.penjualan
+        }];
+        for(var k in this.tableData[0]) this.columns.push(k);
+      }
     }
   }
 };

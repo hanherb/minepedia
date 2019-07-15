@@ -17,6 +17,16 @@ export default function () {
         name: 'users',
       },
     }, {
+      title: 'Companies',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'company-list',
+      },
+    }],
+  }, {
+    title: 'Keuangan',
+    role: ['admin', 'user'],
+    items: [{
       title: 'Asumsi Keuangan',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
@@ -149,29 +159,42 @@ export default function () {
         name: 'csv-sumber-pembiayaan-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
       },
-    }, {
+    }],
+  }, {
+    title: 'Barang',
+    items: [{
       title: 'Belanja Barang',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
         name: 'csv-belanja-barang',
+        role: 'user'
       },
     }, {
       title: 'Rekap Belanja Barang',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
         name: 'rekap-belanja-barang',
+        role: 'admin'
       },
     }, {
-      title: 'Companies',
+      title: 'Manage Barang',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
-        name: 'company-list',
+        name: 'commerce',
+        role: 'supplier'
       },
     }, {
-      title: 'Goods',
-      htmlBefore: '<i class="material-icons">view_module</i>',
+      title: 'List Barang',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
-        name: 'company-list',
+        name: 'list-commerce',
+      },
+    }, {
+      title: 'Input Barang',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'add-commerce',
+        role: 'supplier'
       },
     }],
   }, {

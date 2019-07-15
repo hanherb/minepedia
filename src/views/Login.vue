@@ -74,7 +74,12 @@ export default {
               this.$router.push('/analytics');
             }
             else {
-              this.$router.push('/edit-user-profile');
+              if(response.data.response.role != "supplier") {
+                this.$router.push('/edit-user-profile');
+              }
+              else {
+                this.$router.push('/edit-supplier-profile');
+              }
             }
             this.$session.start();
             this.$session.set('user', response.data.response);
