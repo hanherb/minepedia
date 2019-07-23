@@ -22,16 +22,23 @@ export default function () {
       to: {
         name: 'company-list',
       },
+    }, {
+      title: 'Supplier',
+      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+      to: {
+        name: 'supplier-list',
+      },
     }],
   }, {
     title: 'Keuangan',
-    role: ['admin', 'user'],
+    role: 'user',
     items: [{
       title: 'Asumsi Keuangan',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
         name: 'csv-asumsi-keuangan-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Neraca Keuangan',
@@ -39,6 +46,7 @@ export default function () {
       to: {
         name: 'csv-neraca-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Laba Rugi',
@@ -46,6 +54,7 @@ export default function () {
       to: {
         name: 'csv-laba-rugi-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Harga Pokok Penjualan',
@@ -53,6 +62,7 @@ export default function () {
       to: {
         name: 'csv-harga-pokok-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Arus Kas',
@@ -60,6 +70,7 @@ export default function () {
       to: {
         name: 'csv-arus-kas-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Investasi',
@@ -67,6 +78,7 @@ export default function () {
       to: {
         name: 'csv-investasi-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Penerimaan Negara',
@@ -74,6 +86,7 @@ export default function () {
       to: {
         name: 'csv-penerimaan-negara-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Keuangan Lainnya',
@@ -81,6 +94,7 @@ export default function () {
       to: {
         name: 'csv-keuangan-lainnya-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Sumber Pembiayaan',
@@ -88,6 +102,7 @@ export default function () {
       to: {
         name: 'csv-sumber-pembiayaan-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Anggaran Belanja',
@@ -95,6 +110,7 @@ export default function () {
       to: {
         name: 'csv-anggaran-belanja-op',
         tahapan_kegiatan: 'Operasi Produksi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Asumsi Keuangan',
@@ -102,6 +118,7 @@ export default function () {
       to: {
         name: 'csv-asumsi-keuangan-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Neraca Keuangan',
@@ -109,6 +126,7 @@ export default function () {
       to: {
         name: 'csv-neraca-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Laba Rugi',
@@ -116,6 +134,7 @@ export default function () {
       to: {
         name: 'csv-laba-rugi-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Arus Kas',
@@ -123,6 +142,7 @@ export default function () {
       to: {
         name: 'csv-arus-kas-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Investasi',
@@ -130,6 +150,7 @@ export default function () {
       to: {
         name: 'csv-investasi-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Penerimaan Negara',
@@ -137,6 +158,7 @@ export default function () {
       to: {
         name: 'csv-penerimaan-negara-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Keuangan Lainnya',
@@ -144,6 +166,7 @@ export default function () {
       to: {
         name: 'csv-keuangan-lainnya-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Anggaran Belanja',
@@ -151,6 +174,7 @@ export default function () {
       to: {
         name: 'csv-anggaran-belanja-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }, {
       title: 'Sumber Pembiayaan',
@@ -158,22 +182,23 @@ export default function () {
       to: {
         name: 'csv-sumber-pembiayaan-eksplorasi',
         tahapan_kegiatan: 'Eksplorasi',
+        forbidden: 'admin'
       },
     }],
   }, {
     title: 'Barang',
     items: [{
-      title: 'Belanja Barang',
+      title: 'Input Belanja Barang',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
         name: 'csv-belanja-barang',
         role: 'user'
       },
     }, {
-      title: 'Rekap Belanja Barang',
+      title: 'Rekap Belanja Barang Total',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
-        name: 'rekap-belanja-barang',
+        name: 'rekap-belanja-barang-total',
         role: 'admin'
       },
     }, {
@@ -181,7 +206,7 @@ export default function () {
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {
         name: 'commerce',
-        role: 'supplier'
+        forbidden: 'user'
       },
     }, {
       title: 'List Barang',

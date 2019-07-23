@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -107,11 +108,7 @@ export default {
         this.axios.post(address + ':3000/add-commerce', postObj, headers)
         .then((response) => {
           postObj._id = response.data.insertedIds[0];
-          let query = `mutation createSingleCommerce($input:CommerceInput) {
-              createCommerce(input: $input) {
-                  name
-              }
-          }`;
+          let query = gql.addCommerce;
           let variables = {
             input: postObj
           }

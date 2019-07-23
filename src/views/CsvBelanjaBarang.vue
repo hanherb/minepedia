@@ -6,6 +6,10 @@
       div( class="panel-body")
         div( class="form-group")
           div( class="col-sm-9")
+            d-row
+              d-col( md="3" v-for="kategori in kategoriStatus")
+                p(v-if="kategori.status == 1") Kategori {{kategori.letter}} - &#10004
+                p(v-else) Kategori {{kategori.letter}} - &#10060
             input( type="file" id="csv_file" name="csv_file" class="form-control" @change="loadCSV($event)")
         div( class="col-sm-offset-3 col-sm-9")
           div( class="checkbox-inline")
@@ -66,6 +70,89 @@ export default {
         },
       },
       validation: "",
+      kategori: "",
+      kategoriStatus: [
+        {
+         'letter': 'A',
+         'status': 0
+        },
+        {
+         'letter': 'B',
+         'status': 0
+        },
+        {
+         'letter': 'C',
+         'status': 0
+        },
+        {
+         'letter': 'D',
+         'status': 0
+        },
+        {
+         'letter': 'E',
+         'status': 0
+        },
+        {
+         'letter': 'F',
+         'status': 0
+        },
+        {
+         'letter': 'G',
+         'status': 0
+        },
+        {
+         'letter': 'H',
+         'status': 0
+        },
+        {
+         'letter': 'I',
+         'status': 0
+        },
+        {
+         'letter': 'J',
+         'status': 0
+        },
+        {
+         'letter': 'K',
+         'status': 0
+        },
+        {
+         'letter': 'L',
+         'status': 0
+        },
+        {
+         'letter': 'M',
+         'status': 0
+        },
+        {
+         'letter': 'N',
+         'status': 0
+        },
+        {
+         'letter': 'O',
+         'status': 0
+        },
+        {
+         'letter': 'P',
+         'status': 0
+        },
+        {
+         'letter': 'Q',
+         'status': 0
+        },
+        {
+         'letter': 'R',
+         'status': 0
+        },
+        {
+         'letter': 'S',
+         'status': 0
+        },
+        {
+         'letter': 'T',
+         'status': 0
+        } 
+      ]
     };
   },
   filters: {
@@ -73,7 +160,27 @@ export default {
       return str.charAt(0).toUpperCase() + str.slice(1)
     }
   },
+
+  created: function()
+  {
+    this.fetchBelanjaBarang();
+  },
+
   methods: {
+    fetchBelanjaBarang() {
+      var id = this.$session.get('user')._id;
+      this.axios.get(address + ":3000/get-belanja-barang", headers).then((response) => {
+        for(var i = 0; i < response.data.length; i++) {
+          if(response.data[i].upload_by == id) {
+            for(var j = 0; j < this.kategoriStatus.length; j++) {
+              if(this.kategoriStatus[j].letter == response.data[i].data[0]["Kategori"]) {
+                this.kategoriStatus[j].status = 1;
+              }
+            }
+          }
+        }
+      })
+    },
     sortBy: function (key) {
       var vm = this
       vm.sortKey = key

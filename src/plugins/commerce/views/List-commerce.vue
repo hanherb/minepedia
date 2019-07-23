@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -45,19 +46,7 @@ export default {
   methods: {
       fetchItems() {
         this.axios.get(address + ":3000/get-commerce", headers).then((response) => {
-          let query = `query getAllCommerce {
-            commerces {
-              _id
-              name
-              price
-              qty
-              description
-              category
-              user
-              user_id
-              image
-            }
-          }`;
+          let query = gql.allCommerce;
           graphqlFunction.graphqlFetchAll(query, (result) => {
             for(var i = 0; i < result.commerces.length; i++) {
               result.commerces[i].price = basicFunction.numberWithCommas(result.commerces[i].price);

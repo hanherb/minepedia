@@ -26,9 +26,9 @@
 
       <div class="nav-wrapper">
         <div v-if="items" v-for="(nav, navIdx) in items" :key="navIdx">
-          <h6 v-if="nav.role == role[0] || nav.role == role[1] || !nav.role || role == 'admin'" class="main-sidebar__nav-title">{{ nav.title }}</h6>
+          <h6 v-if="nav.role == role || !nav.role" class="main-sidebar__nav-title">{{ nav.title }}</h6>
           <d-nav v-if="typeof nav.items !== 'undefined' && nav.items.length" class="nav--no-borders flex-column">
-            <li v-for="(item, navItemIdx) in nav.items" :key="navItemIdx" v-if="(item.to.tahapan_kegiatan == tahapan_kegiatan || !item.to.tahapan_kegiatan) && (item.to.role == role || !item.to.role) || role == 'admin'" class="nav-item dropdown">
+            <li v-for="(item, navItemIdx) in nav.items" :key="navItemIdx" v-if="(item.to.tahapan_kegiatan == tahapan_kegiatan || !item.to.tahapan_kegiatan) && (item.to.role == role || !item.to.role) && (item.to.forbidden != role || !item.to.forbidden)" class="nav-item dropdown">
               <d-link :class="['nav-link', item.items && item.items.length ? 'dropdown-toggle' : '']" :to="item.to" v-d-toggle="`snc-${navIdx}-${navItemIdx}`">
                 <div class="item-icon-wrapper" v-if="item.htmlBefore" v-html="item.htmlBefore" />
                 <span v-if="item.title">{{ item.title }}</span>
@@ -74,15 +74,6 @@ export default {
   },
   created() {
     this.$eventHub.$on('toggle-sidebar', this.handleToggleSidebar);
-
-    //Tampilkan sesuai tahapan kegiatan
-    // for(var i = 0; i < this.items[1].items.length; i++) {
-    //   if(this.items[1].items[i].to.hasOwnProperty('tahapan_kegiatan')) {
-    //     if(this.items[1].items[i].to.tahapan_kegiatan != this.$session.get('user').tahapan_kegiatan) {
-    //       this.items[1].items.splice(i, 1);
-    //     }
-    //   }
-    // }
   },
   beforeDestroy() {
     this.$eventHub.$off('toggle-sidebar');

@@ -1,21 +1,35 @@
 {
+  "Emas dan Perak": [
+    "emas",
+    "perak"
+  ],
+  "Tembaga": [
+    "tembaga"
+  ],
+  "Timah": [
+    "timah"
+  ],
+  "Nikel": [
+    "nikel"
+  ],
+  "Bauksit": [
+    "bauksit"
+  ],
+  "Besi": [
+    "besi"
+  ],
   "Mineral Logam Lainnya": [
     "litium", 
     "berilium", 
     "magnesium", 
     "kalium", 
-    "kalsium", 
-    "emas", 
-    "tembaga", 
-    "perak", 
+    "kalsium",  
     "timbal", 
-    "seng timah", 
-    "nikel", 
+    "seng",
     "mangan", 
     "platina", 
     "bismuth", 
-    "molibdenum", 
-    "bauksit", 
+    "molibdenum",  
     "air raksa",
     "wolfram", 
     "titanium", 
@@ -29,10 +43,8 @@
     "galium", 
     "indium", 
     "yitrium", 
-    "magnetit", 
-    "besi", 
-    "galena", 
-    "alumina", 
+    "magnetit",  
+    "galena",  
     "niobium", 
     "zirkonium", 
     "ilmenit", 
@@ -45,8 +57,7 @@
     "niobium", 
     "neodymium", 
     "hafnium", 
-    "scandium", 
-    "alumunium", 
+    "scandium",  
     "palladium", 
     "rhodium", 
     "osmium", 
@@ -59,7 +70,8 @@
     "zenotin"
   ],
   "IUP OPK Olah Murni": [
-    
+    "alumunium",
+    "alumina"
   ],
   "Batubara": [
     "batubara",

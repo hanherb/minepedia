@@ -34,17 +34,13 @@ export default {
     return{
       columns: ['fullname', 
                 'email', 
-                'badan_usaha', 
-                'izin', 
-                'generasi',
-                'tahapan_kegiatan',
-                'komoditas',
                 'alamat_kantor',
                 'telepon',
                 'fax',
                 'website',
-                'npwp',
-                'lokasi_tambang',
+                'siup',
+                'tdp',
+                'skt_minerba',
                 'actions'
       ],
       tableData: [],
@@ -80,10 +76,11 @@ export default {
         let query = gql.allUser;
         graphqlFunction.graphqlFetchAll(query, (result) => {
           for(var i = 0; i < result.users.length; i++) {
-            if(result.users[i].role == 'user') {
+            if(result.users[i].role == 'supplier') {
               this.tableData.push(result.users[i]);
             }
           }
+          console.log(this.tableData);
         });
       })
     },

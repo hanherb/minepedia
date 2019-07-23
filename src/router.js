@@ -216,6 +216,16 @@ export default new Router({
       component: () => import('./views/RekapBelanjaBarang.vue'),
     },
     {
+      path: '/rekap-belanja-barang-total',
+      name: 'rekap-belanja-barang-total',
+      component: () => import('./views/RekapBelanjaBarangTotal.vue'),
+    },
+    {
+      path: '/rekap-belanja-barang-perusahaan',
+      name: 'rekap-belanja-barang-perusahaan',
+      component: () => import('./views/RekapBelanjaBarangPerusahaan.vue'),
+    },
+    {
       path: '/commerce',
       name: 'commerce',
       component: () => import('./plugins/commerce/views/Commerce.vue'),
@@ -259,6 +269,11 @@ export default new Router({
       path: '/company-list',
       name: 'company-list',
       component: () => import('./views/CompanyList.vue'),
+    },
+    {
+      path: '/supplier-list',
+      name: 'supplier-list',
+      component: () => import('./views/SupplierList.vue'),
     },
     {
       path: '/add-new-post',

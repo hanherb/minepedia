@@ -11,7 +11,7 @@
       </d-col>
 
       <!-- Page Header - Datepicker -->
-      <d-col sm="4" class="d-flex">
+      <!-- <d-col sm="4" class="d-flex">
         <d-input-group size="sm" class="d-flex justify-content-end my-auto date-range">
           <d-datepicker v-model="dateRange.from" :highlighted="{ from: dateRange.from, to: dateRange.to || new Date() }" typeable placeholder="Start date" small />
           <d-datepicker v-model="dateRange.to" :highlighted="{ from: dateRange.from, to: dateRange.to || new Date() }" typeable placeholder="End date" small />
@@ -19,7 +19,7 @@
             <i class="material-icons">&#xE916;</i>
           </d-input-group-text>
         </d-input-group>
-      </d-col>
+      </d-col> -->
 
     </d-row>
 
@@ -44,33 +44,33 @@
       <br>
       <d-row>
         <d-col v-for="(stats, idx) in komoditasStats" :key="idx" md="6" lg="3" class="mb-4">
-          <small-stats v-if="activeCard == 'totalAset'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalAset" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
-          <small-stats v-if="activeCard == 'totalPenjualan'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalPenjualan" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
-          <small-stats v-if="activeCard == 'totalAsetEksplorasi'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalAsetEksplorasi" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
-          <small-stats v-if="activeCard == 'totalDER'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalDER" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
-          <small-stats v-if="activeCard == 'totalNPM'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalNPM" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
+          <small-stats v-if="activeCard == 'totalAset'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalAset" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" variation="1"/>
+          <small-stats v-if="activeCard == 'totalPenjualan'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalPenjualan" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" variation="1" />
+          <small-stats v-if="activeCard == 'totalAsetEksplorasi'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalAsetEksplorasi" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" variation="1" />
+          <small-stats v-if="activeCard == 'totalDER'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalDER" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" variation="1" />
+          <small-stats v-if="activeCard == 'totalNPM'" :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value.totalNPM" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" variation="1" />
         </d-col>
       </d-row>
     </div>
 
     <hr>
 
-    <d-row>
+    <!-- <d-row> -->
       <!-- Sessions -->
-      <d-col lg="8" md="12" sm="12" class="mb-4">
+      <!-- <d-col lg="8" md="12" sm="12" class="mb-4">
         <ao-sessions />
-      </d-col>
+      </d-col> -->
 
       <!-- Users by Device -->
-      <d-col lg="4" md="6" sm="6" class="mb-4">
+      <!-- <d-col lg="4" md="6" sm="6" class="mb-4">
         <ao-users-by-device />
-      </d-col>
+      </d-col> -->
 
       <!-- Goals Overview -->
-      <d-col lg="5" class="mb-4">
+      <!-- <d-col lg="5" class="mb-4">
         <ao-goals-overview />
       </d-col>
-    </d-row>
+    </d-row> -->
   </d-container>
 </template>
 

@@ -18,14 +18,11 @@
           <span class="text-light">{{activity.date}}</span>
           <p>{{activity.detail}}</p>
         </div>
-        <div class="user-activity__item__action ml-auto">
-          <button class="ml-auto btn btn-sm btn-white">View Project</button>
-        </div>
       </div>
 
     </d-card-body>
     <d-card-footer class="border-top">
-      <d-button small class="btn-sm btn-white d-table mx-auto">Load More</d-button>
+      <d-button small class="btn-sm btn-white d-table mx-auto" v-if="loaded == 0" v-on:click="loadMore">Load More</d-button>
     </d-card-footer>
   </d-card>
 </template>
@@ -49,6 +46,7 @@ export default {
   data() {
     return {
       activities: [],
+      loaded: 0
     }
   },
 
@@ -61,13 +59,27 @@ export default {
     fetchLogger() {
       var id = window.location.href.split("?id=")[1];
       this.axios.get(address + ":3000/get-log", headers).then((response) => {
-        for(let i = 0; i < response.data.length; i++) {
+        response.data.reverse();
+        for(let i = 0; i < 20; i++) {
           if(response.data[i].userId == id) {
             this.activities.push(response.data[i]);
           }
         }
       });
     },
+    loadMore() {
+      this.activities = [];
+      this.loaded = 1;
+      var id = window.location.href.split("?id=")[1];
+      this.axios.get(address + ":3000/get-log", headers).then((response) => {
+        response.data.reverse();
+        for(let i = 0; i < response.data.length; i++) {
+          if(response.data[i].userId == id) {
+            this.activities.push(response.data[i]);
+          }
+        }
+      });
+    }
   }
 };
 </script>

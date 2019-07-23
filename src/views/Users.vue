@@ -28,6 +28,7 @@
   </d-container>
 </template>
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -76,16 +77,7 @@ export default {
   methods: {
     fetchUsers() {
       this.axios.get(address + ":3000/get-user", headers).then((response) => {
-        let query = `query getAllUser {
-          users {
-            _id
-            fullname
-            email
-            role
-            status
-            authority
-          }
-        }`;
+        let query = gql.allUser;
         graphqlFunction.graphqlFetchAll(query, (result) => {
           this.tableData = result.users;
         });

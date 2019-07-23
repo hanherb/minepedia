@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import gql from '../gql';
 import graphqlFunction from '../graphqlFunction';
 import address from '../address';
 import headers from '../headers';
@@ -61,11 +62,7 @@ export default {
   methods: {
       fetchRole() {
         this.axios.get(address + ":3000/get-role", headers).then((response) => {
-          let query = `query getAllRole {
-            roles {
-                role_name
-            }
-          }`;
+          let query = gql.allRole;
           graphqlFunction.graphqlFetchAll(query, (result) => {
             for(let i = 0; i < result.roles.length; i++) {
               let temp = {
@@ -80,12 +77,7 @@ export default {
 
       fetchPlugin() {
         this.axios.get(address + ":3000/get-plugin", headers).then((response) => {
-          let query = `query getAllPlugin {
-            plugins {
-              name
-              status
-            }
-          }`;
+          let query = gql.allPlugin;
           graphqlFunction.graphqlFetchAll(query, (result) => {
             this.plugins = result.plugins;
           });
@@ -104,11 +96,7 @@ export default {
         this.axios.post(address + ':3000/create-user', postObj, headers)
         .then((response) => {
           postObj._id = response.data.insertedIds[0];
-          let query = `mutation createSingleUser($input:PersonInput) {
-              createUser(input: $input) {
-                  fullname
-              }
-          }`;
+          let query = gql.addUser;
           let variables = {
             input: postObj
           }

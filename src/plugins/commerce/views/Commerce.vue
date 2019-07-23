@@ -20,6 +20,7 @@
               <th class="text-center">Qty</th>
               <th class="text-center">Price</th>
               <th class="text-center">Category</th>
+              <th class="text-center">Supplier</th>
               <th class="text-right">Actions</th>
             </tr>
           </thead>
@@ -39,6 +40,7 @@
               <td class="lo-stats__items text-center">{{ commerce.qty }}</td>
               <td class="lo-stats__total text-center text-success">Rp. {{ commerce.price }}</td>
               <td class="lo-stats__total text-center">{{ commerce.category }}</td>
+              <td class="lo-stats__total text-center">{{ commerce.user }}</td>
               <td class="lo-stats__actions">
                 <d-button-group class="d-table ml-auto">
                   <d-link :to="'/update-commerce?id=' + commerce._id">
@@ -73,6 +75,7 @@
 </template>
 
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -95,18 +98,7 @@ export default {
   methods: {
     fetchItems() {
       this.axios.get(address + ":3000/get-commerce", headers).then((response) => {
-        let query = `query getallCommerce {
-          commerces {
-            _id
-            name
-            price
-            qty
-            description
-            category
-            user
-            image
-          }
-        }`;
+        let query = gql.allCommerce;
         graphqlFunction.graphqlFetchAll(query, (result) => {
           if(this.$session.get('user').role == "supplier") {
             for(var i = 0; i < result.commerces.length; i++) {

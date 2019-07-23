@@ -240,6 +240,7 @@
 </template>
 
 <script>
+import gql from '../gql';
 import graphqlFunction from '../graphqlFunction';
 import address from '../address';
 import headers from '../headers';
@@ -295,28 +296,7 @@ export default {
       fetchUser() {
         let id = this.$session.get('user')._id;
         this.axios.get(address + ":3000/get-user", headers).then((response) => {
-          let query = `query getSingleUser($userId: String!) {
-            user(_id: $userId) {
-              _id
-              fullname
-              email
-              role
-              status
-              authority
-              badan_usaha
-              izin
-              generasi
-              tahapan_kegiatan
-              komoditas
-              alamat_kantor
-              telepon
-              fax
-              website
-              npwp
-              lokasi_tambang
-              profile_picture
-            }
-          }`;
+          let query = gql.singleUser;
           let variable = {
             userId: id
           };

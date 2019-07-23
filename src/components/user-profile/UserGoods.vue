@@ -20,7 +20,6 @@
               <th class="text-center">Qty</th>
               <th class="text-center">Price</th>
               <th class="text-center">Category</th>
-              <th class="text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -39,16 +38,6 @@
               <td class="lo-stats__items text-center">{{ commerce.qty }}</td>
               <td class="lo-stats__total text-center text-success">Rp. {{ commerce.price }}</td>
               <td class="lo-stats__total text-center">{{ commerce.category }}</td>
-              <td class="lo-stats__actions">
-                <d-button-group class="d-table ml-auto">
-                  <d-link :to="'/update-commerce?id=' + commerce._id">
-                    <d-button size="sm" type="button" class="btn-white">Update</d-button>
-                  </d-link>
-                  <d-link :to="'/delete-commerce?id=' + commerce._id">
-                    <d-button size="sm" type="button" class="btn-white">Delete</d-button>
-                  </d-link>
-                </d-button-group>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -60,6 +49,7 @@
 </template>
 
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -83,19 +73,7 @@ export default {
     fetchItems() {
       var id = window.location.href.split("?id=")[1];
       this.axios.get(address + ":3000/get-commerce", headers).then((response) => {
-        let query = `query getallCommerce {
-          commerces {
-            _id
-            name
-            price
-            qty
-            description
-            category
-            user
-            user_id
-            image
-          }
-        }`;
+        let query = gql.allCommerce;
         graphqlFunction.graphqlFetchAll(query, (result) => {
           for(var i = 0; i < result.commerces.length; i++) {
             if(result.commerces[i].user_id == id) {

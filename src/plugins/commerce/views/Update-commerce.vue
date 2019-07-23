@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -101,19 +102,7 @@ export default {
       fetchCommerce() {
         let id = window.location.href.split("?id=")[1];
         this.axios.get(address + ":3000/get-commerce", headers).then((response) => {
-          let query = `query getSingleItem($itemId: String!) {
-            commerce(_id: $itemId) {
-              _id
-              name
-              price
-              qty
-              description
-              category
-              user
-              user_id
-              image
-            }
-          }`;
+          let query = gql.singleCommerce;
           let variable = {
             itemId: id
           };
@@ -141,11 +130,7 @@ export default {
         };
         this.axios.post(address + ':3000/update-commerce', postObj, headers)
         .then((response) => {
-          let query = `mutation updateSingleCommerce($itemId: String!, $input:CommerceInput) {
-              updateCommerce(_id: $itemId, input: $input) {
-                  name
-              }
-          }`;
+          let query = gql.updateCommerce;
           let variables = {
             itemId: this.commerce._id,
             input: postObj

@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import gql from '../gql';
 import graphqlFunction from '../graphqlFunction';
 import address from '../address';
 import headers from '../headers';
@@ -68,28 +69,7 @@ export default {
       fetchUser() {
         let id = window.location.href.split("?id=")[1];
         this.axios.get(address + ":3000/get-user", headers).then((response) => {
-          let query = `query getSingleUser($userId: String!) {
-            user(_id: $userId) {
-              _id
-              fullname
-              email
-              role
-              status
-              authority
-              badan_usaha
-              izin
-              generasi
-              tahapan_kegiatan
-              komoditas
-              alamat_kantor
-              telepon
-              fax
-              website
-              npwp
-              lokasi_tambang
-              profile_picture
-            }
-          }`;
+          let query = gql.singleUser;
           let variable = {
             userId: id
           };
@@ -116,11 +96,7 @@ export default {
       },
       fetchRole() {
         this.axios.get(address + ":3000/get-role", headers).then((response) => {
-          let query = `query getAllRole {
-            roles {
-                role_name
-            }
-          }`;
+          let query = gql.allRole;
           graphqlFunction.graphqlFetchAll(query, (result) => {
             for(let i = 0; i < result.roles.length; i++) {
               let temp = {
@@ -135,12 +111,7 @@ export default {
 
       fetchPlugin() {
         this.axios.get(address + ":3000/get-plugin", headers).then((response) => {
-          let query = `query getAllPlugin {
-            plugins {
-              name
-              status
-            }
-          }`;
+          let query = gql.allPlugin;
           graphqlFunction.graphqlFetchAll(query, (result) => {
             this.plugins = result.plugins;
           });
@@ -169,11 +140,7 @@ export default {
         };
         this.axios.post(address + ':3000/update-user', postObj, headers)
         .then((response) => {
-          let query = `mutation updateSingleUser($userEmail:String!, $input:PersonInput) {
-              updateUser(email: $userEmail, input: $input) {
-                  fullname
-              }
-          }`;
+          let query = gql.updateUser;
           let variables = {
             userEmail: this.input.email,
             input: postObj

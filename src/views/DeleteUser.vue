@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import gql from '../gql';
 import graphqlFunction from '../graphqlFunction';
 import address from '../address';
 import headers from '../headers';
@@ -30,15 +31,7 @@ export default {
       fetchUser() {
         let id = window.location.href.split("?id=")[1];
         this.axios.get(address + ":3000/get-user", headers).then((response) => {
-          let query = `query getSingleUser($userId: String!) {
-            user(_id: $userId) {
-              _id
-              fullname
-              email
-              role
-              authority
-            }
-          }`;
+          let query = gql.singleUser;
           let variable = {
             userId: id
           };
@@ -54,11 +47,7 @@ export default {
         };
         this.axios.post(address + ':3000/delete-user', postObj, headers)
         .then((response) => {
-          let query = `mutation DeleteSingleUser($userEmail:String!) {
-              deleteUser(email: $userEmail) {
-                  fullname
-              }
-          }`;
+          let query = gql.deleteUser;
           let variables = {
             userEmail: this.user.email
           }

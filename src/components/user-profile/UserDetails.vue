@@ -52,7 +52,10 @@
 
       <!-- User Tags -->
       <div class="user-details__tags p-4">
-        <span v-for="(tag, idx) in tags" :key="idx" class="badge badge-pill badge-light text-light text-uppercase mb-2 border">{{ tag }}</span>
+        <!-- <d-link v-for="(tag, idx) in tags" :key="idx" :to="'/user-profile'"> -->
+        <d-link v-for="(tag, idx) in tags" :key="idx" :to="tag.url + user._id">
+          <span class="badge badge-pill badge-light text-light text-uppercase mb-2 border" style="cursor: pointer;">{{ tag.name }}</span>
+        </d-link>
       </div>
 
     </d-card-body>
@@ -60,6 +63,7 @@
 </template>
 
 <script>
+import gql from '@/gql';
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
@@ -78,12 +82,10 @@ export default {
         slack: '#',
       },
       tags: [
-        'User Experience',
-        'UI Design',
-        'React JS',
-        'HTML & CSS',
-        'JavaScript',
-        'Bootstrap 4',
+        {
+          'name': 'Rekap Belanja Barang',
+          'url': '/rekap-belanja-barang-perusahaan?id='
+        }
       ],
     }
   },
@@ -97,28 +99,7 @@ export default {
     fetchUser() {
       var id = window.location.href.split("?id=")[1];
       this.axios.get(address + ":3000/get-user", headers).then((response) => {
-        let query = `query getSingleUser($userId: String!) {
-          user(_id: $userId) {
-            _id
-            fullname
-            email
-            role
-            status
-            authority
-            badan_usaha
-            izin
-            generasi
-            tahapan_kegiatan
-            komoditas
-            alamat_kantor
-            telepon
-            fax
-            website
-            npwp
-            lokasi_tambang
-            profile_picture
-          }
-        }`;
+        let query = gql.singleUser;
         let variable = {
           userId: id
         };
