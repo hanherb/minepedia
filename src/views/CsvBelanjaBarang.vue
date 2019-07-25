@@ -15,7 +15,7 @@
           div( class="checkbox-inline")
             label( for="header_rows") 
         d-container( fluid class="main-content-container px-4 pb-4")
-          v-client-table( class="dataTables_wrapper" :data="tableData" :columns="columns" :options="clientTableOptions")
+          v-client-table( v-for="tableData in tableData" class="dataTables_wrapper csv_table_barang" :data="tableData.data" :columns="columns" :options="clientTableOptions")
               table( class="table mb-0")
                 thead( class="bg-light")
                   tr
@@ -163,22 +163,31 @@ export default {
 
   created: function()
   {
-    this.fetchBelanjaBarang();
+    var vm = this;
+    this.fetchBelanjaBarang(() => {
+      setTimeout(function() {
+        vm.coloring();
+      }, 2000);
+    });
   },
 
   methods: {
-    fetchBelanjaBarang() {
+    fetchBelanjaBarang(cb) {
       var id = this.$session.get('user')._id;
       this.axios.get(address + ":3000/get-belanja-barang", headers).then((response) => {
         for(var i = 0; i < response.data.length; i++) {
           if(response.data[i].upload_by == id) {
             for(var j = 0; j < this.kategoriStatus.length; j++) {
               if(this.kategoriStatus[j].letter == response.data[i].data[0]["Kategori"]) {
+                this.columns = Object.keys(response.data[i].data[0]);
+                this.tableData.push({"data": response.data[i].data});
                 this.kategoriStatus[j].status = 1;
               }
             }
           }
         }
+        if(cb)
+          return cb();
       })
     },
     sortBy: function (key) {
@@ -214,6 +223,8 @@ export default {
       });
       result.pop() // remove the last item because undefined values
       this.columns = Object.keys(result[0]);
+      // this.columns[this.columns.indexOf("Self Assessment")] = "Assessment";
+      // this.columns.splice(this.columns.indexOf("Surveyor"), 1);
 
       function sum(colname) {
         result[result.length-1][colname] = 0;
@@ -286,6 +297,15 @@ export default {
         if(result[i]["Cost, Insurance, & Freight"] && result[i]["On Site"]) {
           this.validation = "Tidak bisa mengisi On Site dan Cost, Insurance, & Freight secara bersamaan, pada barang " + result[i]["Jenis Barang"];
         }
+
+        if(result[i]["Self Assessment"] || result[i]["Surveyor"]) {
+          if(result[i]["Self Assessment"]) {
+            // result[i]["Assessment"] = result[i]["Self Assessment"];
+          }
+          else if(result[i]["Surveyor"]) {
+            // result[i]["Assessment"] = result[i]["Surveyor"];
+          }
+        }
       }
 
       prod("Total Price (US$)");
@@ -306,7 +326,7 @@ export default {
         // Handle errors load
         reader.onload = function(event) {
           var csv = event.target.result;
-          vm.tableData = vm.csvJSON(csv)
+          vm.tableData.push({"data": vm.csvJSON(csv)});
           
         };
         reader.onerror = function(evt) {
@@ -320,7 +340,7 @@ export default {
     },
     addBelanjaBarang() {
       let postObj = {
-        data: this.tableData,
+        data: this.tableData[this.tableData.length-1].data,
         upload_by: this.$session.get('user')._id,
       };
       if(this.validation) {
@@ -333,7 +353,33 @@ export default {
           alert("Add Belanja Barang Success");
         });
       }
+    },
+    coloring() {
+      for(var i = 0; i < this.tableData.length; i++) {
+        for(var j = 1; j < this.tableData[i].data.length; j++) {
+          if(this.tableData[i].data[j]["Self Assessment"]) {
+            document.querySelectorAll(".csv_table_barang tr:nth-child(" + (j+1) +") td:nth-child(14)")[i].classList.add('self-assessment');
+          }
+          else if(this.tableData[i].data[j]["Surveyor"]) {
+            document.querySelectorAll(".csv_table_barang tr:nth-child(" + (j+1) +") td:nth-child(15)")[i].classList.add('surveyor');
+          }
+        }
+      }
     }
   }
 };
 </script>
+
+<style>
+  .csv_table_barang td:nth-child(14) {
+    /*background-color: red;*/
+  }
+
+  .self-assessment {
+    background-color: yellow;
+  }
+
+  .surveyor {
+    background-color: #7FFF00;
+  }
+</style>
