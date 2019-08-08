@@ -1,5 +1,10 @@
 <template lang="pug">
   <d-container fluid class="main-content-container px-4 pb-4">
+    <d-button-group class="">
+      <d-button size="sm" type="button" class="btn-white" v-on:click="toggleAll">Show All</d-button>
+      <d-button size="sm" type="button" class="btn-white" v-on:click="toggleRencana">Hide Rencana</d-button>
+      <d-button size="sm" type="button" class="btn-white" v-on:click="toggleRealisasi">Hide Realisasi</d-button>
+    </d-button-group>
     <v-client-table class="dataTables_wrapper" :data="tableData" :columns="columns" :options="clientTableOptions">
     </v-client-table>
   </d-container>
@@ -70,6 +75,23 @@ export default {
           }
         }
       })
+    },
+    toggleAll() {
+      this.fetchNeraca();
+    },
+    toggleRencana() {
+      for(var i = 0; i < this.columns.length; i++) {
+        if(this.columns[i].split(' ')[0] == "RENCANA") {
+          this.columns.splice(i, 1);
+        }
+      }
+    },
+    toggleRealisasi() {
+      for(var i = 0; i < this.columns.length; i++) {
+        if(this.columns[i].split(' ')[0] == "REALISASI") {
+          this.columns.splice(i, 1);
+        }
+      }
     },
   }
 };

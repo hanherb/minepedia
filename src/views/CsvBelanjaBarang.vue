@@ -365,10 +365,10 @@ export default {
       for(var i = 0; i < this.tableData.length; i++) {
         for(var j = 1; j < this.tableData[i].data.length; j++) {
           if(this.tableData[i].data[j]["Self Assessment"]) {
-            document.querySelectorAll(".csv_table_barang tr:nth-child(" + (j+1) +") td:nth-child(15)")[i].classList.add('self-assessment');
+            document.querySelectorAll(".csv_table_barang tr:nth-child(" + (j+1) +") td:nth-child(16)")[i].classList.add('self-assessment');
           }
           else if(this.tableData[i].data[j]["Surveyor"]) {
-            document.querySelectorAll(".csv_table_barang tr:nth-child(" + (j+1) +") td:nth-child(16)")[i].classList.add('surveyor');
+            document.querySelectorAll(".csv_table_barang tr:nth-child(" + (j+1) +") td:nth-child(17)")[i].classList.add('surveyor');
           }
         }
       }

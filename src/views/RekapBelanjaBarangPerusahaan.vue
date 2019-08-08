@@ -1,5 +1,9 @@
 <template lang="pug">
   <d-container fluid class="main-content-container px-4 pb-4">
+    <d-row class="mt-4">
+      <d-col lg="12" sm="12">
+      </d-col>
+    </d-row>
     <label>Filter Asal Barang :</label>
     <d-col md="1" class="form-group">
       <d-input-group seamless>
@@ -7,8 +11,15 @@
         </d-form-select>
       </d-input-group>
     </d-col>
+     <d-button-group class="">
+      <d-button size="sm" type="button" class="btn-white" v-on:click="toggleAll">Show All</d-button>
+      <d-button size="sm" type="button" class="btn-white" v-on:click="toggleRencana">Hide Rencana</d-button>
+      <d-button size="sm" type="button" class="btn-white" v-on:click="toggleRealisasi">Hide Realisasi</d-button>
+    </d-button-group>
     <v-client-table class="dataTables_wrapper belanjaBarang" :data="belanjaBarang.tableData" :columns="belanjaBarang.columns" :options="belanjaBarang.clientTableOptions">
     </v-client-table>
+    <br>
+    <as-chart-barang />
   </d-container>
 </template>
 <script>
@@ -16,6 +27,7 @@ import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
 import headers from '@/headers';
+import ChartBarang from '@/components/belanja-barang/ChartBarang.vue';
 import Vue from 'vue';
 import { ClientTable } from 'vue-tables-2';
 import '@/assets/scss/vue-tables.scss';
@@ -26,6 +38,7 @@ export default {
   name: 'rekap-belanja-barang-perusahaan',
   components: {
     ClientTable,
+    asChartBarang: ChartBarang,
   },
   data(){
     return{
@@ -71,7 +84,12 @@ export default {
 
   created: function()
   {
-    this.fetchBelanjaBarang();
+    var vm = this;
+    this.fetchBelanjaBarang(() => {
+      setTimeout(function() {
+        vm.coloring();
+      }, 1000);
+    });
   },
 
   methods: {
@@ -123,7 +141,12 @@ export default {
         });
       }
     },
-    fetchBelanjaBarang() {
+    resetColumn(cb) {
+      this.belanjaBarang.columns = ['', 'Kategori', 'Nasional_1', 'Provinsi_1', 'Kabupaten_1', 'Negara_1', 'Total Harga_1', 'Kuantitas_1', 'Nasional_2', 'Provinsi_2', 'Kabupaten_2', 'Negara_2', 'Total Harga_2', 'Kuantitas_2'];
+      if(cb)
+        return cb();
+    },
+    fetchBelanjaBarang(cb) {
       var id = window.location.href.split("?id=")[1];
       this.belanjaBarang.tableData = [];
       this.presetTable();
@@ -217,20 +240,20 @@ export default {
             for(var k = 0; k < this.belanjaBarang.tableData.length; k++) {
               if(kategori == this.belanjaBarang.tableData[k]["Kategori"]) {
                 if(status == "rencana") {
-                  this.belanjaBarang.tableData[k]["Negara_1"] += negara;
-                  this.belanjaBarang.tableData[k]["Nasional_1"] += nasional;
-                  this.belanjaBarang.tableData[k]["Provinsi_1"] += provinsi;
-                  this.belanjaBarang.tableData[k]["Kabupaten_1"] += kabupaten;
-                  this.belanjaBarang.tableData[k]["Kuantitas_1"] += qty;
-                  this.belanjaBarang.tableData[k]["Total Harga_1"] += (negara + nasional + provinsi + kabupaten);
+                  this.belanjaBarang.tableData[k]["Negara_1"] = negara.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Nasional_1"] = nasional.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Provinsi_1"] = provinsi.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Kabupaten_1"] = kabupaten.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Kuantitas_1"] = qty.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Total Harga_1"] = (negara + nasional + provinsi + kabupaten).toLocaleString();
                 }
                 else {
-                  this.belanjaBarang.tableData[k]["Negara_2"] += negara;
-                  this.belanjaBarang.tableData[k]["Nasional_2"] += nasional;
-                  this.belanjaBarang.tableData[k]["Provinsi_2"] += provinsi;
-                  this.belanjaBarang.tableData[k]["Kabupaten_2"] += kabupaten;
-                  this.belanjaBarang.tableData[k]["Kuantitas_2"] += qty;
-                  this.belanjaBarang.tableData[k]["Total Harga_2"] += (negara + nasional + provinsi + kabupaten);
+                  this.belanjaBarang.tableData[k]["Negara_2"] = negara.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Nasional_2"] = nasional.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Provinsi_2"] = provinsi.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Kabupaten_2"] = kabupaten.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Kuantitas_2"] = qty.toLocaleString();
+                  this.belanjaBarang.tableData[k]["Total Harga_2"] = (negara + nasional + provinsi + kabupaten).toLocaleString();
                 }
               }
             }
@@ -239,19 +262,21 @@ export default {
 
         this.belanjaBarang.tableData.push({
           'Kategori': 'Total',
-          'Negara_1': totalNegaraRencana,
-          'Nasional_1': totalNasionalRencana,
-          'Provinsi_1': totalProvinsiRencana,
-          'Kabupaten_1': totalKabupatenRencana,
-          'Kuantitas_1': totalQtyRencana,
-          'Total Harga_1': totalNegaraRencana + totalNasionalRencana + totalProvinsiRencana + totalKabupatenRencana,
-          'Negara_2': totalNegaraRealisasi,
-          'Nasional_2': totalNasionalRealisasi,
-          'Provinsi_2': totalProvinsiRealisasi,
-          'Kabupaten_2': totalKabupatenRealisasi,
-          'Kuantitas_2': totalQtyRealisasi,
-          'Total Harga_2': totalNegaraRealisasi + totalNasionalRealisasi + totalProvinsiRealisasi + totalKabupatenRealisasi
+          'Negara_1': totalNegaraRencana.toLocaleString(),
+          'Nasional_1': totalNasionalRencana.toLocaleString(),
+          'Provinsi_1': totalProvinsiRencana.toLocaleString(),
+          'Kabupaten_1': totalKabupatenRencana.toLocaleString(),
+          'Kuantitas_1': totalQtyRencana.toLocaleString(),
+          'Total Harga_1': (totalNegaraRencana + totalNasionalRencana + totalProvinsiRencana + totalKabupatenRencana).toLocaleString(),
+          'Negara_2': totalNegaraRealisasi.toLocaleString(),
+          'Nasional_2': totalNasionalRealisasi.toLocaleString(),
+          'Provinsi_2': totalProvinsiRealisasi.toLocaleString(),
+          'Kabupaten_2': totalKabupatenRealisasi.toLocaleString(),
+          'Kuantitas_2': totalQtyRealisasi.toLocaleString(),
+          'Total Harga_2': (totalNegaraRealisasi + totalNasionalRealisasi + totalProvinsiRealisasi + totalKabupatenRealisasi).toLocaleString()
         });
+        if(cb)
+          return cb();
       })
     },
     filterBelanjaBarang(origin) {
@@ -348,20 +373,20 @@ export default {
               for(var k = 0; k < this.belanjaBarang.tableData.length; k++) {
                 if(kategori == this.belanjaBarang.tableData[k]["Kategori"]) {
                   if(status == "rencana") {
-                    this.belanjaBarang.tableData[k]["Negara_1"] += negara;
-                    this.belanjaBarang.tableData[k]["Nasional_1"] += nasional;
-                    this.belanjaBarang.tableData[k]["Provinsi_1"] += provinsi;
-                    this.belanjaBarang.tableData[k]["Kabupaten_1"] += kabupaten;
-                    this.belanjaBarang.tableData[k]["Kuantitas_1"] += qty;
-                    this.belanjaBarang.tableData[k]["Total Harga_1"] += (negara + nasional + provinsi + kabupaten);
+                    this.belanjaBarang.tableData[k]["Negara_1"] = negara.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Nasional_1"] = nasional.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Provinsi_1"] = provinsi.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Kabupaten_1"] = kabupaten.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Kuantitas_1"] = qty.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Total Harga_1"] = (negara + nasional + provinsi + kabupaten).toLocaleString();
                   }
                   else {
-                    this.belanjaBarang.tableData[k]["Negara_2"] += negara;
-                    this.belanjaBarang.tableData[k]["Nasional_2"] += nasional;
-                    this.belanjaBarang.tableData[k]["Provinsi_2"] += provinsi;
-                    this.belanjaBarang.tableData[k]["Kabupaten_2"] += kabupaten;
-                    this.belanjaBarang.tableData[k]["Kuantitas_2"] += qty;
-                    this.belanjaBarang.tableData[k]["Total Harga_2"] += (negara + nasional + provinsi + kabupaten);
+                    this.belanjaBarang.tableData[k]["Negara_2"] = negara.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Nasional_2"] = nasional.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Provinsi_2"] = provinsi.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Kabupaten_2"] = kabupaten.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Kuantitas_2"] = qty.toLocaleString();
+                    this.belanjaBarang.tableData[k]["Total Harga_2"] = (negara + nasional + provinsi + kabupaten).toLocaleString();
                   }
                 }
               }
@@ -370,26 +395,76 @@ export default {
 
           this.belanjaBarang.tableData.push({
             'Kategori': 'Total',
-            'Negara_1': totalNegaraRencana,
-            'Nasional_1': totalNasionalRencana,
-            'Provinsi_1': totalProvinsiRencana,
-            'Kabupaten_1': totalKabupatenRencana,
-            'Kuantitas_1': totalQtyRencana,
-            'Total Harga_1': totalNegaraRencana + totalNasionalRencana + totalProvinsiRencana + totalKabupatenRencana,
-            'Negara_2': totalNegaraRealisasi,
-            'Nasional_2': totalNasionalRealisasi,
-            'Provinsi_2': totalProvinsiRealisasi,
-            'Kabupaten_2': totalKabupatenRealisasi,
-            'Kuantitas_2': totalQtyRealisasi,
-            'Total Harga_2': totalNegaraRealisasi + totalNasionalRealisasi + totalProvinsiRealisasi + totalKabupatenRealisasi
+            'Negara_1': totalNegaraRencana.toLocaleString(),
+            'Nasional_1': totalNasionalRencana.toLocaleString(),
+            'Provinsi_1': totalProvinsiRencana.toLocaleString(),
+            'Kabupaten_1': totalKabupatenRencana.toLocaleString(),
+            'Kuantitas_1': totalQtyRencana.toLocaleString(),
+            'Total Harga_1': (totalNegaraRencana + totalNasionalRencana + totalProvinsiRencana + totalKabupatenRencana).toLocaleString(),
+            'Negara_2': totalNegaraRealisasi.toLocaleString(),
+            'Nasional_2': totalNasionalRealisasi.toLocaleString(),
+            'Provinsi_2': totalProvinsiRealisasi.toLocaleString(),
+            'Kabupaten_2': totalKabupatenRealisasi.toLocaleString(),
+            'Kuantitas_2': totalQtyRealisasi.toLocaleString(),
+            'Total Harga_2': (totalNegaraRealisasi + totalNasionalRealisasi + totalProvinsiRealisasi + totalKabupatenRealisasi).toLocaleString()
           });
         })
+      }
+    },
+    coloring() {
+      for(var i = 3; i <= 8; i++) {
+        for(var j = 0; j < this.belanjaBarang.tableData.length; j++) {
+          document.querySelectorAll(".belanjaBarang td:nth-child(" + i + ")")[j].classList.add('rencana-column');
+          document.querySelectorAll(".belanjaBarang td:nth-child(" + i + ")")[j].classList.remove('realisasi-column');
+        }
+      }
+      for(var i = 9; i <= 14; i++) {
+        for(var j = 0; j < this.belanjaBarang.tableData.length; j++) {
+          document.querySelectorAll(".belanjaBarang td:nth-child(" + i + ")")[j].classList.add('realisasi-column');
+          document.querySelectorAll(".belanjaBarang td:nth-child(" + i + ")")[j].classList.remove('rencana-column');
+        }
+      }
+    },
+    toggleColor() {
+      for(var i = 3; i <= 8; i++) {
+        for(var j = 0; j < this.belanjaBarang.tableData.length; j++) {
+          document.querySelectorAll(".belanjaBarang td:nth-child(" + i + ")")[j].classList.add('realisasi-column');
+        }
+      }
+    },
+    toggleAll() {
+      var vm = this;
+      this.resetColumn(() => {
+        setTimeout(function() {
+          vm.coloring();
+        }, 0);
+      });
+    },
+    toggleRencana() {
+      for(var i = 0; i < this.belanjaBarang.columns.length; i++) {
+        if(this.belanjaBarang.columns[i].split('_')[1] == "1") {
+          this.belanjaBarang.columns.splice(i, 6);
+        }
+      }
+      this.toggleColor();
+    },
+    toggleRealisasi() {
+      for(var i = 0; i < this.belanjaBarang.columns.length; i++) {
+        if(this.belanjaBarang.columns[i].split('_')[1] == "2") {
+          this.belanjaBarang.columns.splice(i, 6);
+        }
       }
     },
   }
 }
 </script>
 
-<style scoped>
+<style>
+  .rencana-column {
+    background-color: #f2ff63;
+  }
 
+  .realisasi-column {
+    background-color: #9ced66;
+  }
 </style>
