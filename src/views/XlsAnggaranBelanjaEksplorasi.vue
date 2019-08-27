@@ -2,7 +2,7 @@
   div( class="container")
     div( class="panel panel-sm")
       div( class="panel-heading")
-        h4 Import Spreadsheet Laba Rugi
+        h4 Import Spreadsheet Anggaran Belanja
       div( class="panel-body")
         div( class="form-group")
           div( class="col-sm-9")
@@ -22,7 +22,7 @@
                     td( v-for="key in parse_header") {{csv[key]}}
           br
           div( align='center' v-if="tableData[0]")
-            d-button( theme="primary" v-on:click="addLabaRugi") Submit
+            d-button( theme="primary" v-on:click="addAnggaranBelanja") Submit
 </template>
 
 <script>
@@ -36,7 +36,7 @@ import '@/assets/scss/vue-tables.scss';
 Vue.use(ClientTable);
 
 export default {
-  name: 'csv-laba-rugi-op',
+  name: 'csv-sumber-pembiayaan-eksplorasi',
   components: {
     ClientTable,
   },
@@ -74,7 +74,7 @@ export default {
   },
   created: function()
   {
-    this.fetchLabaRugi();
+    this.fetchAnggaranBelanja();
   },
   methods: {
     sortBy: function (key) {
@@ -111,60 +111,64 @@ export default {
       result.pop() // remove the last item because undefined values
       this.columns = Object.keys(result[0]);
 
-      for(var i = 0; i < result.length; i++) {
-        if(result[i]["URAIAN"] == "Laba (Rugi) kotor") {
-          var laba_rugi_kotor = i;
-        }
-        if(result[i]["URAIAN"] == "Laba/ (Rugi) Operasi") {
-          var laba_rugi_operasi = i;
-        }
-        if(result[i]["URAIAN"] == "Laba/(Rugi) sebelum Pajak") {
-          var laba_rugi_pajak = i;
-        }
-      }
-
       function sum(colname) {
-        result[laba_rugi_kotor][colname] = parseInt(result[0][colname]);
-        for(var i = 0; i < laba_rugi_kotor; i++) {
-          if(i != 1) {
-            if(!result[i][colname] || result[i][colname] == ' - ') {
-              result[i][colname] = 0;
-            }
-            if(i != 0) {
-              result[laba_rugi_kotor][colname] = 
-                parseInt(result[laba_rugi_kotor][colname]) - 
-                parseInt(result[i][colname]);
-            }
-          }
-        }
-
-        for(var i = laba_rugi_kotor+1; i < laba_rugi_operasi; i++) {
-          if(!result[i][colname] || result[i][colname] == '-') {
+        //Sub Total (1)
+        for(var i = 1; i < 14; i++) {
+          if(!result[i][colname] || result[i][colname] == ' - ') {
             result[i][colname] = 0;
           }
+          result[14][colname] = 
+            parseInt(result[14][colname]) + 
+            parseInt(result[i][colname]);
         }
 
-        result[laba_rugi_operasi][colname] = parseInt(result[laba_rugi_kotor][colname]) - parseInt(result[laba_rugi_operasi-1][colname]);
-
-        for(var i = laba_rugi_operasi+1; i < laba_rugi_pajak; i++) {
-          if(!result[i][colname] || result[i][colname] == '-') {
+        //Sub Total (2)
+        for(var i = 16; i < 22; i++) {
+          if(!result[i][colname] || result[i][colname] == ' - ') {
             result[i][colname] = 0;
           }
+          result[22][colname] = 
+            parseInt(result[22][colname]) + 
+            parseInt(result[i][colname]);
         }
 
-        result[laba_rugi_pajak][colname] = parseInt(result[laba_rugi_operasi][colname]) - parseInt(result[laba_rugi_pajak-1][colname]);
-
-        for(var i = laba_rugi_pajak+1; i < laba_rugi_pajak+2; i++) {
-          if(!result[i][colname] || result[i][colname] == '-') {
+        //Sub Total (3)
+        for(var i = 24; i < 32; i++) {
+          if(!result[i][colname] || result[i][colname] == ' - ') {
             result[i][colname] = 0;
           }
+          result[32][colname] = 
+            parseInt(result[32][colname]) + 
+            parseInt(result[i][colname]);
         }
 
-        result[laba_rugi_pajak+2][colname] = parseInt(result[laba_rugi_pajak][colname]) - parseInt(result[laba_rugi_pajak+1][colname]);
+        //Jumlah
+        result[33][colname] =
+          parseInt(result[14][colname]) +
+          parseInt(result[22][colname]) +
+          parseInt(result[32][colname]);
       }
 
       function div(colname) {
-        for(var i = 0; i < result.length; i++) {
+        for(var i = 1; i <= 14; i++) {
+          if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
+            result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          }
+          else if(colname == "% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018") {
+            result[i][colname] = result[i]["RENCANA TAHUN 2019"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          }
+        }
+
+        for(var i = 16; i <= 22; i++) {
+          if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
+            result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          }
+          else if(colname == "% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018") {
+            result[i][colname] = result[i]["RENCANA TAHUN 2019"] / result[i]["RENCANA TAHUN 2018"] * 100;
+          }
+        }
+
+        for(var i = 24; i <= 33; i++) {
           if(colname == "% REALISASI TERHADAP RENCANA TAHUN 2018") {
             result[i][colname] = result[i]["REALISASI TAHUN 2018"] / result[i]["RENCANA TAHUN 2018"] * 100;
           }
@@ -174,13 +178,13 @@ export default {
         }
       }
 
-      for(var i = 2018; i <= 2019; i++) {
-        sum("RENCANA TAHUN " + i);
-        sum("REALISASI TAHUN " + i);
-        div("% REALISASI TERHADAP RENCANA TAHUN " + i);
-        div("% RENCANA TAHUN " + (i+1) + " TERHADAP RENCANA TAHUN " + i);
-      }
+      sum("RENCANA TAHUN 2018");
+      sum("REALISASI TAHUN 2018");
+      sum("RENCANA TAHUN 2019");
+      div("% REALISASI TERHADAP RENCANA TAHUN 2018");
+      div("% RENCANA TAHUN 2019 TERHADAP RENCANA TAHUN 2018");
 
+      console.log(result);
       return result // JavaScript object
     },
     loadCSV(e) {
@@ -191,8 +195,7 @@ export default {
         // Handle errors load
         reader.onload = function(event) {
           var csv = event.target.result;
-          vm.tableData = vm.csvJSON(csv);
-          console.log(vm.tableData);
+          vm.tableData = vm.csvJSON(csv)
           
         };
         reader.onerror = function(evt) {
@@ -204,8 +207,8 @@ export default {
         alert('FileReader are not supported in this browser.');
       }
     },
-    fetchLabaRugi() {
-      this.axios.get(address + ":3000/get-laba-rugi", headers).then((response) => {
+    fetchAnggaranBelanja() {
+      this.axios.get(address + ":3000/get-anggaran-belanja", headers).then((response) => {
         for(var i = 0; i < response.data.length; i++) {
           if (response.data[i].upload_by == this.$session.get('user')._id) {
             this.columns = Object.keys(response.data[i].data[0]);
@@ -214,17 +217,16 @@ export default {
         }
       })
     },
-    addLabaRugi() {
+    addAnggaranBelanja() {
       let postObj = {
         data: this.tableData,
         upload_by: this.$session.get('user')._id,
         tahapan_kegiatan: this.$session.get('user').tahapan_kegiatan,
-        komoditas: this.$session.get('user').komoditas,
       };
-      this.axios.post(address + ':3000/add-laba-rugi', postObj, headers)
+      this.axios.post(address + ':3000/add-anggaran-belanja', postObj, headers)
       .then((response) => {
         location.reload();
-        alert("Add Laba Rugi Success");
+        alert("Add Anggaran Belanja Success");
       });
     }
   }

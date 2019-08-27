@@ -97,15 +97,15 @@ export default {
             }
             var temp = {
               id: "notif_format_csv",
-              category: "Import CSV",
-              description: "Click here to download CSV Format",
+              category: "Import Spreadsheet",
+              description: "Click here to download Spreadsheet Format",
               href: "/admin/downloads/FormatCSV.rar",
               read: 0,
             }
             var temp2 = {
               id: "notif_active",
               category: "Profile",
-              description: "Your profile is <span class='text-success text-semibold'>complete</span>, you can upload CSV files now",
+              description: "Your profile is <span class='text-success text-semibold'>complete</span>, you can upload Spreadsheet files now",
               href: "/admin/csv-neraca-"+tk,
               read: 0,
             }
