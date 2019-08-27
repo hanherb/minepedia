@@ -161,11 +161,6 @@ export default new Router({
       component: () => import('./views/CsvAnggaranBelanjaOP.vue'),
     },
     {
-      path: '/xls-anggaran-belanja-eksplorasi',
-      name: 'xls-anggaran-belanja-eksplorasi',
-      component: () => import('./views/XlsAnggaranBelanjaEksplorasi.vue'),
-    },
-    {
       path: '/csv-asumsi-keuangan-eksplorasi',
       name: 'csv-asumsi-keuangan-eksplorasi',
       component: () => import('./views/CsvAsumsiKeuanganEksplorasi.vue'),
