@@ -34,10 +34,6 @@
       </a>
       <d-collapse id="user-actions" class="dropdown-menu dropdown-menu-small">
         <d-dropdown-item :to="'user-profile?id=' + session._id"><i class="material-icons">&#xE7FD;</i> Profile</d-dropdown-item>
-        <d-dropdown-item v-if="session.role == 'supplier'" to="edit-supplier-profile"><i class="material-icons">&#xE8B8;</i> Edit Profile</d-dropdown-item>
-        <d-dropdown-item v-else to="edit-user-profile"><i class="material-icons">&#xE8B8;</i> Edit Profile</d-dropdown-item>
-        <d-dropdown-item to="file-manager-list"><i class="material-icons">&#xE2C7;</i> Files</d-dropdown-item>
-        <d-dropdown-item to="transaction-history"><i class="material-icons">&#xE896;</i> Transactions</d-dropdown-item>
         <d-dropdown-divider />
         <d-dropdown-item href="#" class="text-danger">
           <i class="material-icons text-danger">&#xE879;</i> <span v-on:click="logout">Logout</span>

@@ -22,6 +22,10 @@
 
 <script>
 import getSidebarItems from '@/data/sidebar-nav-items';
+import gql from '@/gql';
+import graphqlFunction from '@/graphqlFunction';
+import basicFunction from '@/basicFunction';
+import address from '@/address';
 
 // Main layout components
 import MainNavbar from '@/components/layout/MainNavbar/MainNavbar.vue';
@@ -40,6 +44,41 @@ export default {
       sidebarItems: getSidebarItems(),
     };
   },
+  created: function() 
+  {
+    if(this.$session.get('user')) {
+      this.fetchUsers();
+    }
+  },
+
+  methods: {
+    fetchUsers() {
+      var config = {
+        headers: {
+          "authorization": "Bearer " + document.cookie.split('token=')[1].split('; ')[0],
+          "user_session": document.cookie.split('user_session=')[1].split('; ')[0],
+          "user_authority": document.cookie.split('user_authority=')[1].split('; ')[0],
+        }
+      };
+      this.axios.get(address + ":3000/get-user", config).then((response) => {
+        let query = gql.allUser;
+        graphqlFunction.graphqlFetchAll(query, (result) => {
+          for(var i = 0; i < result.users.length; i++) {
+            if(result.users[i].role == "user") {
+              this.sidebarItems[1].items.push({
+                title: result.users[i].fullname,
+                htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
+                to: {
+                  path: 'user-profile?id=' + result.users[i]._id,
+                  role: 'admin'
+                },
+              });
+            }
+          }
+        });
+      })
+    },
+  }
 };
 </script>
 

@@ -82,32 +82,8 @@ export default {
       },
       tags: [
         {
-          'name': 'Belanja Barang',
-          'url': '/rekap-belanja-barang-perusahaan?id='
-        },
-        {
-          'name': 'Anggaran Belanja',
-          'url': '/rekap-anggaran-belanja?id='
-        },
-        {
           'name': 'Arus Kas',
           'url': '/rekap-arus-kas?id='
-        },
-        {
-          'name': 'Asumsi Keuangan',
-          'url': '/rekap-asumsi-keuangan?id='
-        },
-        {
-          'name': 'HPP',
-          'url': '/rekap-harga-pokok?id='
-        },
-        {
-          'name': 'Investasi',
-          'url': '/rekap-Investasi?id='
-        },
-        {
-          'name': 'Keuangan Lainnya',
-          'url': '/rekap-keuangan-lainnya?id='
         },
         {
           'name': 'Laba Rugi',
@@ -120,10 +96,6 @@ export default {
         {
           'name': 'Penerimaan Negara',
           'url': '/rekap-penerimaan-negara?id='
-        },
-        {
-          'name': 'Sumber Pembiayaan',
-          'url': '/rekap-sumber-pembiayaan?id='
         }
       ],
     }

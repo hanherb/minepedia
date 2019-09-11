@@ -24,11 +24,11 @@
     </d-row>
 
     <!-- Small Stats Blocks -->
-    <d-row>
+<!--     <d-row>
       <d-col v-for="(stats, idx) in smallStats" :key="idx" md="6" lg="3" class="mb-4">
         <small-stats :id="`small-stats-${idx}`" :chart-data="stats.datasets" :label="stats.label" :value="stats.value" :percentage="stats.percentage" :increase="stats.increase" :decrease="stats.decrease" />
       </d-col>
-    </d-row>
+    </d-row> -->
 
     <hr>
   

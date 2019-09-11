@@ -3,11 +3,9 @@
     <d-row class="mt-4">
       <d-col lg="4" sm="12">
         <up-user-details />
-        <up-user-activity />
       </d-col>
 
       <d-col lg="8">
-        <d-alert show v-if="session.role == 'user'">Download Format Spreadsheet - <a class="alert-link" href="/admin/downloads/FormatCSV.rar">Click Here</a></d-alert> 
         <up-user-laba-rugi v-if="user.role == 'user' || user.role == 'admin'" />
         <up-user-neraca v-if="user.role == 'user' || user.role == 'admin'" />
         <up-user-rasio-keuangan v-if="user.role == 'user' || user.role == 'admin'" />
@@ -28,7 +26,6 @@ import address from '@/address';
 import headers from '@/headers';
 
 import UserDetails from '@/components/user-profile/UserDetails.vue';
-import UserActivity from '@/components/user-profile/UserActivity.vue';
 import UserLabaRugi from '@/components/user-profile/UserLabaRugi.vue';
 import UserNeraca from '@/components/user-profile/UserNeraca.vue';
 import UserRasioKeuangan from '@/components/user-profile/UserRasioKeuangan.vue';
@@ -41,7 +38,6 @@ export default {
   name: 'user-profile',
   components: {
     upUserDetails: UserDetails,
-    upUserActivity: UserActivity,
     upUserLabaRugi: UserLabaRugi,
     upUserNeraca: UserNeraca,
     upUserRasioKeuangan: UserRasioKeuangan,
