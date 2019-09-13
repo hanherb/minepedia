@@ -72,7 +72,7 @@ export default {
                 this.$router.push('/analytics');
               }
               else {
-                this.$router.push('/user-profile?id=' + response.data.response._id);
+                this.$router.push('/user-profile/' + response.data.response._id);
               }
             }
             else {
