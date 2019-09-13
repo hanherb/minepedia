@@ -33,7 +33,7 @@
         <img class="user-avatar rounded-circle mr-2" :src="avatarImg" alt="User Avatar"> <span class="d-none d-md-inline-block">{{session.fullname}}</span>
       </a>
       <d-collapse id="user-actions" class="dropdown-menu dropdown-menu-small">
-        <d-dropdown-item :to="'user-profile?id=' + session._id"><i class="material-icons">&#xE7FD;</i> Profile</d-dropdown-item>
+        <d-dropdown-item :to="'user-profile/' + session._id"><i class="material-icons">&#xE7FD;</i> Profile</d-dropdown-item>
         <d-dropdown-divider />
         <d-dropdown-item href="#" class="text-danger">
           <i class="material-icons text-danger">&#xE879;</i> <span v-on:click="logout">Logout</span>
