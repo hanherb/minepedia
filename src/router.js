@@ -30,7 +30,7 @@ export default new Router({
       component: () => import('./views/Analytics.vue'),
     },
     {
-      path: '/user-profile',
+      path: '/user-profile/:id',
       name: 'user-profile',
       component: () => import('./views/UserProfile.vue'),
     },

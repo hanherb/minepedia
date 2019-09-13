@@ -69,7 +69,7 @@ export default {
                 title: result.users[i].fullname,
                 htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
                 to: {
-                  path: 'user-profile?id=' + result.users[i]._id,
+                  path: '/user-profile/' + result.users[i]._id,
                   role: 'admin'
                 },
               });

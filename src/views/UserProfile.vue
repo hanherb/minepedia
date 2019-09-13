@@ -59,9 +59,15 @@ export default {
     this.session = this.$session.get('user');
   },
 
+  watch: {
+    '$route.params.id': function (id) {
+      location.reload();
+    }
+  },
+
   methods: {
     fetchUser() {
-      var id = window.location.href.split("?id=")[1];
+      var id = window.location.href.split("user-profile/")[1];
       this.axios.get(address + ":3000/get-user", headers).then((response) => {
         let query = gql.singleUser;
         let variable = {

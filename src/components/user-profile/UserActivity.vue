@@ -57,7 +57,7 @@ export default {
 
   methods: {
     fetchLogger() {
-      var id = window.location.href.split("?id=")[1];
+      var id = window.location.href.split("user-profile/")[1];
       this.axios.get(address + ":3000/get-log", headers).then((response) => {
         response.data.reverse();
         for(let i = 0; i < 10; i++) {

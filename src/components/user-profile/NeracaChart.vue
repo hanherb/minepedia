@@ -164,7 +164,7 @@ export default {
 
   methods: {
     fetchNeraca(cb) {
-      var id = window.location.href.split("?id=")[1];
+      var id = window.location.href.split("user-profile/")[1];
       this.axios.get(address + ":3000/get-neraca", headers).then((response) => {
         for(let i = 0; i < response.data.length; i++) {
           if(response.data[i].upload_by == id) {
