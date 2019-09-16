@@ -51,11 +51,11 @@
       </div>
 
       <!-- User Tags -->
-      <div class="user-details__tags p-4">
+      <!-- <div class="user-details__tags p-4">
         <d-link v-for="(tag, idx) in tags" :key="idx" :to="tag.url + user._id">
           <span class="badge badge-pill badge-light text-light text-uppercase mb-2 border" style="cursor: pointer;">{{ tag.name }}</span>
         </d-link>
-      </div>
+      </div> -->
 
     </d-card-body>
   </d-card>

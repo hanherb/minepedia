@@ -6,13 +6,7 @@
       </d-col>
 
       <d-col lg="8">
-        <up-user-laba-rugi v-if="user.role == 'user' || user.role == 'admin'" />
-        <up-user-neraca v-if="user.role == 'user' || user.role == 'admin'" />
-        <up-user-rasio-keuangan v-if="user.role == 'user' || user.role == 'admin'" />
-        <up-user-goods v-if="user.role == 'supplier' || user.role == 'admin'" />
-        <ao-neraca v-if="user.role == 'user' || user.role == 'admin'" />
-        <ao-laba-rugi v-if="user.role == 'user' || user.role == 'admin'" />
-        <ao-penerimaan-negara v-if="user.role == 'user' || user.role == 'admin'" />
+        <up-rekap-belanja-barang-perusahaan v-if="user.role == 'user' || user.role == 'admin'" />
       </d-col>
     </d-row>
   </d-container>
@@ -26,25 +20,13 @@ import address from '@/address';
 import headers from '@/headers';
 
 import UserDetails from '@/components/user-profile/UserDetails.vue';
-import UserLabaRugi from '@/components/user-profile/UserLabaRugi.vue';
-import UserNeraca from '@/components/user-profile/UserNeraca.vue';
-import UserRasioKeuangan from '@/components/user-profile/UserRasioKeuangan.vue';
-import UserGoods from '@/components/user-profile/UserGoods.vue';
-import NeracaChart from '@/components/user-profile/NeracaChart.vue';
-import LabaRugiChart from '@/components/user-profile/LabaRugiChart.vue';
-import PenerimaanNegaraChart from '@/components/user-profile/PenerimaanNegaraChart.vue';
+import RekapBelanjaBarangPerusahaan from '@/views/RekapBelanjaBarangPerusahaan.vue';
 
 export default {
   name: 'user-profile',
   components: {
     upUserDetails: UserDetails,
-    upUserLabaRugi: UserLabaRugi,
-    upUserNeraca: UserNeraca,
-    upUserRasioKeuangan: UserRasioKeuangan,
-    upUserGoods: UserGoods,
-    aoNeraca: NeracaChart,
-    aoLabaRugi: LabaRugiChart,
-    aoPenerimaanNegara: PenerimaanNegaraChart,
+    upRekapBelanjaBarangPerusahaan: RekapBelanjaBarangPerusahaan,
   },
   data(){
     return{

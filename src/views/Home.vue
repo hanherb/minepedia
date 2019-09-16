@@ -1,19 +1,31 @@
 <template>
 <d-container>
 	<d-row>
-		<d-col lg="12" sm="6" class="mb-4">
-	    	<ao-summary-card-public />
+		<d-col lg="6" sm="6" class="mb-4">
+	    	<country-reports />
+	  	</d-col>
+	  	<d-col lg="6" class="mb-4">
+	    	<province-reports />
+	  	</d-col>
+	</d-row>
+	<d-row>
+		<d-col lg="6" sm="6" class="mb-4">
+	    	<ao-top-referrals />
 	  	</d-col>
 	</d-row>
 </d-container>
 </template>
 
 <script>
-import SummaryCardPublic from '@/components/analytics/SummaryCardPublic.vue';
+import TopReferrals from '@/components/common/TopReferrals.vue';
+import CountryReports from '@/components/common/CountryReports.vue';
+import ProvinceReports from '@/components/common/ProvinceReports.vue';
 export default {
   name: 'home',
   components: {
-  	aoSummaryCardPublic: SummaryCardPublic,
+  	aoTopReferrals: TopReferrals,
+  	CountryReports,
+  	ProvinceReports,
   },
 };
 </script>

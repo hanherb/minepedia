@@ -32,7 +32,7 @@
 
     <hr>
   
-    <ao-summary-card />
+    <up-rekap-belanja-barang-total />
 
     <!-- <d-row> -->
       <!-- Sessions -->
@@ -59,11 +59,7 @@ import basicFunction from '@/basicFunction';
 import address from '@/address';
 import headers from '@/headers';
 import SmallStats from '@/components/common/SmallStats.vue';
-import Sessions from '@/components/analytics/Sessions.vue';
-import UsersByDevice from '@/components/analytics/UsersByDevice.vue';
-import GoalsOverview from '@/components/analytics/GoalsOverview/GoalsOverview.vue';
-import SummaryCard from '@/components/analytics/SummaryCard.vue';
-import KomoditasGroup from '@/data/komoditas-group.json';
+import RekapBelanjaBarangTotal from '@/views/RekapBelanjaBarangTotal.vue';
 
 import colors from '../utils/colors';
 
@@ -71,10 +67,7 @@ export default {
   name: 'analytics',
   components: {
     SmallStats,
-    aoSessions: Sessions,
-    aoUsersByDevice: UsersByDevice,
-    aoGoalsOverview: GoalsOverview,
-    aoSummaryCard: SummaryCard,
+    upRekapBelanjaBarangTotal: RekapBelanjaBarangTotal,
   },
   data() {
     return {

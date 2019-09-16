@@ -2,7 +2,7 @@
   <d-container fluid class="main-content-container px-4 pb-4">
     <label>Filter Tahun: </label>
     <d-row>
-      <d-col md="1" class="form-group">
+      <d-col md="2" class="form-group">
          <d-form-select :options="belanjaBarang.tahun" @change="filterTahun($event)"></d-form-select>
       </d-col>
     </d-row>
@@ -136,7 +136,7 @@ export default {
         return cb();
     },
     fetchBelanjaBarang(cb, filterTahun) {
-      var id = window.location.href.split("?id=")[1];
+      var id = window.location.href.split("user-profile/")[1];
       this.belanjaBarang.tableData = [];
       this.presetTable();
       this.axios.get(address + ":3000/get-belanja-barang", headers).then((response) => {

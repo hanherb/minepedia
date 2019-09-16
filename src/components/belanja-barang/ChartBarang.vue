@@ -137,7 +137,7 @@ export default {
 
   methods: {
     fetchBelanjaBarang(cb) {
-      var id = window.location.href.split("?id=")[1];
+      var id = window.location.href.split("user-profile/")[1];
       this.axios.get(address + ":3000/get-belanja-barang", headers).then((response) => {
         var tempTotal = [];
         for(let i = 0; i < response.data.length; i++) {
