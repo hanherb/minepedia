@@ -76,14 +76,6 @@ export default {
         to: null,
       },
       users: [],
-      komoditasGroup: KomoditasGroup,
-      komoditasCard: [],
-      totalAset: [],
-      totalPenjualan: [],
-      totalAsetEksplorasi: [],
-      totalDER: [],
-      totalNPM: [],
-      activeCard: "totalAset",
     };
   },
   computed: {
@@ -147,16 +139,11 @@ export default {
         }],
       }];
     }, */
-    komoditasStats() {
-      return this.komoditasCard;
-    },
   },
 
   created: function()
   {
     this.fetchUsers();
-    this.createKomoditasCard();
-    this.calculateSummary();
   },
 
   methods: {
