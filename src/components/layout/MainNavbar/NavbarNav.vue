@@ -25,9 +25,6 @@
     <li class="nav-item" v-if="!session">
       <router-link class="nav-link text-nowrap px-3" to="/login">Login</router-link>
     </li>
-    <li class="nav-item" v-if="!session">
-      <router-link class="nav-link text-nowrap px-3" to="/register">Register</router-link>
-    </li>
     <li class="nav-item dropdown" v-if="session">
       <a class="nav-link dropdown-toggle text-nowrap px-3" v-d-toggle.user-actions>
         <img class="user-avatar rounded-circle mr-2" :src="avatarImg" alt="User Avatar"> <span class="d-none d-md-inline-block">{{session.fullname}}</span>
