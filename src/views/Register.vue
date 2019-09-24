@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content-container container-fluid h-100 px-4">
+  <div class="main-content-container container-fluid px-4">
     <d-row no-gutters class="h-100">
       <d-col lg="3" md="5" class="auth-form mx-auto my-auto">
         <d-card>
@@ -39,7 +39,7 @@
         <!-- Meta -->
         <div class="auth-form__meta d-flex mt-4">
           <d-link tag="a" to="forgot-password">Forgot your password?</d-link>
-          <d-link tag="a" to="register" class="ml-auto">Sign In?</d-link>
+          <d-link tag="a" to="login" class="ml-auto">Sign In?</d-link>
         </div>
       </d-col>
     </d-row>

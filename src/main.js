@@ -5,12 +5,12 @@ import VueAnalytics from 'vue-analytics';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueSession from 'vue-session';
-import VueHtmlToPaper from 'vue-html-to-paper';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.css';
 import '@/assets/shards-dashboard-pro/shards-dashboards.scss';
 import '@/assets/scss/date-range.scss';
+import '@/assets/style.css';
 
 // Core
 import App from './App.vue';
@@ -18,40 +18,18 @@ import router from './router';
 
 // Layouts
 import Default from '@/layouts/Default.vue';
-import NonAdmin from '@/layouts/NonAdmin.vue';
-import NoNavigation from '@/layouts/NoNavigation.vue';
-import HeaderNavigation from '@/layouts/HeaderNavigation.vue';
-import IconSidebar from '@/layouts/IconSidebar.vue';
 
 const isProd = process.env.NODE_ENV === 'production';
-
-const options = {
-  name: '_blank',
-  specs: [
-    'fullscreen=yes',
-    'titlebar=yes',
-    'scrollbars=yes'
-  ],
-  styles: [
-    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-    'https://unpkg.com/kidlat-css/css/kidlat.css'
-  ]
-}
 
 ShardsVue.install(Vue);
 
 Vue.component('default-layout', Default);
-Vue.component('non-admin-layout',NonAdmin);
-Vue.component('no-navigation-layout', NoNavigation);
-Vue.component('header-navigation-layout', HeaderNavigation);
-Vue.component('icon-sidebar-layout', IconSidebar);
 
 Vue.config.productionTip = false;
 Vue.prototype.$eventHub = new Vue();
 
 Vue.use(VueAxios, axios);
 Vue.use(VueSession);
-Vue.use(VueHtmlToPaper, options);
 
 // Analytics
 Vue.use(VueAnalytics, {

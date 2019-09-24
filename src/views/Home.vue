@@ -1,39 +1,39 @@
 <template>
-<d-container>
-	<d-row>
-		<d-col lg="6" sm="6" class="mb-4">
-	    	<country-reports />
-	  	</d-col>
-	  	<d-col lg="6" class="mb-4">
-	    	<province-reports />
-	  	</d-col>
-	</d-row>
-	<d-row>
-		<d-col lg="6" sm="6" class="mb-4">
-	    	<ao-top-referrals />
-	  	</d-col>
-	</d-row>
-</d-container>
+	<div>
+	    <section class="banner_part">
+	        <banner />
+	    </section>
+	    <section class="feature_part pt-4">
+	        <featured />
+	    </section>
+	    <section class="new_arrival section_padding">
+	        <new-arrival />
+	    </section>
+	    <!-- free shipping here -->
+	    <section class="shipping_details section_padding">
+	        <shipping />
+	    </section>
+	</div>
 </template>
 
 <script>
-import TopReferrals from '@/components/common/TopReferrals.vue';
-import CountryReports from '@/components/common/CountryReports.vue';
-import ProvinceReports from '@/components/common/ProvinceReports.vue';
+import Banner from '@/components/ecommerce/Banner.vue';
+import Featured from '@/components/ecommerce/Featured.vue';
+import NewArrival from '@/components/ecommerce/NewArrival.vue';
+import Shipping from '@/components/ecommerce/Shipping.vue';
 export default {
   name: 'home',
   components: {
-  	aoTopReferrals: TopReferrals,
-  	CountryReports,
-  	ProvinceReports,
+    Banner,
+    Featured,
+    NewArrival,
+    Shipping,
   },
 };
 </script>
 
 <style scoped>
-
 .container{
 	padding-top: 6rem;
 }
-
 </style>

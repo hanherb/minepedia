@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content-container container-fluid h-100 px-4">
+  <div class="main-content-container container-fluid px-4">
     <d-row no-gutters class="h-100">
       <d-col lg="3" md="5" class="auth-form mx-auto my-auto">
         <d-card>
@@ -68,20 +68,10 @@ export default {
           if(response.data.token) {
             // alert("Login Success");
             if(response.data.response.status != 'wait-profile') {
-              if(response.data.response.role == "admin") {
-                this.$router.push('/analytics');
-              }
-              else {
-                this.$router.push('/user-profile/' + response.data.response._id);
-              }
+              this.$router.push('/');
             }
             else {
-              if(response.data.response.role != "supplier") {
-                this.$router.push('/edit-user-profile');
-              }
-              else {
-                this.$router.push('/edit-supplier-profile');
-              }
+              this.$router.push('/error');
             }
             this.$session.start();
             this.$session.set('user', response.data.response);
@@ -92,6 +82,7 @@ export default {
             localStorage.setItem('user_role', this.$session.get('user').role);
             localStorage.setItem('user_authority', this.$session.get('user').authority);
             localStorage.setItem('user_status', this.$session.get('user').status);
+            location.reload();
           }
           else {
             alert("Incorrect combination of email and password");
