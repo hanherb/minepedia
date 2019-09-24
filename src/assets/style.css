@@ -2361,8 +2361,10 @@ ul {
     left: 0;
     top: 50px;
     width: 100%;
-    background-color: #fff;
+    background-color: #f4f4f4;
     text-align: center !important;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
   /* line 216, /Applications/MAMP/htdocs/palash/cl/august 2019/202. Shop/202 shop html/sass/_menu.scss */
   .dropdown .dropdown-menu {

@@ -8,6 +8,7 @@ import VueSession from 'vue-session';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import '@/assets/shards-dashboard-pro/shards-dashboards.scss';
 import '@/assets/scss/date-range.scss';
 import '@/assets/style.css';
