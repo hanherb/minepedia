@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid p-lg-0 overflow-hidden">
       <div class="row align-items-center justify-content-between">
-          <div class="col-lg-4 col-sm-6">
+          <div class="featured col-lg-4 col-sm-6">
               <div class="single_feature_post_text">
                   <img src="@/assets/images/content-management/feature_1.png" alt="#">
                   <div class="hover_text">
@@ -9,7 +9,7 @@
                   </div>
               </div>
           </div>
-          <div class="col-lg-4 col-sm-6">
+          <div class="featured col-lg-4 col-sm-6">
               <div class="single_feature_post_text">
                   <img src="@/assets/images/content-management/feature_2.png" alt="#">
                   <div class="hover_text">
@@ -17,7 +17,7 @@
                   </div>
               </div>
           </div>
-          <div class="col-lg-4 col-sm-6">
+          <div class="featured col-lg-4 col-sm-6">
               <div class="single_feature_post_text">
                   <img src="@/assets/images/content-management/feature_3.png" alt="#">
                   <div class="hover_text">
@@ -42,8 +42,17 @@ export default {
   }
   @media screen and (max-width: 600px) {
     img {
-      width: 100%;
-      height: 100%;
+      width: 160px;
+      height: 150px;
+    }
+    .featured {
+      width: 160px;
+      height: 150px;
+    }
+    .hover_text a {
+      opacity: 0;
+      width: 160px;
+      height: 150px;
     }
   }
 </style>

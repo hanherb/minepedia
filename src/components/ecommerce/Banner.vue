@@ -24,3 +24,9 @@ export default {
   name: 'banner',
 };
 </script>
+
+<style scoped>
+  @media screen and (max-width: 600px) {
+    
+  }
+</style>

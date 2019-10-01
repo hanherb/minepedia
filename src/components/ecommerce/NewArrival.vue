@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="new_arrival_iner filter-container">
-                    <div class="single_arrivel_item weidth_1 mix shoes">
+                    <div class="single_arrivel_item weidth mix shoes">
                         <img src="@/assets/images/content-management/arrivel_5.png" alt="#">
                         <div class="hover_text">
                             <p>Canvas</p>
@@ -27,12 +27,11 @@
                             </div>
                             <h5>$150</h5>
                             <div class="social_icon">
-                                <a href="#"><i class="ti-heart"></i></a>
                                 <a href="#"><i class="ti-bag"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="single_arrivel_item weidth_2 mix women">
+                    <div class="single_arrivel_item weidth mix women">
                         <img src="@/assets/images/content-management/arrivel_2.png" alt="#">
                         <div class="hover_text">
                             <p>Canvas</p>
@@ -46,12 +45,11 @@
                             </div>
                             <h5>$150</h5>
                             <div class="social_icon">
-                                <a href="#"><i class="ti-heart"></i></a>
                                 <a href="#"><i class="ti-bag"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="single_arrivel_item weidth_3 mix shoes women" >
+                    <div class="single_arrivel_item weidth mix shoes women" >
                         <img src="@/assets/images/content-management/arrivel_3.png" alt="#">
                         <div class="hover_text">
                             <p>Canvas</p>
@@ -65,12 +63,11 @@
                             </div>
                             <h5>$150</h5>
                             <div class="social_icon">
-                                <a href="#"><i class="ti-heart"></i></a>
                                 <a href="#"><i class="ti-bag"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="single_arrivel_item weidth_3 mix women men">
+                    <div class="single_arrivel_item weidth mix women men">
                         <img src="@/assets/images/content-management/arrivel_4.png" alt="#">
                         <div class="hover_text">
                             <p>Canvas</p>
@@ -84,12 +81,11 @@
                             </div>
                             <h5>$150</h5>
                             <div class="social_icon">
-                                <a href="#"><i class="ti-heart"></i></a>
                                 <a href="#"><i class="ti-bag"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="single_arrivel_item weidth_2 mix men women">
+                    <div class="single_arrivel_item weidth mix men women">
                         <img src="@/assets/images/content-management/arrivel_1.png" alt="#">
                         <div class="hover_text">
                             <p>Canvas</p>
@@ -103,12 +99,11 @@
                             </div>
                             <h5>$150</h5>
                             <div class="social_icon">
-                                <a href="#"><i class="ti-heart"></i></a>
                                 <a href="#"><i class="ti-bag"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="single_arrivel_item weidth_1 mix shoes men">
+                    <div class="single_arrivel_item weidth mix shoes men">
                         <img src="@/assets/images/content-management/arrivel_6.png" alt="#">
                         <div class="hover_text">
                             <p>Canvas</p>
@@ -122,7 +117,6 @@
                             </div>
                             <h5>$150</h5>
                             <div class="social_icon">
-                                <a href="#"><i class="ti-heart"></i></a>
                                 <a href="#"><i class="ti-bag"></i></a>
                             </div>
                         </div>
@@ -140,38 +134,29 @@ export default {
   name: 'featured',
 };
 </script>
-<!-- <style scoped>
-  .feature_part .single_feature_post_text {
-  position: relative;
-  overflow: hidden;
-}
-
-/* line 6, /Applications/MAMP/htdocs/palash/cl/august 2019/202. Shop/202 shop html/sass/_feature_part.scss */
-.feature_part .single_feature_post_text img {
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-}
-
-@media (max-width: 991px) {
-  /* line 3, /Applications/MAMP/htdocs/palash/cl/august 2019/202. Shop/202 shop html/sass/_feature_part.scss */
-  .feature_part .single_feature_post_text {
-    margin-bottom: 15px;
-  }
-}
-
-/* line 13, /Applications/MAMP/htdocs/palash/cl/august 2019/202. Shop/202 shop html/sass/_feature_part.scss */
-.feature_part .single_feature_post_text .hover_text {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  text-align: center;
-  top: 46%;
-}
-
-/* line 22, /Applications/MAMP/htdocs/palash/cl/august 2019/202. Shop/202 shop html/sass/_feature_part.scss */
-.feature_part .single_feature_post_text:hover img {
-  transform: scale(1.1);
-}
+<style scoped>
+    .weidth {
+        width: 630px;
+        height: 550px;
+    }
+    @media screen and (max-width: 600px) {
+        img {
+          width: 160px;
+          height: 150px;
+        }
+        .single_arrivel_item {
+            width: 160px;
+            height: 150px;
+        }
+        .weidth  {
+            width: 120px;
+            height: 150px;
+        }
+        .hover_text a h3, .rate_icon, .hover_text p, .hover_text h5 {
+            display: none;
+        }
+        .social_icon {
+            margin-top: 20px;
+        }
+    }
 </style>
- -->

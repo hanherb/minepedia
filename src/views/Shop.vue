@@ -38,7 +38,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-                        	<div v-for="commerce in commerces" class="col-lg-4 col-sm-6">
+                        	<div v-for="commerce in commerces" class="container_product">
 	                            <div class="single_category_product">
 	                                <div class="single_category_img">
 	                                    <img :src="require('@/assets/images/uploads/' + commerce.image + '.png')" alt="">
@@ -144,8 +144,10 @@ export default {
 </script>
 
 <style scoped>
-.container{
-	padding-top: 6rem;
+
+.container_product {
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 img {
@@ -170,6 +172,18 @@ img {
 	}
 	.mobile {
 		display: block;
+	}
+	.single_category_product {
+		width: 150px;
+		height: 220px;
+	}
+	.single_category_product img {
+		width: 150px;
+		height: 150px;
+	}
+	.container_product {
+		padding-left: 5px;
+		padding-right: 5px;
 	}
 }
 </style>
