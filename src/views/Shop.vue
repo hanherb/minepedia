@@ -178,8 +178,8 @@ img {
 		height: 120px;
 	}
 	.container_product {
-		padding-left: 5px;
-		padding-right: 5px;
+		padding-left: 8px;
+		padding-right: 8px;
 	}
 	.category_product_text p {
 		font-size: 14px;
