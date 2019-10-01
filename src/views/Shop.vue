@@ -163,10 +163,6 @@ img {
 }
 
 @media screen and (max-width: 600px) {
-	img {
-		width: 500px;
-		height: 500px;
-	}
 	.desktop {
 		display: none;
 	}
@@ -174,16 +170,19 @@ img {
 		display: block;
 	}
 	.single_category_product {
-		width: 150px;
+		width: 120px;
 		height: 220px;
 	}
 	.single_category_product img {
-		width: 150px;
-		height: 150px;
+		width: 120px;
+		height: 120px;
 	}
 	.container_product {
 		padding-left: 5px;
 		padding-right: 5px;
+	}
+	.category_product_text p {
+		font-size: 14px;
 	}
 }
 </style>

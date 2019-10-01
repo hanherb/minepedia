@@ -42,17 +42,17 @@ export default {
   }
   @media screen and (max-width: 600px) {
     img {
-      width: 160px;
-      height: 150px;
+      width: 130px;
+      height: 120px;
     }
     .featured {
-      width: 160px;
-      height: 150px;
+      width: 130px;
+      height: 120px;
     }
     .hover_text a {
       opacity: 0;
-      width: 160px;
-      height: 150px;
+      width: 130px;
+      height: 120px;
     }
   }
 </style>
