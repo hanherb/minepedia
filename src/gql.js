@@ -75,6 +75,7 @@ let query = {
 	      name
 	      price
 	      qty
+        tkdn
 	      description
 	      category
 	      user
@@ -89,6 +90,7 @@ let query = {
 	      name
 	      price
 	      qty
+        tkdn
 	      description
 	      category
 	      user

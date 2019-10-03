@@ -44,12 +44,12 @@
 	                                    <img :src="require('@/assets/images/uploads/' + commerce.image + '.png')" alt="">
 	                                    <div class="category_social_icon">
 	                                        <ul>
-	                                            <li><a href="#"><i class="ti-bag"></i></a></li>
+	                                            <li><a :href='"/product/" + commerce._id'><i class="ti-bag"></i></a></li>
 	                                        </ul>
 	                                    </div>
 	                                    <div class="category_product_text">
-	                                        <a href="single-product.html"><h5>{{commerce.name}}</h5></a>
-	                                        <p>Rp. {{commerce.price}}</p>
+	                                        <a :href='"/product/" + commerce._id'><h5>{{commerce.name}}</h5></a>
+	                                        <p>TKDN: {{commerce.tkdn}}%</p>
 	                                    </div>
 	                                </div>
 	                            </div>

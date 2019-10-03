@@ -38,6 +38,11 @@ export default new Router({
       component: () => import('./views/Shop.vue'),
     },
     {
+      path: '/product/:id',
+      name: 'product',
+      component: () => import('./views/Product.vue'),
+    },
+    {
       path: '/errors',
       name: 'errors',
       component: Errors,
